@@ -1,7 +1,6 @@
 lsi: false
 safe: true
-source: [your repo's top level directory]
-baseurl: "yjh16120"
+source: .
 incremental: false
 highlighter: rouge
 gist:
