@@ -1,6 +1,6 @@
 <h1>Navigation</h1>
 <ul>
-    <li><a href="yjh16120.github.io/about.html>About</a></li>
+    <li><a href="yjh16120.github.io/about.html">About</a></li>
 </ul>
 Welcome to my website. My name is Yap Jia Hong, and I am a student in university studying in a diploma course on software engineering. Then I'll probably switch to a degree in computer science. If you would like to know more about me take a look at the [about](https://yjh16120.github.io/about.html) page.
 
