@@ -5,7 +5,7 @@ Welcome to my website. My name is Yap Jia Hong, and I am a student in university
 
 # Active projects
 Here you can see the number of projects I have active.
-1. [rlox](https://github.com/YJH16120/rlox), a clone of the lox programming language but written in Rust hence the 'r' prefix before 'lox'.
+1. [rlox](https://yjh16120.github.com/rlox), a clone of the lox programming language but written in Rust hence the 'r' prefix before 'lox'.
 2. [Kalculator](https://github.com/YJH16120/Kalculator). It's a calculator. The same knowledge needed to create a programming language is also needed in making a calculator, I thought why not kill two birds with one shot.
 
 # Ideas
