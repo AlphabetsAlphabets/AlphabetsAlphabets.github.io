@@ -1,7 +1,6 @@
 ---
 layout: page
 title: projects
-permalink: /projects/
 ---
 Here you can see the number of projects I have active.
 1. [rlox](https://yjh16120.github.io/rlox), a clone of the lox programming language but written in Rust hence the 'r' prefix before 'lox'.
