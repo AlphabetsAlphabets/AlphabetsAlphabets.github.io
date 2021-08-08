@@ -1,5 +1,6 @@
 ---
 layout: page
+title: projects
 permalink: /projects/
 ---
 Here you can see the number of projects I have active.
