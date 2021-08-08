@@ -1,0 +1,10 @@
+---
+layout: page
+title: About
+permalink: /about/
+---
+
+As mentioned in the home page. I'm Yap Jia Hong, and a university student currently studying diploma in software engineering. And I am going to switch to a computer science degree once I finish with my diploma.
+
+I've been programming for over a year, I started in march of last year. The reason I starting programming was because I had nothing better to do and I always wanted to program. One thing lead to the next, and I got my first software engineering internship, and now I'm in university.
+
