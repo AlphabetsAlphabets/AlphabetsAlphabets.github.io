@@ -2,7 +2,6 @@
 layout: page
 permalink: /projects/
 ---
-# Active projects
 Here you can see the number of projects I have active.
 1. [rlox](https://yjh16120.github.io/rlox), a clone of the lox programming language but written in Rust hence the 'r' prefix before 'lox'.
 2. [Kalculator](https://github.com/YJH16120/Kalculator). It's a calculator. The same knowledge needed to create a programming language is also needed in making a calculator, I thought why not kill two birds with one shot.
