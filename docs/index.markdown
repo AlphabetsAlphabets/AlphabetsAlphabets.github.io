@@ -1,5 +1,8 @@
 ---
-layout: page
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+
+layout: home
 ---
 Welcome to my website. My name is Yap Jia Hong, and I am a student in university studying in a diploma course on software engineering. Then I'll probably switch to a degree in computer science. If you would like to know more about me take a look at the [about](https://yjh16120.github.io/about.html) page.
 
@@ -12,3 +15,5 @@ Here you can see the number of projects I have active.
 Here you'll look at my project ideas, basically what I want to create in the future.
 1. A vim/neovim clone, but with only the basic features. Basic text editing, moving around with 'hjkl', etc.
 2. Creating a music discord bot. I currently have a discord bot that can play music, but it's very ineffective. And I might need to refactor the entire song playback feature.
+
+
