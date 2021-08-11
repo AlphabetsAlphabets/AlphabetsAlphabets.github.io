@@ -8,6 +8,6 @@ Here you can see the number of projects I have active.
 
 # Ideas
 Here you'll look at my project ideas, basically what I want to create in the future.
-1. A vim/neovim clone, but with only the basic features. Basic text editing, moving around with 'hjkl', etc.
+1. Creating a text editor with basic features.
 2. Creating a music discord bot. I currently have a discord bot that can play music, but it's very ineffective. And I might need to refactor the entire song playback feature.
 3. A shitpost generator. "Because I must shitpost at unprecedented speeds" - nth. Someone on my [discord](https://discord.gg/DsmRhYYUH9).
