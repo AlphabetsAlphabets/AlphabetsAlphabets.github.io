@@ -7,9 +7,9 @@ Here you can see the number of projects I have active.
 1. Creating a text editor with basic features.
 
 # On Hold
-1. [rlox](https://yjh16120.github.io/rlox), a clone of the lox programming language but written in Rust hence the 'r' prefix before 'lox'.
-2. [Kalculator](https://github.com/YJH16120/Kalculator). It's a calculator. The same knowledge needed to create a programming language is also needed in making a calculator, I thought why not kill two birds with one shot.
-3. [gaiden](https://yjh16120.github.io/discord-bot-gaiden). I'm going to add the ability for my bot Gaiden to create specific channel topics.
+1. rlox, a clone of the lox programming language but written in Rust hence the 'r' prefix before 'lox'.
+2. Kalculator. It's a calculator. The same knowledge needed to create a programming language is also needed in making a calculator, I thought why not kill two birds with one shot.
+3. gaiden. I'm going to add the ability for my bot Gaiden to create specific channel topics.
 
 # Ideas
 Here you'll look at my project ideas, basically what I want to create in the future.

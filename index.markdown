@@ -1,5 +1,4 @@
 ---
 layout: home
 ---
-Welcome to my website. My name is Yap Jia Hong, and I am a student in university studying in a diploma course on software engineering. Then I'll probably switch to a degree in computer science. If you would like to know more about me take a look at the [about](https://yjh16120.github.io/about.html) page.
-
+Hey there. Welcome to my website. I write all my notes for my projects. Here's a list of all my projects if you're [curious](https://yjh16120.github.io/projects.html).
