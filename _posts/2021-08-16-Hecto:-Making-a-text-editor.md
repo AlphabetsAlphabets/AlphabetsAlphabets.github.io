@@ -1,6 +1,7 @@
 ---
 layout: post
-title: Hecto: Making a text editor
+title: "Hecto: Making a text editor"
+categories: hecto
 ---
 
 **Cargo.toml**

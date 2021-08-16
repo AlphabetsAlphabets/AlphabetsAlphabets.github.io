@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Understanding the lexer"
-categories: Notes about source
+title:  "rlox: Understanding the lexer"
+categories: rlox
 ---
 
 # Lexer

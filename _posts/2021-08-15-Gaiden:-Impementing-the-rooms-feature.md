@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Implementing the rooms feature
+title: "Gaiden: Implementing the rooms feature"
 ---
 
 # Implementation of rooms

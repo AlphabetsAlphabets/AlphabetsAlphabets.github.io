@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Implementing an abstract syntax tree"
+title:  "rlox: Implementing an abstract syntax tree"
 categories: Notes about source
 ---
 
