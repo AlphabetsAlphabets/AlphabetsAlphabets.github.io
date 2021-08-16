@@ -4,7 +4,7 @@ title: "Hecto: Making a text editor"
 categories: hecto
 ---
 
-**Cargo.toml**
+**Dependancies (Cargo.toml)**
 ```toml
 [package]
 name = "hecto"
@@ -52,5 +52,80 @@ Every key press is matched and then checks to see if that character is a printab
 
 If it is a control character then the character will be converted to bytes and printed out. If the key combination pressed is ctrl+q it will end the process.
 
-> Character to byte = `char as u8`
+> Character to byte = `char as u8`  
 > byte to char = `byte as char`
+
+# Creating the editor module
+Everything related to editing will be in that module. First are the imports.
+```rust
+use std::io::{self, stdout, Write};
+
+use termion::event::Key;
+use termion::input::TermRead;
+use termion::raw::IntoRawMode;
+```
+The editor struct
+```rust
+pub struct Editor {
+    should_quit: bool
+}
+```
+Next are the functions
+```rust
+pub fn read_key() -> Result<Key, std::io::Error> {
+    loop {
+        if let Some(key) = io::stdin().lock().keys().next() {
+            return key;
+        }
+    }
+}
+
+impl Editor {
+    pub fn new() -> Self {
+        Self {
+            should_quit: false
+        }
+    }
+
+    fn refresh_screen(&self) -> Result<(), std::io::Error> {
+        // This byte clears the screen
+        print!("\x1b[2J");
+        io::stdout().flush()
+    }
+
+    pub fn run(&mut self) {
+        let _stdout = stdout().into_raw_mode().unwrap();
+
+        loop {
+            if let Err(error) = self.refresh_screen() {
+                panic!(error);
+            };
+
+            if self.should_quit {
+                break;
+            };
+
+            if let Err(error) = self.process_keypress() {
+                panic!(error);
+            };
+
+        }
+    }
+
+    fn process_keypress(&mut self) -> Result<(), std::io::Error> {
+        let pressed_key = read_key()?;
+        match pressed_key {
+            Key::Ctrl('q') => self.should_quit = true,
+            _ => (),
+        }
+        Ok(())
+    }
+}
+```
+Quitting the program was done by using the `panic!` macro, but that leaves an ugly output in stderr. Instead adding the `should_quit` field and setting it to `false` by default, then checking if `should_quit` is `true` or `false`, if `true` then break ending the program, if `false` continue running the program.  
+![Using panic! to exit](/images/hecto/using_panic_macro_to_exit.png){:class="img-responsive"}
+<h5 style="text-align: center;">Using panic! to exit</h5>
+
+`\x1b[2J` by putting that escape character into the `print!` macro it clears the screen.
+
+the `process_keypress` has been condensed down, before the byte code and the character would printed in that function. Now it has `read_key` a helper function. Basically it grabs the current key pressed and returns it as an event. The `?` for when it's called is the same as calling `unwrap`. And if `pressed_key` matches `ctrl+q`, `should_quit` is set to `true`, quitting the program.
