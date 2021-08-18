@@ -52,8 +52,8 @@ Every key press is matched and then checks to see if that character is a printab
 
 If it is a control character then the character will be converted to bytes and printed out. If the key combination pressed is ctrl+q it will end the process.
 
-> Character to byte = `char as u8`  
-> byte to char = `byte as char`
+> Character to byte -> `char as u8`  
+> byte to char -> `byte as char`
 
 # Creating the editor module
 Everything related to editing will be in that module. First are the imports.
@@ -88,8 +88,8 @@ impl Editor {
     }
 
     fn refresh_screen(&self) -> Result<(), std::io::Error> {
-        // This byte clears the screen
-        print!("\x1b[2J");
+	print!("{}", termion::clear::All);
+	print!("{}{}", termion::clear::All, termion::cursor::Goto(1, 1));
         io::stdout().flush()
     }
 
@@ -122,10 +122,60 @@ impl Editor {
     }
 }
 ```
-Quitting the program was done by using the `panic!` macro, but that leaves an ugly output in stderr. Instead adding the `should_quit` field and setting it to `false` by default, then checking if `should_quit` is `true` or `false`, if `true` then break ending the program, if `false` continue running the program.  
-![Using panic! to exit](/images/hecto/using_panic_macro_to_exit.png){:class="img-responsive"}
-<h5 style="text-align: center;">Using panic! to exit</h5>
+Quitting the program was done by using the `panic!` macro, but that leaves an ugly output in stderr. `should_quit` is a bool, set to true when `ctrl+q` is pressed. If `should_quit` is true, exit program.
 
-`\x1b[2J` by putting that escape character into the `print!` macro it clears the screen.
+![Using panic! to exit](/images/hecto/using_panic_macro_to_exit.png){:class="img-responsive"}
+<h5 style="text-align: center; font-style: italic;">Using panic! to exit</h5>
+
+`termion::clear::All`, and `termion::cursor::Goto(1, 1)`. Clears the screen then goes to row 1, column 1.
 
 the `process_keypress` has been condensed down, before the byte code and the character would printed in that function. Now it has `read_key` a helper function. Basically it grabs the current key pressed and returns it as an event. The `?` for when it's called is the same as calling `unwrap`. And if `pressed_key` matches `ctrl+q`, `should_quit` is set to `true`, quitting the program.
+
+# Drawing tidles (~) like vim
+First get the height of the terminal window a struct will represent this data. `termion` provides a method to get the width, and height of the terminal window.
+```rust
+pub struct Terminal {
+    size: (u16, u16)
+}
+
+impl Terminal {
+    pub fn new() -> Result<Self, std::io::Error> {
+        let size = termion::terminal_size()?; // <- gets terminal dimensions
+        let term = Self {
+            size: (size.0, size.1)
+        };
+
+        Ok(term)
+    }
+
+    pub fn size(&self) -> (u16, u16) {
+        (self.size.0, self.size.1)
+    }
+}
+```
+Add a new field to `Editor`
+```rust
+Editor {
+    should_quit: bool,
+    terminal: Terminal
+}
+```
+Create a draw function
+```rust
+fn draw_tidles(&self) {
+    for _ in 0..self.terminal.size.1 {
+        println!("~\r");
+    }
+}
+```
+Then reset the cursor to `1, 1` after the call.
+```rust
+if self.should_quit {
+    break;
+} else {
+    self.draw_tildes();
+    print!("{}", termion::cursor::Goto(1, 1));
+    io::stdout().flush();
+}
+```
+*Moved all functions related to the terminal into the implementation of `Terminal`.*
