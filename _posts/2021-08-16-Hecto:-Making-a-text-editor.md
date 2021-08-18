@@ -179,3 +179,85 @@ if self.should_quit {
 }
 ```
 *Moved all functions related to the terminal into the implementation of `Terminal`.*
+
+# Touching up
+```rust
+    // moved `refresh_screen` back to editor.rs
+    pub fn refresh_screen(&self) -> Result<(), std::io::Error> {
+	Terminal::clear_screen();
+        Terminal::cursor_hide();
+        Terminal::cursor_position(0, 0);
+        Terminal::flush()
+    }
+```
+Clearing the screen each time is overkill, to fix it in the `draw_tildes` function, it should clear the current line instead. So when the window moves down, it doesn't just clear the entire screen.
+```rust
+    pub fn clear_current_line() {
+        print!("{}", termion::clear::CurrentLine);
+        Self::flush();
+    }
+```
+Then in `draw_tildes`
+```rust
+    fn draw_tildes(&self) {
+        for _ in 0..self.terminal.size().1 {
+            Terminal::clear_current_line();
+            println!("~\r");
+        }
+    }
+```
+
+# Displaying a welcome message
+Drawing the welcome message will be called when the tidles are being drawn.
+```rust
+    fn draw_tildes(&self) {
+        let height = self.terminal.size().1;
+        for row in 0..height {
+            Terminal::clear_current_line();
+            if row == height / 3 {
+                self.draw_welcome_message();
+            } else {
+                println!("~\r");
+            }
+        }
+    }
+```
+```rust
+    fn draw_welcome_message(&self) {
+        let mut welcome_message = format!("Hecto -- version {}\r", VERSION);         
+        let width = self.terminal.size().0 as usize;
+        let len = welcome_message.len();
+
+        let padding = width.saturating_sub(len) / 2;
+        let spaces = " ".repeat(padding.saturating_sub(1));
+
+        welcome_message = format!("~{}{}", spaces, welcome_message);
+        welcome_message.truncate(width);
+
+        println!("{}\r", welcome_message);
+    }
+```
+To illustrate centering the text.
+```
+Assume the width of the screen in 24 chars
++------------------------+
+|                        |
+|                        |
++------------------------+
+```
+To center the text in the center with 4 chars, you must make space so `width - 4`.
+This places the 4 character string right up to the edge of the screen.
+```
++------------------------+
+|                    TEXT|
+|                        |
++------------------------+
+```
+Then half the length of the width which places the "T" in "TEXT" starting from the 12th character.
+```
++------------------------+
+|           TEXT         |
+|                        |
++------------------------+
+```
+It's not exactly centered but close enough.
