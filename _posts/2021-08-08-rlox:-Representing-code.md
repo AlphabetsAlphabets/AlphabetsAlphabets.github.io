@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "rlox: Representing code"
-categories: Notes about source
+categories: rlox
 ---
 
 # Representing code

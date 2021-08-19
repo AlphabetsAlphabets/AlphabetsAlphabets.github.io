@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Gaiden: Implementing the rooms feature"
+categories: gaiden
 ---
 
 # Implementation of rooms
