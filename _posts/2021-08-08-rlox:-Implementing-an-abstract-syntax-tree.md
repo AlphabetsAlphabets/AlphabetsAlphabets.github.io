@@ -4,7 +4,7 @@ title:  "rlox: Implementing an abstract syntax tree"
 categories: Notes about source
 ---
 
-After learning about how the [productions](https://yjh16120.github.io/rlox/notes/about/source/2021/08/08/Representing-code.html) work in general it's time to implement productions specifically for rlox.
+After learning about how the [productions](https://yjh16120.github.io/notes/about/source/2021/08/08/rlox-Implementing-an-abstract-syntax-tree.html) work in general it's time to implement productions specifically for rlox.
 
 *Production of rlox*
 ```

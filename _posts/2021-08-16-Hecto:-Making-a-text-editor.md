@@ -3,7 +3,7 @@ layout: post
 title: "Hecto: Making a text editor"
 categories: hecto
 ---
-
+   
 **Dependancies (Cargo.toml)**
 ```toml
 [package]
@@ -261,3 +261,79 @@ Then half the length of the width which places the "T" in "TEXT" starting from t
 +------------------------+
 ```
 It's not exactly centered but close enough.
+
+# Moving the cursor
+Making the cursor move means in the places where `Terminal::cursor_position` was called and set to `(0, 0)` is now pointless. That function will now that a `Position` as an argument. `Position` will be in `editor.rs` and **not** `terminal.rs` because it's the position of the cursor **in the document**, not in the terminal.
+
+```rust
+    pub fn cursor_position(pos: &Position) {
+        // using `saturating_add` prevents the buffer from overflowing.
+        let Position { mut x, mut y } = pos;
+        let x = x.saturating_add(1) as u16;
+        let y = y.saturating_add(1) as u16;
+
+        print!("{}", termion::cursor::Goto(x, y));
+        Self::flush();
+    }
+```
+Next creating `Position` in `editor.rs`
+```rust
+pub struct Position {
+    pub x: usize,
+    pub y: usize,
+}
+```
+Detecting the key press will be done in the `process_keypress` function (lmao obviously).
+```rust
+    fn process_keypress(&mut self) -> Result<(), std::io::Error> {
+        let Position { mut x, mut y } = self.cursor_position;
+        let pressed_key = Terminal::read_key()?;
+        match pressed_key {
+            Key::Ctrl('q') => self.should_quit = true,
+            Key::Up | Key::Down | Key::Left | Key::Right => self.move_cursor(pressed_key),
+            _ => (),
+        }
+        Ok(())
+    }
+```
+A new method in `Editor` called `move_cursor` will be implemented. The cursor will be able to move any where within the bounds of the screen.
+```rust
+    fn move_cursor(&mut self, key: Key) {
+        let Position { mut x, mut y } = self.cursor_position;
+
+        let size = self.terminal.size();
+        let width = size.width.saturating_sub(1) as usize;
+        let height = size.height.saturating_sub(1) as usize;
+
+        match key {
+            Key::Up => y = y.saturating_sub(1),
+            Key::Down => {
+                if y < height {
+                    y = y.saturating_add(1)
+                }
+            },
+            Key::Left => x = x.saturating_sub(1),
+            Key::Right => {
+                if x < width {
+                    x = x.saturating_add(1)
+                }
+            },
+            _ => (),
+        }
+
+        self.cursor_position = Position { x, y }
+    }
+```
+<h5 style="text-align: center; font-style: italic;">(0, 0) starts in the top left corner, not the centre of the screen.</h5>
+
+```rust
+            if self.should_quit {
+                Terminal::clear_screen();
+                Terminal::cursor_show();
+                break;
+            } else {
+                self.draw_tildes();
+                Terminal::cursor_position(&self.cursor_position);
+            }
+```
+The change here is that instead of setting the cursor to `(0, 0)` after drawing the tidles (which is every single time unless it's to quit hecto). Will cause the cursor to not move despite the functions being implemented. The fix is to just move the cursor to the current position of the cursor which doesn't change where it is at all.
