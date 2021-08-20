@@ -4,7 +4,7 @@ title: "Hecto: Making a text editor"
 categories: hecto
 ---
    
-**Dependancies (Cargo.toml)**
+**Dependencies (Cargo.toml)**
 ```toml
 [package]
 name = "hecto"
@@ -55,7 +55,7 @@ If it is a control character then the character will be converted to bytes and p
 > Character to byte -> `char as u8`  
 > byte to char -> `byte as char`
 
-# Creating the editor module
+# Creating the editor
 Everything related to editing will be in that module. First are the imports.
 ```rust
 use std::io::{self, stdout, Write};
@@ -337,3 +337,132 @@ A new method in `Editor` called `move_cursor` will be implemented. The cursor wi
             }
 ```
 The change here is that instead of setting the cursor to `(0, 0)` after drawing the tidles (which is every single time unless it's to quit hecto). Will cause the cursor to not move despite the functions being implemented. The fix is to just move the cursor to the current position of the cursor which doesn't change where it is at all.
+
+# Adding in normal & insert mode (5010ba7)
+A struct that has the different modes will be used. `PartialEq` will save me from using too many match statements.
+```rust
+#[derive(PartialEq)]
+enum Mode {
+    Insert,
+    Normal
+}
+```
+
+Made two functions to handle the inputs in normal and insert mode.
+```rust
+    fn normal_mode(&mut self, key: Key) {
+        let Position { mut x, mut y } = self.cursor_position;
+
+        let size = self.terminal.size();
+        let width = size.width.saturating_sub(1) as usize;
+        let height = size.height.saturating_sub(1) as usize;
+
+        match key {
+            Key::Char('k') => y = y.saturating_sub(1),
+            Key::Char('j') => {
+                if y < height {
+                    y = y.saturating_add(1)
+                }
+            }
+            Key::Char('h') => x = x.saturating_sub(1),
+            Key::Char('l') => {
+                if x < width {
+                    x = x.saturating_add(1)
+                }
+            }
+
+            Key::Char('i') => {
+                self.mode = Mode::Insert;
+            }
+            _ => (),
+        }
+
+        self.cursor_position = Position { x, y }
+    }
+
+    fn insert_mode(&mut self, key: Key) {
+        match key {
+            Key::Esc => {
+                self.mode = Mode::Normal;
+            }
+            _ => (),
+        }
+    }
+```
+
+The move cursor function will need to be modified
+```rust
+    fn move_cursor(&mut self, key: Key) {
+        if self.mode == Mode::Normal {
+            self.normal_mode(key);
+        } else {
+            self.insert_mode(key);
+        }
+    }
+```
+
+A status bar telling the user what mode their in will also be displayed. Two things need to be added, a new field, and a new function.
+```rust
+pub struct Editor {
+    mode: Mode, // <- The new field
+    status_bar: String,
+    should_quit: bool,
+    terminal: Terminal,
+    cursor_position: Position,
+}
+```
+
+To switch between different modes the `process_keypress` function will be modified
+```rust
+    fn process_keypress(&mut self) -> Result<(), std::io::Error> {
+        let Position { mut x, mut y } = self.cursor_position;
+        let pressed_key = Terminal::read_key()?;
+        match pressed_key {
+            Key::Ctrl('q') => self.should_quit = true,
+            Key::Char('j') | Key::Char('k') | Key::Char('l') | Key::Char('h') => {
+                self.move_cursor(pressed_key)
+            }
+            Key::Esc => self.change_mode(Mode::Normal),
+            Key::Char('i') => self.change_mode(Mode::Insert),
+            _ => (),
+        }
+        Ok(())
+    }
+```
+
+`change_mode` will change the mode (lmao yeah duh)
+```rust
+    fn change_mode(&mut self, change_to: Mode) {
+        self.mode = change_to;
+    }
+```
+
+Creating the status bar function
+```rust
+    fn status_bar(&mut self) {
+        if self.mode == Mode::Normal {
+            self.status_bar = "MODE: NORMAL".to_string();
+        } else {
+            self.status_bar = "MODE: INSERT".to_string();
+        }
+        println!("{}", self.status_bar);
+    }
+```
+This function will be called after the tidles are finished being drawn. Now the user will be able to move around with `hjkl` in normal mode, but can't in insert mode.
+
+# Adding in G, g, 0 and $
+Very simple change in `process_keypress` modify the match arm that uses `move_cursor`
+```rust
+            Key::Char('j') | Key::Char('k') | Key::Char('l') | Key::Char('h') 
+                | Key::Char('G') | Key::Char('g') | Key::Char('0') | Key::Char('S') => {
+                self.move_cursor(pressed_key)
+            }
+```
+In the `normal_mode` function add these arms
+```rust
+            Key::Char('g') => y = 0,
+            Key::Char('G') => y = height,
+            Key::Char('0') => x = 0,
+            Key::Char('S') => x = width,
+```
+Since `g` goes to the beginning of the file, set y to 0, same reasoning for `0` the start of the line is when x is 0. When going to the bottom of the screen with `G` y is set to `height` because you don't want it to go beyond the status bar.
