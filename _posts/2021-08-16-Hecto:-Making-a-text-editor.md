@@ -3,8 +3,14 @@ layout: post
 title: "Hecto: Making a text editor"
 categories: hecto
 ---
-   
-**Dependencies (Cargo.toml)**
+
+* TOC
+{:toc}
+
+---
+
+
+# Cargo.toml specifications
 ```toml
 [package]
 name = "hecto"
@@ -131,7 +137,7 @@ Quitting the program was done by using the `panic!` macro, but that leaves an ug
 
 the `process_keypress` has been condensed down, before the byte code and the character would printed in that function. Now it has `read_key` a helper function. Basically it grabs the current key pressed and returns it as an event. The `?` for when it's called is the same as calling `unwrap`. And if `pressed_key` matches `ctrl+q`, `should_quit` is set to `true`, quitting the program.
 
-# Drawing tidles (~) like vim
+## Drawing tidles (~) like vim
 First get the height of the terminal window a struct will represent this data. `termion` provides a method to get the width, and height of the terminal window.
 ```rust
 pub struct Terminal {
@@ -153,6 +159,7 @@ impl Terminal {
     }
 }
 ```
+
 Add a new field to `Editor`
 ```rust
 Editor {
@@ -180,7 +187,7 @@ if self.should_quit {
 ```
 *Moved all functions related to the terminal into the implementation of `Terminal`.*
 
-# Touching up
+## Touching up
 ```rust
     // moved `refresh_screen` back to editor.rs
     pub fn refresh_screen(&self) -> Result<(), std::io::Error> {
@@ -207,7 +214,7 @@ Then in `draw_tildes`
     }
 ```
 
-# Displaying a welcome message
+## Displaying a welcome message
 Drawing the welcome message will be called when the tidles are being drawn.
 ```rust
     fn draw_tildes(&self) {
@@ -237,6 +244,7 @@ Drawing the welcome message will be called when the tidles are being drawn.
         println!("{}\r", welcome_message);
     }
 ```
+
 To illustrate centering the text.
 ```
 Assume the width of the screen in 24 chars
@@ -262,7 +270,8 @@ Then half the length of the width which places the "T" in "TEXT" starting from t
 ```
 It's not exactly centered but close enough.
 
-# Moving the cursor
+# Functionality
+## Moving the cursor
 Making the cursor move means in the places where `Terminal::cursor_position` was called and set to `(0, 0)` is now pointless. That function will now that a `Position` as an argument. `Position` will be in `editor.rs` and **not** `terminal.rs` because it's the position of the cursor **in the document**, not in the terminal.
 
 ```rust
@@ -296,6 +305,7 @@ Detecting the key press will be done in the `process_keypress` function (lmao ob
         Ok(())
     }
 ```
+
 A new method in `Editor` called `move_cursor` will be implemented. The cursor will be able to move any where within the bounds of the screen.
 ```rust
     fn move_cursor(&mut self, key: Key) {
@@ -338,7 +348,7 @@ A new method in `Editor` called `move_cursor` will be implemented. The cursor wi
 ```
 The change here is that instead of setting the cursor to `(0, 0)` after drawing the tidles (which is every single time unless it's to quit hecto). Will cause the cursor to not move despite the functions being implemented. The fix is to just move the cursor to the current position of the cursor which doesn't change where it is at all.
 
-# Adding in normal & insert mode (5010ba7)
+## Adding modes (5010ba7)
 A struct that has the different modes will be used. `PartialEq` will save me from using too many match statements.
 ```rust
 #[derive(PartialEq)]
@@ -450,7 +460,7 @@ Creating the status bar function
 ```
 This function will be called after the tidles are finished being drawn. Now the user will be able to move around with `hjkl` in normal mode, but can't in insert mode.
 
-# Adding in G, g, 0 and $
+## Adding in G, g, 0 and $
 Very simple change in `process_keypress` modify the match arm that uses `move_cursor`
 ```rust
             Key::Char('j') | Key::Char('k') | Key::Char('l') | Key::Char('h') 
