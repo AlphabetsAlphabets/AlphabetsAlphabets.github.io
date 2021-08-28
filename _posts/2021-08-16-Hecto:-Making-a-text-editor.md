@@ -212,7 +212,7 @@ Drawing the welcome message will be called when the tidles are being drawn.
 ```rust
     fn draw_tildes(&self) {
         let height = self.terminal.size().1;
-        for row in 0..height {
+        for row in 0..height - 2 {
             Terminal::clear_current_line();
             if row == height / 3 {
                 self.draw_welcome_message();
@@ -466,3 +466,42 @@ In the `normal_mode` function add these arms
             Key::Char('S') => x = width,
 ```
 Since `g` goes to the beginning of the file, set y to 0, same reasoning for `0` the start of the line is when x is 0. When going to the bottom of the screen with `G` y is set to `height` because you don't want it to go beyond the status bar.
+
+# Viewing files
+In `document.rs` a new function `open` is to be defined, it's going to open a file.
+```rust
+    pub fn open(filename: &str) -> Self {
+        let contents = fs::read_to_string(filename).expect("Unable to open file.");
+        let mut rows = vec![];
+
+	// lines() strips all whitespace characters at the end of each line.
+        for value in contents.lines() {
+            rows.push(Row::from(value));
+        }
+
+        Self { rows }
+    }
+```
+
+This changes the `new` method for `Editor`
+```rust
+    pub fn new() -> Self {
+        let args: Vec<String> = env::args().collect();
+        let document = if args.len() > 1 {
+            let file_name = &args[1];
+            Document::open(file_name)
+        } else {
+            Document::default()
+        };
+
+        Self {
+            mode: Mode::Normal,
+            status_bar: "".to_string(),
+            should_quit: false,
+            document,
+            terminal: Terminal::new().expect("Failed to initialize terminal."),
+            cursor_position: Position::default(),
+        }
+    }
+```
+Checking if args is greater than 1 because `args[0]` is the name of the program, and `args[1]` onwards are actual arugments. If it's greater than 1 it means a file is passed in. And it will load the contents of that document into the editor, else it will load in an empty document into the editor.
