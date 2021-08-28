@@ -4,11 +4,14 @@ title:  "rlox: Representing code"
 categories: rlox
 ---
 
+* TOC
+{:toc}
+
 # Representing code
 The way we represent rlox's grammer. First we need to make up the rules for Lox's grammer. 
 
 ## Rules for grammar
-We can get grammar by following the grammar rules. Strings are created by following these rules. Strings that are created this way are called __derivations__. So that means all strings are derivations.
+We can get grammar by following the grammar rules. Strings are created by following these rules. Strings that are created this way are called __derivations__. So that means all strings are derivations. [^1]
 
 The technical term for "grammar rules" or "rules for grammar" is productions. Because these rules __produce__ grammer. A production (rules for the grammar) has a head, and a body. The head is the name of the rule, and the body describes what the rule does.
 
@@ -45,15 +48,20 @@ The first nonterminal is `protein`, so let's pick one production of `protein`; `
 
 The second nonterminal is `breakfast`. `breakfast -> bread"`, folow the bread production. `bread -> "muffin"`. Then build it all the way back up.
 
-`protein` eventually produces the derivation of `scrambled eggs with muffin on the side`
+`protein` eventually produces the derivation of `scrambled eggs "with" muffin on the "side"`
 
 # Enhancing production notation
 It's really long in it's current form. Since there are multiple productions for the `bread` nonterminal. It can be condensed into `bread -> "muffin" | "toast";`. So the new notation is now this.
 ```
 breakfast -> protein "with" breakfast "on the side" | protein | bread;
 
-protein -> ("scrambled" | "poached" | "fried) "eggs" | "sausage";
+protein -> ("scrambled" | "poached" | "fried") "eggs" | "sausage";
 
 bread -> "muffin" | "toast" ;
 ```
-This can be kept handy in the file system as a reference.
+This can be kept handy in the file system as a reference. [^2]
+
+---
+
+[^1]: Unsure if all strings are derivations, as it's implied by crafting interpreters.
+[^2]: Isn't very useful until after parsing the language, can result it output such as when `print` is called, etc.
