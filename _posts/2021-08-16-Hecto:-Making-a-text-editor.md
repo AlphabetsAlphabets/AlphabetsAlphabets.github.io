@@ -515,3 +515,28 @@ This changes the `new` method for `Editor`
     }
 ```
 Checking if args is greater than 1 because `args[0]` is the name of the program, and `args[1]` onwards are actual arugments. If it's greater than 1 it means a file is passed in. And it will load the contents of that document into the editor, else it will load in an empty document into the editor.
+
+To draw all of the text onto the screen.
+```rust
+impl Row {
+    pub fn render(&self, start: usize, end: usize) -> String {
+	// start will always be smaller than end due to `min`
+        let end = cmp::min(end, self.string.len());
+        let start = cmp::min(start, end);
+        self.string.get(start..end).unwrap_or_default().to_string()
+    }
+}
+```
+This function will always make sure to return a substring (assuming `start`, and `end` are reasonable numbers). `get` can be used on `&str`, and `String` to get substrings.
+
+In `draw_row` 
+```rust
+    fn draw_row(&self, row: &Row) {
+        let start = 0;
+        let end = self.terminal.size().width as usize;
+        let row = row.render(start, end);
+
+        println!("{}\r", row);
+    }
+```
+`render` as discussed earlier will print extract a substring or return `None`, then print out the substring.
