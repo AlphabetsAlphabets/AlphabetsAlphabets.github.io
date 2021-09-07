@@ -540,3 +540,83 @@ In `draw_row`
     }
 ```
 `render` as discussed earlier will print extract a substring or return `None`, then print out the substring.
+
+## Scrolling
+### Vertical scrolling
+a new field offset of type `Position` will need to be added to `Editor`
+```rust
+pub struct Editor {
+    mode: Mode,
+    offset: Position,
+    status_bar: String,
+    should_quit: bool,
+    document: Document,
+    terminal: Terminal,
+    cursor_position: Position,
+}
+```
+This will be used to handle scrolling vertically (up and down). The value of `offset.x`, and `offset.y` will not be determined on startup. Instead it is initialized in the new `scroll` function.
+
+```rust
+    fn scroll(&mut self) {
+        let Position { x, y } = self.cursor_position;
+        let width = self.terminal.size().width as usize;
+        let height = self.terminal.size().height as usize;
+        let mut offset = &mut self.offset;
+
+        if y < offset.y {
+            offset.y = y;
+        } else if y >= offset.y.saturating_add(height) {
+            offset.y = y.saturating_sub(height).saturating_add(1);
+        }
+
+        if x < offset.x {
+            offset.x = x;
+        } else if x >= offset.x.saturating_add(width) {
+            offset.x = x.saturating_sub(width).saturating_add(1);
+        }
+    }
+```
+`offset` keeps track of which row the user is at in the file. 
+
+Assuming `y` is 24, and offset.y is 0, i the first `if` the second condition would be true. Then the added height is subtracted from `offset.y` and 1 is added to it. This will allow for scrolling, as `offset.y` is used in here to determine what lines should be drawn onto the screen:
+```rust
+if let Some(row) = self.document.row(terminal_row as usize + self.offset.y) {
+    self.draw_row(row);
+} else if self.document.is_empty() && terminal_row == height / 3 {
+    self.draw_welcome_message();
+} else {
+    println!("~\r");
+}
+```
+As the goal is to scroll downwards, the row that is obtained from the `row` method [^1] will be increased by 1, thereby ignoring the previous row, and rendering everything else instead. As the value of `offset.y` increases, the row that was rendered will be ignored in favour of a new one. The same concept is applied to scrolling horizontally. Where it ignores a character instead of an entire line.
+
+### Horizontal scrolling
+Horizontal scrolling is implemented this way.
+```rust
+let mut width = if let Some(row) = self.document.row(y) {
+    row.len()
+} else {
+    0
+};
+```
+This is used to determine the width of the line, meaning how many characters long it is. If the width cannot be determined set it to 0, as `row` functions by getting the index. Right now the cursor can move any where in the document, but it can only move as far as the longest row. If there is a row shorter than the longer row, it will be able to move beyond the width of the current row.
+
+The fix for this is checking if the x position of the cursor is greater than the width of the current row. If it is set the x position to the width, to make sure the cursor can only move as far as right as the length of the current row.
+
+```rust
+// adjusts the width the the length of the row
+width = if let Some(row) = self.document.row(y) {
+    row.len()
+} else {
+    0
+};
+
+if x > width {
+    x = width + 1; // <-- `width + 1` not in the guide
+}
+```
+
+
+# Footnotes
+[^1]: The `row` method will index into the `Row` struct which has a field containing a vector of strings, where each element is a row in a file, then grab that role using the provided index.
