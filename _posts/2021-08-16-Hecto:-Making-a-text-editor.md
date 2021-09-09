@@ -617,6 +617,33 @@ if x > width {
 }
 ```
 
+## Adding in more keys
+The W and B key in vim moves the cursor forward, and backward respectively until the first non whitespace character with the exception of the whitespace the cursor is currently on, or adjacent to.
+
+### Adding in the 'W' key
+In `normal_mode`, another match arm is added
+```rust
+if let Some(row) = self.document.row(y) {
+    if let Some(contents) = row.contents().get(x..) {
+        for (count, ch) in contents.chars().enumerate() {
+            if ch == ' ' && !ch.is_ascii_alphabetic() {
+                x = x.saturating_add(count + 1);
+                break;
+            }
+        }
+    }
+}
+```
+`contents` is a simple function that returns the text in the current row. And `get`, gets a substring of that row. To illustrate:  
+
+```
+# See more {k}eys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+```
+Take this line, and the cursor position is found by finding what text is surrounded by {foo}, in this case the cursor is at the 'k' character in 'keys'. To move forward and stop at the first **non ascii alphabet**, excluding the word the cursor is at, looping through each character with `enumerate`. To find out which character is a space, and a non ascii alphabetic character (spaces are non ascii alphabetic). Then adding the current x position of the cursor with `count` + 1, because we want to move to the first **non ascii alphabet**.
+
+And the 'B' is the reverse of the 'W' so it won't be specified in here. [^2]
 
 # Footnotes
 [^1]: The `row` method will index into the `Row` struct which has a field containing a vector of strings, where each element is a row in a file, then grab that role using the provided index.
+
+[^2]: [The implementation of the 'B' key](https://github.com/YJH16120/hecto/blob/master/src/editor.rs#L143)
