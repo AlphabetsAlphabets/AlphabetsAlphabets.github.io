@@ -411,17 +411,6 @@ The move cursor function will need to be modified
     }
 ```
 
-A status bar telling the user what mode their in will also be displayed. Two things need to be added, a new field, and a new function.
-```rust
-pub struct Editor {
-    mode: Mode, // <- The new field
-    status_bar: String,
-    should_quit: bool,
-    terminal: Terminal,
-    cursor_position: Position,
-}
-```
-
 To switch between different modes the `process_keypress` function will be modified
 ```rust
     fn process_keypress(&mut self) -> Result<(), std::io::Error> {
@@ -447,35 +436,20 @@ To switch between different modes the `process_keypress` function will be modifi
     }
 ```
 
-Creating the status bar function
-```rust
-    fn status_bar(&mut self) {
-        if self.mode == Mode::Normal {
-            self.status_bar = "MODE: NORMAL".to_string();
-        } else {
-            self.status_bar = "MODE: INSERT".to_string();
-        }
-        println!("{}", self.status_bar);
-    }
-```
-This function will be called after the tidles are finished being drawn. Now the user will be able to move around with `hjkl` in normal mode, but can't in insert mode.
-
-## Adding in G, g, 0 and $
+## Adding in 0 and S
 Very simple change in `process_keypress` modify the match arm that uses `move_cursor`
 ```rust
             Key::Char('j') | Key::Char('k') | Key::Char('l') | Key::Char('h') 
-                | Key::Char('G') | Key::Char('g') | Key::Char('0') | Key::Char('S') => {
+                |  Key::Char('0') | Key::Char('S') => {
                 self.move_cursor(pressed_key)
             }
 ```
 In the `normal_mode` function add these arms
 ```rust
-            Key::Char('g') => y = 0,
-            Key::Char('G') => y = height,
             Key::Char('0') => x = 0,
             Key::Char('S') => x = width,
 ```
-Since `g` goes to the beginning of the file, set y to 0, same reasoning for `0` the start of the line is when x is 0. When going to the bottom of the screen with `G` y is set to `height` because you don't want it to go beyond the status bar.
+Since `g` goes to the beginning of the file, set y to 0, same reasoning for `0` the start of the line is when x is 0. When going to the bottom of the screen with `G` y is set to `height`.
 
 # Viewing files
 In `document.rs` a new function `open` is to be defined, it's going to open a file.
@@ -506,7 +480,6 @@ This changes the `new` method for `Editor`
 
         Self {
             mode: Mode::Normal,
-            status_bar: "".to_string(),
             should_quit: false,
             document,
             terminal: Terminal::new().expect("Failed to initialize terminal."),
@@ -548,7 +521,6 @@ a new field offset of type `Position` will need to be added to `Editor`
 pub struct Editor {
     mode: Mode,
     offset: Position,
-    status_bar: String,
     should_quit: bool,
     document: Document,
     terminal: Terminal,
@@ -617,6 +589,30 @@ if x > width {
 }
 ```
 
+### Adding a fix
+Because the cursor position has the values of `offset.x`, and `offset.y` added to it's value. It will need to be subtracted from it. So in `run()` in `editor.rs`
+
+```rust
+loop {
+    if self.should_quit {
+    	self.terminal.clear_screen();
+    	break;
+    } else {
+    	self.draw_rows();
+    	let pos = Position {
+	    x: self.cursor_position.x.saturating_sub(self.offset.x),
+	    y: self.cursor_position.y.saturating_sub(self.offset.y),
+    	};
+    
+    	self.terminal.cursor_position(&pos);
+    }
+    
+    if let Err(error) = self.process_keypress() {
+    	panic!(error);
+    };
+}
+```
+
 ## Adding in more keys
 The W and B key in vim moves the cursor forward, and backward respectively until the first non whitespace character with the exception of the whitespace the cursor is currently on, or adjacent to.
 
@@ -643,7 +639,11 @@ Take this line, and the cursor position is found by finding what text is surroun
 
 And the 'b' is the reverse of the 'w' so it won't be specified in here. [^2]
 
+### Scrolling up and down a page.
+The keys responsible for this will be captial 'J', and 'K'.
+
 # Footnotes
 [^1]: The `row` method will index into the `Row` struct which has a field containing a vector of strings, where each element is a row in a file, then grab that role using the provided index.
 
 [^2]: [The implementation of the 'b' key](https://github.com/YJH16120/hecto/blob/master/src/editor.rs#L143)
+
