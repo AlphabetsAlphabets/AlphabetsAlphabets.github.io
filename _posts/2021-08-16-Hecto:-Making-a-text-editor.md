@@ -620,14 +620,23 @@ The W and B key in vim moves the cursor forward, and backward respectively until
 In `normal_mode`, another match arm is added
 ```rust
 if let Some(row) = self.document.row(y) {
-    if let Some(contents) = row.contents().get(x..) {
-        for (count, ch) in contents.chars().enumerate() {
-            if ch == ' ' && !ch.is_ascii_alphabetic() {
-                x = x.saturating_add(count + 1);
-                break;
-            }
-        }
-    }
+	if let Some(contents) = row.contents().get(x..) {
+		let mut index = 0;
+		for (count, ch) in contents.chars().enumerate() {
+			if !ch.is_ascii_alphabetic() {
+				index = count;
+				break;
+			}
+		}
+
+		if x >= width && y < height {
+			y += 1;
+			x = 0;
+		} else {
+			x = x.saturating_add(index + 1);
+		}
+
+	}
 }
 ```
 `contents` is a simple function that returns the text in the current row. And `get`, gets a substring of that row. To illustrate:  
@@ -635,9 +644,11 @@ if let Some(row) = self.document.row(y) {
 ```
 # See more {k}eys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 ```
-Take this line, and the cursor position is found by finding what text is surrounded by {foo}, in this case the cursor is at the 'k' character in 'keys'. To move forward and stop at the first **non ascii alphabet**, excluding the word the cursor is at, looping through each character with `enumerate`. To find out which character is a space, and a non ascii alphabetic character (spaces are non ascii alphabetic). Then adding the current x position of the cursor with `count` + 1, because we want to move to the first **non ascii alphabet**.
+Take this line, and the cursor position is found by finding what text is surrounded by {foo}, in this case the cursor is at the 'k' character in 'keys'. To move forward and stop at the first **non ascii alphabet**, excluding the word the cursor is at, looping through each character with `enumerate`. Taking note of `count`, and setting it to `index`. Because `count` is the number of characters that has passed to read the non ascii alphabetic character. 
 
-And the 'b' is the reverse of the 'w' so it won't be specified in here. [^2]
+The if statement at the bottom will allow the cursor to move to the start of the second line, assuming the cursor is at the end of the current line, and there is a next line (`y < height` part). Then increment y by 1, and set x to 0 (the start of the line). If that isn't the case, then just add the number of characters passed into the current x position to move it.
+
+And the 'b' is the reverse of the 'w' so it won't be specified in here, the concepts are all the same. [^2]
 
 ### Scrolling up and down a page.
 The keys responsible for this will be captial 'J', and 'K'.
