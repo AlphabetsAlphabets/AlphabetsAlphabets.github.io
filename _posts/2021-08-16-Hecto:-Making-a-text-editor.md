@@ -651,7 +651,135 @@ The if statement at the bottom will allow the cursor to move to the start of the
 And the 'b' is the reverse of the 'w' so it won't be specified in here, the concepts are all the same. [^2]
 
 ### Scrolling up and down a page.
-The keys responsible for this will be captial 'J', and 'K'.
+The keys responsible for this will be captial 'J', and 'K'. The comments I added is all the explanation that is needed.
+
+#### The 'K' key
+```rust
+Key::Char('K') => {
+	// first if only happens on the 1st screen.
+	y = if y > terminal_height {
+		// saturating_add/sub not used because y and terminal_height
+		// have the same type.
+		y - terminal_height
+	} else {
+		0
+	}
+}
+```
+
+#### The 'J' key
+```rust
+Key::Char('J') => {
+	// terminal_height is the number of visible rows on the screen.
+	// height is the number of rows in the entire file
+	y = if y.saturating_add(terminal_height) < height {
+		y + terminal_height as usize
+	} else {
+		// This is only true when it's at the last page
+		height
+	}
+}
+```
+
+# Drawing a status bar
+One new field will need to be added. That is the `file_name` field.
+```rust
+pub struct Editor {
+    // Editing
+    mode: Mode,
+    file_name: String,
+    // Editor
+    /// Keeps track of which row the file the user is currently on.
+    offset: Position,
+    should_quit: bool,
+    document: Document,
+    terminal: Terminal,
+    cursor_position: Position,
+}
+```
+Line in vim, it shows the file name of the file we are currently working on. And the status bar will also display the current mode.
+
+There will also need to be a change in the `new` related method for `Editor`
+```rust
+    pub fn new() -> Self {
+        let args: Vec<String> = env::args().collect();
+        let mut file_name = "";
+        let document = if args.len() > 1 {
+            file_name = &args[1];
+            Document::open(&file_name).unwrap_or_default()
+        } else {
+            Document::default()
+        };
+
+        Self {
+            mode: Mode::Normal,
+            offset: Position::default(),
+            file_name: file_name.to_string(),
+            should_quit: false,
+            document,
+            terminal: Terminal::new().expect("Failed to initialize terminal."),
+            cursor_position: Position { x: 0, y: 0 },
+        }
+```
+The change is to create a new variable to store the current file name. The mode struct will be moved into it's own file. And implement display on it, so nothing verbose will stay in this file.
+
+```rust
+impl fmt::Display for Mode {
+    fn fmt(&self, f:&mut fmt::Formatter<'_>) -> fmt::Result {
+        let mode = match self {
+            Self::Insert => "INSERT",
+            Self::Normal => "NORMAL",
+            Self::Command => "COMMAND",
+        };
+
+        write!(f, "MODE: {}", mode)
+    }
+}
+```
+
+The next step is to simply print it all out.
+```rust
+    fn draw_status_bar(&mut self) {
+        let status = format!("{} | {}", self.mode, self.file_name);
+        println!("{}", status);
+    }
+```
+
+Next we need to decrease the size of the screen, thereby limit the areas where the cursor can go. In the `Terminal` struct.
+```rust
+impl Terminal {
+    pub fn new() -> Result<Self, std::io::Error> {
+        let size = termion::terminal_size()?;
+        let term = Self {
+            size: Size {
+                width: size.0,
+                height: size.1.saturating_sub(2),
+            },
+            stdout: stdout().into_raw_mode()?,
+        };
+
+        Ok(term)
+    }
+}
+```
+Reduce the height by 2 because:
+1. Make space for the status bar 
+2. Make space for below the status bar.
+
+In the `draw_rows` function there isn't a need to subtract the height by 1 anymore.
+```rust
+fn draw_rows(&mut self) {
+    ...
+    for terminal_row in 0..height {
+        ...
+    }
+}
+```
+
+[Previously](https://github.com/YJH16120/hecto/blob/913d49300816dae5e370f6ddef04588e1d370a0d/src/editor.rs#L257), the solution was to prevent the cursor from going to the line the status bar was, and to stop it from going past it. But all that did was prevent scrolling. It never occured to me to reduce the size of the active area instead. 
+
+> If you can't raise the river, lower the boat.
+
 
 # Footnotes
 [^1]: The `row` method will index into the `Row` struct which has a field containing a vector of strings, where each element is a row in a file, then grab that role using the provided index.
