@@ -778,11 +778,80 @@ fn draw_rows(&mut self) {
 
 [Previously](https://github.com/YJH16120/hecto/blob/913d49300816dae5e370f6ddef04588e1d370a0d/src/editor.rs#L257), the solution was to prevent the cursor from going to the line the status bar was, and to stop it from going past it. But all that did was prevent scrolling. It never occured to me to reduce the size of the active area instead. 
 
-> If you can't raise the river, lower the boat.
+The next thing to do would be to colour it. And make it pretty.
+```rust
+    fn draw_status_bar(&mut self) {
+        let status = format!("{} | {}", self.mode, self.file_name);
+        let spaces = " ".repeat(self.terminal.size().width as usize - status.len());
 
+        self.terminal.set_bg_color(STATUS_BAR_BG_COLOUR);
+        self.terminal.set_fg_color(STATUS_FG_COLOUR);
+        println!("{}{}\r", status, spaces);
+        self.terminal.reset_fg_color();
+        self.terminal.reset_bg_color();
+    }
+```
+This code will draw the status bar horizontally along the line it is supposed to be in, and in colour as well thanks to terminal. Since `reset_fg_color`, `reset_bg_color`, `set_bg_color`, and `set_fg_color` are simple implementations, their details will be found in the foot notes [^3]
+
+As for repeating the spaces, that is to pad it out. If the result of `status` is 7 characters long, the status bar would only be 7 characters long. The spaces is to pad it out making the status bar a horizontal bar.
+
+The next thing to do would be to add an indicator to tell the user which line he is currently on.
+```rust
+    fn draw_status_bar(&mut self) {
+        let width = self.terminal.size().width as usize;
+        let filename = if let Some(filename) = self.file_name.get(..21) {
+            filename.to_string()
+        } else {
+            self.file_name.clone()
+        };
+
+        let status = format!("{} | {}", self.mode, filename);
+
+        let rows = self.document.len() as f32;
+        let current_line = (self.cursor_position.y + 1) as f32;
+
+        let percentage = if rows > 0.0 {
+            (current_line / rows * 100.0).trunc()
+        } else {
+            0 as f32
+        };
+
+        let line_number = format!("{}/{}: {}%", current_line, rows, percentage);
+        let spaces = " ".repeat(width - status.len() - line_number.len());
+
+        self.terminal.set_bg_color(STATUS_BAR_BG_COLOUR);
+        self.terminal.set_fg_color(STATUS_FG_COLOUR);
+        println!("{}{}{}\r", status, spaces, line_number);
+        self.terminal.reset_fg_color();
+        self.terminal.reset_bg_color();
+    }
+```
+There is quite a lot of new stuff here. So to break it down line by line
+1. Getting the width and setting it for future use.
+2. Getting the filename up to the 20th character. Just incase it gets too long. There is a chance that the file name is less than 21 characters which results in an error. So and `if let` statement is used in case of an error, it will just use the file name.
+3. Getting the status to have the current mode, and it's filename.
+4. Getting the rows, and current line. The reasons one is added to it is because at the very first line, the y pos of the cursor is 0 this is so that it can working with the `row` method easier.
+5. Calculating the percentage of lines passed.
+6. Formatting everything nicely, with colours.
+
+While there is a bug that adds in an extra line into the document and it gets processed as an actual line by Hecto despite the line not existing inside of the original file, on top of that the cursor will be able to move to, and past the status bar. The way to fix this is like so:
+```rust
+Key::Char('J') => {
+    // terminal_height is the number of visible rows on the screen.
+    // height is the number of rows in the entire file
+    y = if y.saturating_add(terminal_height) < height - 1 {
+        y + terminal_height as usize
+    } else {
+        // This is only true when it's at the last page
+        height - 1
+    }
+}
+```
+By adding in `height - 1`. This stops the cursor from moving to, and past the status bar. And fixes the extra "phantom" line that was added in by Hecto. I noticed that when using captial J in normal mode, the cursor could go past the bounds of the document, but that did not apply to lower case j in normal mode, so I just did the samething for captial J as well.
 
 # Footnotes
 [^1]: The `row` method will index into the `Row` struct which has a field containing a vector of strings, where each element is a row in a file, then grab that role using the provided index.
 
 [^2]: [The implementation of the 'b' key](https://github.com/YJH16120/hecto/blob/master/src/editor.rs#L143)
 
+[^3]: [The colour changing stuff](https://github.com/YJH16120/hecto/blob/94813bfbf66d5b9f0b0b644f4a520d37e4d9ff1f/src/terminal.rs#L66).
