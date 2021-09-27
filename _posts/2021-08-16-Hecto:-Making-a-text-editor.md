@@ -19,6 +19,7 @@ edition = "2018"
 
 [dependencies]
 termion = "1"
+unicode-segmentation = "1"
 ```
 
 `termion` is used to go into raw mode, raw mode won't let us input characters directly into the screen, enter also doesn't need to be pressed for it to count as input. This is handy because the byte code for each button can be extracted. The only down side for this is that the in order for output to be shown from user input, it must be done manually.
@@ -370,7 +371,7 @@ Made two functions to handle the inputs in normal and insert mode.
         match key {
             Key::Char('k') => y = y.saturating_sub(1),
             Key::Char('j') => {
-                if y < height {
+                if y < height.saturating_sub(1) {
                     y = y.saturating_add(1)
                 }
             }
@@ -839,15 +840,207 @@ While there is a bug that adds in an extra line into the document and it gets pr
 Key::Char('J') => {
     // terminal_height is the number of visible rows on the screen.
     // height is the number of rows in the entire file
-    y = if y.saturating_add(terminal_height) < height - 1 {
+    y = if y.saturating_add(terminal_height) < height.saturating_sub(1) {
         y + terminal_height as usize
     } else {
         // This is only true when it's at the last page
-        height - 1
+        height.saturating_sub(1)
     }
 }
 ```
 By adding in `height - 1`. This stops the cursor from moving to, and past the status bar. And fixes the extra "phantom" line that was added in by Hecto. I noticed that when using captial J in normal mode, the cursor could go past the bounds of the document, but that did not apply to lower case j in normal mode, so I just did the samething for captial J as well.
+
+# Text editing
+## Typing
+Finally after all the setup just for viewing text, Hecto is ready to become at least some what similar to a text editor. Hecto needs to know that we are currently typing, so in the `process_keypress` function:
+```rust
+    fn process_keypress(&mut self) -> Result<(), std::io::Error> {
+        let pressed_key = Terminal::read_key()?;
+        match pressed_key {
+            Key::Ctrl('q') => self.should_quit = true,
+            Key::Esc => self.change_mode(Mode::Normal),
+            Key::Char('i') => {
+                if self.mode == Mode::Insert {
+                    self.insert_mode(pressed_key)
+                } else {
+                    self.command_mode(pressed_key)
+                }
+            }
+            Key::Char(':') => self.change_mode(Mode::Command),
+            _ => self.check_mode(pressed_key),
+        }
+
+        self.scroll();
+        Ok(())
+    }
+```
+This is added when the `i` key is pressed when in normal mode, to switch to insert mode. And inside insert mode it will need to detect all characters:
+```rust
+    fn insert_mode(&mut self, key: Key) {
+        let Position { mut x, mut y } = self.cursor_position;
+        match key {
+            Key::Esc => self.change_mode(Mode::Command),
+            Key::Char(c) => {
+	        self.document.insert(c, &self.cursor_position);
+	        self.normal_mode(Key::Char('l'));
+            }
+
+            _ => (),
+        }
+    }
+```
+
+An `insert` function needs to be implemented for `Document`
+```rust
+pub fn insert(&mut self, c: char, at: &Position) {
+	if at.y < self.len() {
+	    let row = self.rows.get_mut(at.y).unwrap();
+	    row.insert(at.x, c);
+	}
+}
+```
+This function is a simple one, if the y position (`at.y`) of the cursor is less than the length of the doucment, insert character at `at.x`.
+
+The `Row` struct needed an `insert` function as well.
+```rust
+    pub fn insert(&mut self, at: usize, c: char) {
+        if at >= self.len {
+            self.string.push(c);
+        } else {
+            let mut result: String = self.string[..].graphemes(true).take(at).collect();
+            let remainder: String = self.string[..].graphemes(true).skip(at).collect();
+            result.push(c);
+            result.push_str(&remainder);
+            self.string = result;
+        }
+        self.update_len();
+    }
+```
+In order to call `graphemes(true)` the `UnicodeSegmentation`[^4] crate is needed, it has already been included in `Cargo.toml` file. It is also available in the specifications. If the cursor is greater than or equal to the length, meaning if it is at the end of the line, or further than that (which isn't possible, but, it's nice to cover all basis) simply add that character to the end of the line.
+
+If it was however somewhere in the middle of the line, cut the string into two and push the character to the first half of the string, then stitch them back together. `update_len` is very simple, does exactly what the name suggests:
+```rust
+    fn update_len(&mut self) {
+        self.len = self.string[..].graphemes(true).count();
+    }
+```
+
+```rust
+Key::Char(c) => {
+    self.document.insert(c, &self.cursor_position);
+    self.normal_mode(Key::Char('l'));
+}
+```
+Where `normal_mode` is called, this is to move the cursor to the right. Because without it text would appear, but, the cursor would not move, but instead, remain at the same position.
+
+## Enter key - Adding a new line
+Since the enter key produces a newline character `\n`, having that being detected is enough. So in the match arm where all characters are detected in `insert_mode`
+```rust
+Key::Char(c) => {
+    if c == '\n' {
+        self.document.enter(y);
+        self.normal_mode(Key::Char('j'));
+    } else {
+        self.document.insert(c, &self.cursor_position);
+        self.normal_mode(Key::Char('l'));
+    }
+}
+```
+
+The `enter` function looks like this:
+```rust
+pub fn enter(&mut self, y: usize) {
+    let mut new_row = Row::default();
+    if y == self.rows.len() {
+        self.rows.push(new_row);
+    } else {
+        let start = self.rows.iter().take(y + 1);
+        let remainder = self.rows.iter().skip(y + 1);
+
+        let mut rows: Vec<Row> = vec![];
+        for row in start {
+            rows.push(row.clone());
+        }
+
+        rows.push(new_row);
+        for row in remainder {
+            rows.push(row.clone());
+        }
+
+        self.rows = rows;
+    }
+}
+```
+It works on the same concept as inserting text in the same line, but, since it's going to be a `Vec<Row>` instead of `Vec<String>` the `collect` function won't be available for use. Which is why for loops were used to substitue for it instead.
+
+
+```rust
+Key::Char(c) => {
+    if c == '\n' {
+        self.document.enter(y);
+        self.normal_mode(Key::Char('j'));
+    }
+}
+```
+This part is for the same reason why `normal_mode(Key::Char('l'))` was called, this was to move the cursor down as a new line was formed.
+
+## Deleting text
+Hecto needs to know that you're pressing the backspace key, so inside of insert mode:
+```rust
+    fn insert_mode(&mut self, key: Key) {
+        let Position { mut x, mut y } = self.cursor_position;
+        match key {
+            Key::Esc => self.change_mode(Mode::Command),
+            Key::Backspace => {
+                self.document.delete(&self.cursor_position);
+                self.normal_mode(Key::Char('h'));
+            }
+            Key::Char(c) => {
+                if c == '\n' {
+                    self.document.enter(y);
+                    self.normal_mode(Key::Char('j'));
+                } else {
+                    self.document.insert(c, &self.cursor_position);
+                    self.normal_mode(Key::Char('l'));
+                }
+            }
+
+            _ => (),
+        }
+    }
+```
+A new match arm is needed to determine that.
+
+
+This is what the delete function looks like
+```rust
+    pub fn delete(&mut self, at: &Position) {
+        if let Some(current_row) = self.rows.get_mut(at.y) {
+            let mut contents = current_row.contents();
+            // take() takes from start to at.x, not to just one elem before at.x
+            let contents = contents
+                .chars()
+                .take(at.x.saturating_sub(1))
+                .collect::<String>();
+            let mut new_row = Row::from(contents);
+            *current_row = new_row;
+        }
+    }
+```
+Getting the contents of the row the cursor is currently on, and taking all characters up to where the cursor was minus 1, then collecting everything into a string and creating a `Row` from that then replacing the old row with the new one. `take` works like this:
+```rust
+let name = "JOHN DOE".to_string();
+let name = name.take(3).collect::<String>();
+println("{}", name); // JOHN
+```
+
+To delete it simply take 1 less so `name.take(2)`, which would change the result to:
+```
+let name = name.take(2).collect::<String>();
+println!("{}", name); // JOH
+```
+
+And that's basically how the delete key works.
 
 # Footnotes
 [^1]: The `row` method will index into the `Row` struct which has a field containing a vector of strings, where each element is a row in a file, then grab that role using the provided index.
@@ -855,3 +1048,5 @@ By adding in `height - 1`. This stops the cursor from moving to, and past the st
 [^2]: [The implementation of the 'b' key](https://github.com/YJH16120/hecto/blob/master/src/editor.rs#L143)
 
 [^3]: [The colour changing stuff](https://github.com/YJH16120/hecto/blob/94813bfbf66d5b9f0b0b644f4a520d37e4d9ff1f/src/terminal.rs#L66).
+
+[^4]: The reason the UnicodeSegmentation crate is used is because scrolling is determined via bytes, but some characters have larger bytes which can lead to improper deletion or scrolling of text, for example arabic characters. That crate is used to solve that issue.
