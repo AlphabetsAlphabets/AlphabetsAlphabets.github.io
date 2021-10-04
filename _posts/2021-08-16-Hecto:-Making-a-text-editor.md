@@ -857,7 +857,6 @@ Finally after all the setup just for viewing text, Hecto is ready to become at l
     fn process_keypress(&mut self) -> Result<(), std::io::Error> {
         let pressed_key = Terminal::read_key()?;
         match pressed_key {
-            Key::Ctrl('q') => self.should_quit = true,
             Key::Esc => self.change_mode(Mode::Normal),
             Key::Char('i') => {
                 if self.mode == Mode::Insert {
@@ -874,15 +873,16 @@ Finally after all the setup just for viewing text, Hecto is ready to become at l
         Ok(())
     }
 ```
-This is added when the `i` key is pressed when in normal mode, to switch to insert mode. And inside insert mode it will need to detect all characters:
+Just like in vim, you'll need to be in INSERT mode before you can type, else everything you do will be strictly for navigation.
+
+After switching to insert mode, it'll need to detect all characters regardless of what it is so you can type, therefore: 
 ```rust
     fn insert_mode(&mut self, key: Key) {
-        let Position { mut x, mut y } = self.cursor_position;
         match key {
             Key::Esc => self.change_mode(Mode::Command),
             Key::Char(c) => {
-	        self.document.insert(c, &self.cursor_position);
-	        self.normal_mode(Key::Char('l'));
+                self.document.insert(c, &self.cursor_position);
+                self.normal_mode(Key::Char('l'));
             }
 
             _ => (),
@@ -892,13 +892,19 @@ This is added when the `i` key is pressed when in normal mode, to switch to inse
 
 An `insert` function needs to be implemented for `Document`
 ```rust
-pub fn insert(&mut self, c: char, at: &Position) {
-	if at.y < self.len() {
-	    let row = self.rows.get_mut(at.y).unwrap();
-	    row.insert(at.x, c);
-	}
-}
+    pub fn insert(&mut self, c: char, at: &Position) {
+        if self.rows.is_empty() {
+            let c = c.to_string();
+            let row = Row::from(c);
+            self.rows.push(row);
+        } else {
+            let row = self.rows.get_mut(at.y).unwrap();
+            row.insert(at, c);
+        }
+    }
 ```
+The way it works is if the rows are empty, meaning you either didn't open a file, or you opened a file but it has no text in it, the first if condition will trigger. Adding a row so you can type into an empty file. If it is not added, you will not be able to type, because Hecto will outright crash. Since that condition can only trigger once, it'll function like a normal text editor.
+
 This function is a simple one, if the y position (`at.y`) of the cursor is less than the length of the doucment, insert character at `at.x`.
 
 The `Row` struct needed an `insert` function as well.
@@ -938,109 +944,195 @@ Since the enter key produces a newline character `\n`, having that being detecte
 ```rust
 Key::Char(c) => {
     if c == '\n' {
-        self.document.enter(y);
+        self.document.enter(&self.cursor_position);
         self.normal_mode(Key::Char('j'));
+        self.normal_mode(Key::Char('0'));
     } else {
         self.document.insert(c, &self.cursor_position);
         self.normal_mode(Key::Char('l'));
     }
 }
 ```
+`Key::Char('0')` will make sure the cursor moves to the very beginning of the line just like how the cursor would normally function. `Key::Char('j')` is to make the cursor go down first.
 
 The `enter` function looks like this:
 ```rust
-pub fn enter(&mut self, y: usize) {
-    let mut new_row = Row::default();
-    if y == self.rows.len() {
-        self.rows.push(new_row);
-    } else {
-        let start = self.rows.iter().take(y + 1);
-        let remainder = self.rows.iter().skip(y + 1);
+pub fn enter(&mut self, at: &Position) {
+    self.insert_newline(at);
+}
 
-        let mut rows: Vec<Row> = vec![];
-        for row in start {
-            rows.push(row.clone());
-        }
-
-        rows.push(new_row);
-        for row in remainder {
-            rows.push(row.clone());
-        }
-
-        self.rows = rows;
-    }
+fn insert_newline(&mut self, at: &Position) {
+    let new_row = self.rows.get_mut(at.y).unwrap().split(at.x);
+    self.rows.insert(at.y + 1, new_row);
 }
 ```
-It works on the same concept as inserting text in the same line, but, since it's going to be a `Vec<Row>` instead of `Vec<String>` the `collect` function won't be available for use. Which is why for loops were used to substitue for it instead.
+`enter` will serve as a sort of entry way into the `insert_newline` function. You will first get the current row, then split it's contents at where the cursor is, and you want the second half of the contents, meaning everything to the right of the cursor, and stick that in a new row.
 
-
+The `split` function will handle splitting the text of the row with the cursor as a center.
 ```rust
-Key::Char(c) => {
-    if c == '\n' {
-        self.document.enter(y);
-        self.normal_mode(Key::Char('j'));
-    }
+pub fn split(&mut self, at: usize) -> Self {
+    let beginning: String = self.string.graphemes(true).take(at).collect();
+    let remainder: String = self.string.graphemes(true).skip(at).collect();
+
+    self.string = beginning;
+    self.update_len();
+    Self::from(&remainder[..])
 }
 ```
-This part is for the same reason why `normal_mode(Key::Char('l'))` was called, this was to move the cursor down as a new line was formed.
 
 ## Deleting text
-Hecto needs to know that you're pressing the backspace key, so inside of insert mode:
+After inserting text you need to know how to delete text, so, there will be a new match arm, detecting the backspace key.
 ```rust
-    fn insert_mode(&mut self, key: Key) {
-        let Position { mut x, mut y } = self.cursor_position;
-        match key {
-            Key::Esc => self.change_mode(Mode::Command),
-            Key::Backspace => {
-                self.document.delete(&self.cursor_position);
-                self.normal_mode(Key::Char('h'));
-            }
-            Key::Char(c) => {
-                if c == '\n' {
-                    self.document.enter(y);
-                    self.normal_mode(Key::Char('j'));
-                } else {
-                    self.document.insert(c, &self.cursor_position);
-                    self.normal_mode(Key::Char('l'));
-                }
-            }
-
-            _ => (),
+fn insert_mode(&mut self, key: Key) {
+    match key {
+        Key::Esc => self.change_mode(Mode::Command),
+        Key::Backspace => {
+            self.document.backspace(&self.cursor_position);
+            self.normal_mode(Key::Char('h'));
         }
+        Key::Char(c) => {
+            if c == '\n' {
+                self.document.enter(&self.cursor_position);
+                self.normal_mode(Key::Char('j'));
+                self.normal_mode(Key::Char('0'));
+            } else {
+                self.document.insert(c, &self.cursor_position);
+                self.normal_mode(Key::Char('l'));
+            }
+        }
+
+        _ => (),
     }
+}
 ```
-A new match arm is needed to determine that.
 
-
-This is what the delete function looks like
+The call to `normal_mode` and `Key::Char('h')` is to move the cursor backwards, because the cursor doesn't say on the same place as you type. As for the logic itself it is a pretty long one and with good reason! Took me a while to come up with this one, and I've started to divludge from the guide very heavily at this point. With the way I'm going to implement command mode, it's gonna take a hard left turn to where I can't follow the guide anymore.
 ```rust
-    pub fn delete(&mut self, at: &Position) {
-        if let Some(current_row) = self.rows.get_mut(at.y) {
-            let mut contents = current_row.contents();
-            // take() takes from start to at.x, not to just one elem before at.x
-            let contents = contents
-                .chars()
+    pub fn backspace(&mut self, at: &Position) {
+        let current_row = self.rows.get_mut(at.y).unwrap();
+
+        if current_row.string.len() == 0 {
+            // removing rows
+            self.rows.remove(at.y);
+        } else if at.x == 0 {
+            // removing rows
+            let current_row = self.rows.get_mut(at.y).unwrap();
+            let contents = current_row.contents();
+
+            let mut row_above_current = self.rows.get_mut(at.y.saturating_sub(1)).unwrap();
+            row_above_current.string = format!("{}{}", row_above_current.string, contents);
+
+            self.rows.remove(at.y);
+        } else {
+            // removing the text from the row
+            let current: String = current_row
+                .string
+                .graphemes(true)
                 .take(at.x.saturating_sub(1))
-                .collect::<String>();
-            let mut new_row = Row::from(contents);
+                .collect();
+
+            let remainder: String = current_row.string.graphemes(true).skip(at.x).collect();
+
+            let new_row = format!("{}{}", current, remainder);
+            let new_row = Row::from(new_row);
             *current_row = new_row;
         }
     }
 ```
-Getting the contents of the row the cursor is currently on, and taking all characters up to where the cursor was minus 1, then collecting everything into a string and creating a `Row` from that then replacing the old row with the new one. `take` works like this:
+I'm going to breakdown the explanation by if statements. So first up is the very sort if statement:
 ```rust
-let name = "JOHN DOE".to_string();
-let name = name.take(3).collect::<String>();
-println("{}", name); // JOHN
+if current_row.string.len() == 0 {
+    // removing rows
+    self.rows.remove(at.y);
+}
+```
+This is when you use backspace the end of an empty line, and the total number of lines decreases, and everything below that line moves upwards. It was originally a hell of a lot longer I would include a footnote, but, I didn't put it into a commit because I managed to find a built in function from the standard library. Next up:
+
+```rust
+else if at.x == 0 {
+    // removing rows
+    let current_row = self.rows.get_mut(at.y).unwrap();
+    let contents = current_row.contents();
+
+    let mut row_above_current = self.rows.get_mut(at.y.saturating_sub(1)).unwrap();
+    row_above_current.string = format!("{}{}", row_above_current.string, contents);
+
+    self.rows.remove(at.y);
+} 
+```
+This is when you use backspace at the start of the line and there are characters in that line. This will append the contents of the previous line to the line above. I get the content of the current line and I stored it in `contents`, then I get the row above so I can modify that row's contents, I do that with `row_above_current.string = format!("{}{}", row_above_current.string, contents);` Then I remove the current row the cursor is one. Reducing the total number of lines by 1.
+
+Last but not least is using backspace to delete a character.
+```rust
+else {
+    // removing the text from the row
+    let current: String = current_row
+        .string
+        .graphemes(true)
+        .take(at.x.saturating_sub(1))
+        .collect();
+
+    let remainder: String = current_row.string.graphemes(true).skip(at.x).collect();
+
+    let new_row = format!("{}{}", current, remainder);
+    let new_row = Row::from(new_row);
+    *current_row = new_row;
+}
+```
+By only collecting the text up to `at.x.saturating_sub(1)`, and collecting everything else skipping `at.x` characters, then combining them together to form a new row, then change the current row with the updated row which is the one with deleted text.
+
+The way `take` works is that it will take all elements up to `x` but not including `x`. For example:
+```rust
+let x = vec![1, 2, 3, 4, 5];
+let x = x.iter().take(2);
+// x = [1, 2];
 ```
 
-To delete it simply take 1 less so `name.take(2)`, which would change the result to:
-```
-let name = name.take(2).collect::<String>();
-println!("{}", name); // JOH
+But `skip` will skip all characters up to and **including** `x`.
+```rust
+let x = vec![1, 2, 3, 4, 5];
+let x = x.iter().skip(2);
+// x = [3, 4, 5];
 ```
 
-And that's basically how the delete key works.
+Assuming the same vectors in both examples are used. Taking the same amount but minus it by one.
+```rust
+let x = x.iter().take(2 - 1);
+// x = [1];
+```
+
+Then skipping for the same amount.
+```rust
+let x =x .iter().skip(2);
+// x = [3, 4, 5];
+```
+
+My taking away one character, you essentially delete it. And that's how the backspace key works.
+
+# Saving files (or writing files)
+These two functions are needed, first you open the file that is currently being edited with write privelleges, and you truncate it. That's what the `truncate_and_open_file` function does, as the name would suggest.
+```rust
+fn truncate_and_open_file(&self) -> Result<fs::File, std::io::Error> {
+    let mut file = fs::OpenOptions::new();
+    file.write(true)
+        .truncate(true)
+        .open(&self.filename)
+}
+```
+
+Next would be to save the file itself. Because when you truncate the file, and newline characters don't get inserted into the document directly they need to be appended here:
+```rust
+pub fn save_file(&mut self) {
+    if let Ok(mut file) = self.truncate_and_open_file() {
+        for row in &self.rows {
+            let string = format!("{}\n", row.string);
+            file.write_all(string.as_bytes()).unwrap();
+        }
+    }     
+}
+```
+
+The reason to truncate the file is so that you make sure the contents are as fresh as possible, this also avoids duplicating text. In a previous iteration of this function, the number of newline characters would increase because the file was not truncated before hand, making the file longer and longer each time. But when opened in Hecto they looked fine[^5]. But this solution fixes the issue.
 
 # Footnotes
 [^1]: The `row` method will index into the `Row` struct which has a field containing a vector of strings, where each element is a row in a file, then grab that role using the provided index.
@@ -1050,3 +1142,5 @@ And that's basically how the delete key works.
 [^3]: [The colour changing stuff](https://github.com/YJH16120/hecto/blob/94813bfbf66d5b9f0b0b644f4a520d37e4d9ff1f/src/terminal.rs#L66).
 
 [^4]: The reason the UnicodeSegmentation crate is used is because scrolling is determined via bytes, but some characters have larger bytes which can lead to improper deletion or scrolling of text, for example arabic characters. That crate is used to solve that issue.
+
+[^5]: [This issue persisted for a very long time](https://github.com/YJH16120/hecto/blob/9ae7913395984310be97c380a38d589445314aaa/src/document.rs#L94)
