@@ -1109,6 +1109,26 @@ let x =x .iter().skip(2);
 
 My taking away one character, you essentially delete it. And that's how the backspace key works.
 
+## Tabs
+Since I am used to spaces, instead of tabs this editor will be converting all tabs to spaces, and it's also because it's a lot easier to implement spaces instead. In `edito.rs`, and `insert_mode`, in the match arm, just add in four spaces, and call to insert mode. This will make the cursor move accordingly, and such.
+```rust
+Key::Char(c) => {
+    if c == '\n' {
+        self.document.enter(&self.cursor_position);
+        self.normal_mode(Key::Char('j'));
+        self.normal_mode(Key::Char('0'));
+    } else if c == '\t' {
+        self.insert_mode(Key::Char(' '));
+        self.insert_mode(Key::Char(' '));
+        self.insert_mode(Key::Char(' '));
+        self.insert_mode(Key::Char(' '));
+    } else {
+        self.document.insert(c, &self.cursor_position);
+        self.normal_mode(Key::Char('l'));
+    }
+}
+```
+
 # Saving files (or writing files)
 These two functions are needed, first you open the file that is currently being edited with write privelleges, and you truncate it. That's what the `truncate_and_open_file` function does, as the name would suggest.
 ```rust
@@ -1132,7 +1152,7 @@ pub fn save_file(&mut self) {
 }
 ```
 
-The reason to truncate the file is so that you make sure the contents are as fresh as possible, this also avoids duplicating text. In a previous iteration of this function, the number of newline characters would increase because the file was not truncated before hand, making the file longer and longer each time. But when opened in Hecto they looked fine[^5]. But this solution fixes the issue.
+The reason to truncate the file is so that you make sure the contents are as fresh as possible, this also avoids duplicating text. In a previous iteration of this function, the number of newline characters would increase because the file was not truncated before hand, making the file longer and longer each time. But when opened in Hecto they looked fine[^5]. But this solution fixes the issue. With this Hecto has now become a function text editor with good features! It is usable but I plan to add mroe features to it. I plan to extend the Hecto blog posts instead of having one gigantic post. Who knows, I might keep it as one gigantic post anyways.
 
 # Footnotes
 [^1]: The `row` method will index into the `Row` struct which has a field containing a vector of strings, where each element is a row in a file, then grab that role using the provided index.
