@@ -18,7 +18,7 @@ version = "0.1.0"
 edition = "2018"
 
 [dependencies]
-termion = "1"
+crossterm = "0.20.0"
 unicode-segmentation = "1"
 ```
 
@@ -451,6 +451,30 @@ In the `normal_mode` function add these arms
             Key::Char('S') => x = width,
 ```
 Since `g` goes to the beginning of the file, set y to 0, same reasoning for `0` the start of the line is when x is 0. When going to the bottom of the screen with `G` y is set to `height`.
+
+## Making the cursor change it's shape
+In neovim at least the cursor changes from a block, to a line when you go from normal mode to insert mode, and vice versa. And I managed to implement it. At first I had it to be changed everytime a mode was changed, but that makes it so that the cursor will change shape after you've pressed a key after the mode change.
+```rust
+Key::Char('i') => {
+    self.terminal.change_cursor_shape(CursorShape::Line);
+    self.change_mode(Mode::Insert);
+}
+```
+This is one of the match arms inside of `normal_mode`, and I had the cursor change shape just before the call to change modes. I did this just before the mode was changed to normal as well. Then I realised that the reason the cursor shape wasn't changed the moment modes were switched, but instead after modes were switched an a key was pressed: The function to detect the change in modes doesn't occur until after you press a key due to the loop setup. So I made sure to have the function be at the start of the loop.
+
+With the recent changes to make everything go from termion to crossterm[^6]. I had to change all the function parameters and all sorts of annoying things. And that made it so that I needed to pass in a key. The solution is:
+```rust
+    pub fn run(&mut self) {
+        ...
+        loop {
+            let key = self.create_event(Key::Null, Mod::NONE);
+            self.check_mode(key);
+
+            ...
+        }
+    }
+```
+After implementing this the cursor can now change immediately upon the mode being changed.
 
 # Viewing files
 In `document.rs` a new function `open` is to be defined, it's going to open a file.
@@ -1164,3 +1188,4 @@ The reason to truncate the file is so that you make sure the contents are as fre
 [^4]: The reason the UnicodeSegmentation crate is used is because scrolling is determined via bytes, but some characters have larger bytes which can lead to improper deletion or scrolling of text, for example arabic characters. That crate is used to solve that issue.
 
 [^5]: [This issue persisted for a very long time](https://github.com/YJH16120/hecto/blob/9ae7913395984310be97c380a38d589445314aaa/src/document.rs#L94)
+[^6]: [The repo right after the port from termion to crossterm](https://github.com/YJH16120/hecto/commit/91576db65fa695a7934d2c57ccd2a0684a96bef4)
