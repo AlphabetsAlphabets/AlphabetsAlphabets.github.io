@@ -6,6 +6,9 @@ title: "Valorant breeze tournament FAQ"
 # Is there prize money?
 Yes. RM 250 will be given to the winning team.
 
+# I'm from another country how will the prize money be handled?
+Go to this [link](https://developer.paypal.com/docs/reports/reference/paypal-supported-currencies/) and check if your currency is supported.
+
 # Are the players going to play on the Breeze map only?
 No. 3 maps will be shown, and the team will ban 2 of them. And play on the remaining map.
 
@@ -20,3 +23,4 @@ The event is held in Malaysia. From 1st of November to 7th of November @ 2pm to 
 2. No profanity is allowed, cursing, etc.
 3. All team members must be present during the time of the event.
 4. All members must listen to the event managers.
+
