@@ -18,9 +18,11 @@ version = "0.1.0"
 edition = "2018"
 
 [dependencies]
+termion = "1"
 crossterm = "0.20.0"
 unicode-segmentation = "1"
 ```
+*`termion` is no longer used in the updated version of hecto, for the changes take a look at [^6]*
 
 `termion` is used to go into raw mode, raw mode won't let us input characters directly into the screen, enter also doesn't need to be pressed for it to count as input. This is handy because the byte code for each button can be extracted. The only down side for this is that the in order for output to be shown from user input, it must be done manually.
 
@@ -1176,7 +1178,11 @@ pub fn save_file(&mut self) {
 }
 ```
 
+
 The reason to truncate the file is so that you make sure the contents are as fresh as possible, this also avoids duplicating text. In a previous iteration of this function, the number of newline characters would increase because the file was not truncated before hand, making the file longer and longer each time. But when opened in Hecto they looked fine[^5]. But this solution fixes the issue. With this Hecto has now become a function text editor with good features! It is usable but I plan to add mroe features to it. I plan to extend the Hecto blog posts instead of having one gigantic post. Who knows, I might keep it as one gigantic post anyways.
+
+# Command mode
+Yes, after a few months command mode here is. With it's headaches of course, took me a few weeks just to solve a minor issue. 
 
 # Footnotes
 [^1]: The `row` method will index into the `Row` struct which has a field containing a vector of strings, where each element is a row in a file, then grab that role using the provided index.
