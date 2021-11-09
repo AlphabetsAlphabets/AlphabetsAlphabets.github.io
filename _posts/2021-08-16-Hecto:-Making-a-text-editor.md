@@ -1182,6 +1182,7 @@ pub fn save_file(&mut self) {
 The reason to truncate the file is so that you make sure the contents are as fresh as possible, this also avoids duplicating text. In a previous iteration of this function, the number of newline characters would increase because the file was not truncated before hand, making the file longer and longer each time. But when opened in Hecto they looked fine[^5]. But this solution fixes the issue. With this Hecto has now become a function text editor with good features! It is usable but I plan to add mroe features to it. I plan to extend the Hecto blog posts instead of having one gigantic post. Who knows, I might keep it as one gigantic post anyways.
 
 # Command mode
+### Drawing the border
 Yes, after a few months command mode here is (kind of). With its headaches of course, took me a few weeks just to solve a minor issue, and a few more just to make the cursor move properly. In vim/nvim to get into command mode just use `:` which is the same method to get into command mode. But in Hecto, it will have a window popup in the middle of it with a list of options you can filter through. 
 
 First I need the `command_mode` function just like with the other modes. And it will have a `todo!()` macro in it to crash the program immediately, to tell me it does work.
@@ -1274,12 +1275,59 @@ fn command_mode(&mut self) {
     window.draw_border(&mut self.terminal.stdout); 
 }
 ```
-This will create `+` at each corner. Now that we have the corners, let's build the top, and bottom walls to start closing them out the change is very simple:
 
+This will create `+` at each corner. Now that we have the corners, let's build the top, and bottom walls to start closing them out the change is very simple:
 ```rust
 let hori_fill = "-".repeat(hori_line - 2);
 ```
-Simply change `hori_fill` to a hypen instead of a space.
+Simply change `hori_fill` to a hypen instead of a space. Next would be the vertical walls on the left and right. This will be trickier than the top and bottom walls.
+
+```rust
+        let mut y = y1 + 1;
+        // TODO: Make this list come from somewhere else.
+        let commands = vec!["Save file".to_string(), "Quit".to_string()];
+
+        // the vertical left and right walls
+        let mut num = 0;
+        while y < y2 - 2 {
+            let repeat = if let Some(command) = commands.get(num) {
+                command.len()
+            } else {
+                0
+            } as u16;
+
+            // results window
+            let text = if num < commands.len() {
+                let spaces = " ".repeat((x2 - x1 - repeat - 2).into());
+                let row = format!("|{}{}|", commands.get(num).unwrap(), spaces);
+
+                self.rows.push(Row::from(row.clone().as_str()));
+                row
+            } else {
+                let spaces = " ".repeat((x2 - x1 - 2).into());
+                let row = format!("|{}|", spaces);
+
+                self.rows.push(Row::from(row.clone().as_str()));
+                row
+            };
+
+            queue!(stdout, cursor::MoveTo(x1, y as u16), Print(text)).unwrap();
+
+            y += 1;
+            num += 1;
+        }
+```
+Breaking down everything. There will be a list of commands that will be pumped in from elsewhere, but right now having a small list in the function isn't a big issue. First `let mut y = y1 + 1;` this is important because near the end of the code block there is this `queue!()` macro that's being used, this is used to print the text basically the commands available. As well as all the whitespace. Since this is a window over the text it doesn't really matter what happens to it since the important part is that we display the window itself.
+
+`while y < y2 - 2`, why minutes 2? That's because `y2` is the very bottom of the window. In the image, earlier there is an area to enter text to select/filter the options so move it up by one. Then there is a border separating the options from the text entry area. This moving it up once more. By making sure that `y` is less than `y2 - 2`, it will only print text to just one above the top border of the text entry area. This while loop is used to print all the options, and the whitespace.
+
+The next part is the `repeat` variable, if there happens to be an element at index `num` then the string will be taken and it's length recorded. This is useful to know to create spaces to push the border to the edge of the window.
+
+Next is `text`, this is the part where the options come in. By checking if `num` is less than the length of the list it will print out whitespace if it's true. Else, it will print out the options such as "Quit", and "Save file". In both cases there will be a repeating number of spaces, this is to push the borders over to the side, if not the borders will just stick to the end of the word. Finally in the last `queue` the macro will print `text` and `y` and `num` will be incremented by one moving everything down by one.
+
+### Drawing the text box
+
+
 
 # Footnotes
 [^1]: The `row` method will index into the `Row` struct which has a field containing a vector of strings, where each element is a row in a file, then grab that role using the provided index.
