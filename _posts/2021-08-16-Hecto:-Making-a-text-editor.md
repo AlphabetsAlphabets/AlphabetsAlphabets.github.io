@@ -1182,7 +1182,104 @@ pub fn save_file(&mut self) {
 The reason to truncate the file is so that you make sure the contents are as fresh as possible, this also avoids duplicating text. In a previous iteration of this function, the number of newline characters would increase because the file was not truncated before hand, making the file longer and longer each time. But when opened in Hecto they looked fine[^5]. But this solution fixes the issue. With this Hecto has now become a function text editor with good features! It is usable but I plan to add mroe features to it. I plan to extend the Hecto blog posts instead of having one gigantic post. Who knows, I might keep it as one gigantic post anyways.
 
 # Command mode
-Yes, after a few months command mode here is. With it's headaches of course, took me a few weeks just to solve a minor issue. 
+Yes, after a few months command mode here is (kind of). With its headaches of course, took me a few weeks just to solve a minor issue, and a few more just to make the cursor move properly. In vim/nvim to get into command mode just use `:` which is the same method to get into command mode. But in Hecto, it will have a window popup in the middle of it with a list of options you can filter through. 
+
+First I need the `command_mode` function just like with the other modes. And it will have a `todo!()` macro in it to crash the program immediately, to tell me it does work.
+```rust
+fn command_mode(&mut self) {
+    todo!("IN COMMAND MODE");
+}
+```
+
+I will need a way to get into command mode. So in `normal_mode` a new match arm is needed.
+```rust
+Key::Char(':') => self.change_mode(Mode::Command),
+```
+
+In `change_mode` a new `if/else` statement is added.
+```rust
+fn check_mode(&mut self, key: Event) {
+    if self.mode == Mode::Normal {
+        self.terminal.change_cursor_shape(CursorShape::Block);
+        self.normal_mode(key);
+    } else if self.mode == Mode::Command {
+        self.command_mode(key);
+    } else {
+        self.terminal.change_cursor_shape(CursorShape::Line);
+        self.insert_mode(key);
+    }
+}
+```
+I want a window to be drawn. The window eventually looks like this:
+![Using panic! to exit](/images/hecto/command_win_final.png){:class="img-responsive"}
+<h5 style="text-align: center; font-style: italic;">How it will eventually look</h5>
+
+A new file will be made called `window.rs`. A struct that contains the four corners of the window.
+```rust
+pub struct Window {
+    pub x1: u16,
+    pub x2: u16,
+    pub y1: u16,
+    pub y2: u16,
+}
+```
+
+The next function is to draw the window. First let's figure out where the four corners are. In `editor.rs` a function to initialize the command window is needed.
+```rust
+// IN EDITOR.RS
+fn init_command_window(doc_width: f32, doc_height: f32) -> Window {
+    let x1 = (doc_width * 0.2) as u16;
+    let x2 = (doc_width * 0.8) as u16;
+
+    let y1 = (doc_height * 0.2) as u16;
+    let y2 = (doc_height * 0.8) as u16;
+
+    Window::new("command".to_string(), x1, x2, y1, y2)
+}
+```
+These will help get the four corners, and this will be used for the `draw_border` function. I plan for the borders to be `+` because I like the look of everything being text. So let's place a `+` at each corner.
+
+```rust
+    pub fn draw_border(&mut self, stdout: &mut StdoutLock) {
+        let Self { x1, x2, y1, y2, .. } = *self;
+
+        let hori_line = (x2 - x1) as usize;
+
+        let hori_fill = " ".repeat(hori_line - 2);
+        let hori_border = format!("+{}+", hori_fill);
+
+        // Handles the horizontal top and bottom walls
+        queue!(
+            stdout,
+            cursor::Hide,
+            cursor::MoveTo(x1, y1),
+            Print(&hori_border),
+            cursor::MoveTo(x1, y2 - 2),
+            Print(&hori_border),
+        )
+        .unwrap();
+
+        queue!(stdout, cursor::Show).unwrap();
+    }
+```
+
+`hori_line` is to get the distance between the two points of `x2`, and `x1`. `x1` is the left hand side of the screen, while `x2` is the right hand side. Getting the document width, and height is very simple. Then the a call to `draw_border` will finish it.
+```rust
+// IN EDITOR.RS
+fn command_mode(&mut self) {
+    let height = self.terminal.size().height as f32;
+    let width = self.terminal.size().width as f32;
+
+    let mut window = init_command_window(width, height)
+    window.draw_border(&mut self.terminal.stdout); 
+}
+```
+This will create `+` at each corner. Now that we have the corners, let's build the top, and bottom walls to start closing them out the change is very simple:
+
+```rust
+let hori_fill = "-".repeat(hori_line - 2);
+```
+Simply change `hori_fill` to a hypen instead of a space.
 
 # Footnotes
 [^1]: The `row` method will index into the `Row` struct which has a field containing a vector of strings, where each element is a row in a file, then grab that role using the provided index.
