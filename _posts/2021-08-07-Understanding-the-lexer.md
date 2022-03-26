@@ -13,7 +13,7 @@ Currently there are 4 reserved keywords (that can't actually do anything yet as 
 3. else
 4. class
 
-# How does the lexer create the correct token.
+# How the lexer creates the correct token
 If the lexer goes through the source code of lox and finds a '>' character it could just give it the `Greater` token but if the next character is a '=', the token should be `GreaterEqual`. This is done with helper functions.
 
 The `match` function and the `if_contains` function will work together.
