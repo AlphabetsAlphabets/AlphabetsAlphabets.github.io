@@ -1,10 +1,10 @@
-title: Jia Hong's website
+title: The Lexicon
 description: >- # this means to ignore newlines until "baseurl:"
-  Hello, there! I'm Jia Hong. I'm pretty new to tech in general, so I'm excited to be here.
-  Welcome, to my blog!
+  Welcome to my blog. I talk about stuff. Could be tech, games or something else.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-github_username:  YJH16120
+github_username:  AlphabetsAlphabets
+twitter_username: LexiconLexicon
 
 # Build settings
 theme: minima
