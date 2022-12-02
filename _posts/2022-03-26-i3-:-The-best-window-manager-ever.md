@@ -3,7 +3,6 @@ layout: post
 title:  "i3: The best window manager ever."
 ---
 
-# i3: The best window manager ever.
 I've recently switched from Awesome to i3. Why? Because, my entire system broke. I'm not sure what's going on, but I was unable to even get to the login screen before I saw red text during startup. So, I had to wipe my disk clean and put on a fresh install of Manjaro. A friend of mine suggested that I switch to i3. Ever since switching to i3, I've only had good things to say about it.
 
 > "Awesome does too many things at once. That's why it sucks." - Bare
