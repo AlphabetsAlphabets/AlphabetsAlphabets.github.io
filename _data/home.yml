@@ -2,8 +2,11 @@ navbar_entries:
   - title: About
     url: about
 
-  - title: Blog
-    url: blog
+  - title: Projects
+    url: projects
+
+  - title: Tags
+    url: tags
 
 project_entries:
   - title: Actt

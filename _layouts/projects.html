@@ -1,0 +1,20 @@
+---
+layout: post
+---
+
+<header>
+  <h1>Projects</h1>
+</header>
+
+{{ content }}
+
+<h2>{{ site.theme_config.home.title_projects }}</h2>
+{% include card_list.html collection=site.data.home.project_entries %}
+
+<h2>{{ site.theme_config.home.title_old_projects }}</h2>
+{% include card_list.html collection=site.data.home.old_project_entries %}
+
+<footer>
+  <div class="dashed"></div>
+  {% include horizontal_list.html collection=site.data.home.footer_entries %}
+</footer>
