@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Hecto: Making a text editor"
-categories: hecto
+tag: hecto
 ---
 
 * TOC

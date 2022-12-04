@@ -136,5 +136,9 @@ if app.does_tag_exist(&act.tag_list, &app.tag_name) {
 
 The biggest change are these lines. It used to look completely different[^2]. This is because of the introduction of `Entry`. But, compared to the previous version this definitely looks a lot cleaner. Along with a few utility functions as well. Revamping the entire config file is definitely a bonus. There are still other features that are broken, such as the tag options. Which involves a context menu opening up and allowing you to pick from various options. The menu doesn't show up. But, one step at a time.
 
+---
+
+### Footnotes
+
 [^1]: The json is lengthy despite only having two entries which is why it is located in a paste, [here](https://paste.rs/Flq.json)
 [^2]: Checkout the [diff](https://github.com/AlphabetsAlphabets/actt/commit/b22ec46ed622a3df2f2a738b766f2951c9ea1ee6?diff=unified#diff-2e19f9d4cc615159e143104182f5d0a39c3ee720b1907e17e69c690981859197L249), you may need to scroll up.
