@@ -34,8 +34,11 @@ WantedBy=shutdown.target
 
 > It took me a while to figure out what the purpose of `[Install]` is and if you'd like to know more take a look at the [man page](https://man.archlinux.org/man/systemd.unit.5.en#%5BINSTALL%5D_SECTION_OPTIONS) for this.
 
-These units are not detected yet and systemd will need to know about them to do that run `sudo systemctl daemon-reload`. After making the unit known you'll need to install it with `systemctl enable <service>`.
+These units are not detected yet and systemd will need to know about them to do that run `sudo systemctl daemon-reload`. After making the unit known you'll need to install it with `systemctl --user enable <service>` and there will be some output this is my output is like.
 
+```
+Created symlink /home/yjh/.config/systemd/user/shutdown.target.wants/backup.service → /home/yjh/.config/systemd/user/backup.service.
+```
 
 [^1]: [~/.config/systemd/user/ where the user puts their own units.](https://wiki.archlinux.org/title/Systemd/User)
 
