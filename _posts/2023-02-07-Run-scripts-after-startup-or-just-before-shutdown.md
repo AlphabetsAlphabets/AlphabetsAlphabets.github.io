@@ -16,7 +16,7 @@ There are a few things to do with your script:
 1. Store it somewhere. I decided to store it in `~/scripts/` to keep things simple. 
 2. Make it executable with `chmod u+x <script>`.
 
-Now, create the `.service` file in the directory mentioned above. Name it whatever you want, since this is a backup form my notes I decided to name it `backup.service` and this is what it looks like.
+Now, create the `.service` file in the appropriate directory above. Name it whatever you want, since this is a backup form my notes I decided to name it `backup.service` and this is what it looks like.
 
 ```
 [Unit]
