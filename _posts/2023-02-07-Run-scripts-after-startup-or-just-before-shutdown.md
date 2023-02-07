@@ -1,0 +1,41 @@
+---
+layout: post
+title: "Running scripts just before shutdown."
+categories: linux
+---
+
+This functionality will be done by using `systemd`. If you'd like to know more about what systemd is refer to [this](https://wiki.archlinux.org/title/Systemd) article.
+
+These tasks ran just before shutdown are called units and all units are written in a `.service` file. Since these are serviecs made by us the user they must be placed in `~/.config/systemd/user/`[^1]. This article will about how to setup these service files. As for the convention and syntax for each file refer to another source. One method is browse and read through a couple `.service` files. Or you can take a look at this [section](https://wiki.archlinux.org/title/Systemd#Writing_unit_files) in the arch wiki about systemd.
+
+The script I want to be run just before shutdown is simple. It will:
+1. `cd` into where I place my notes.
+2. use `git` to stage changes, commit and push.
+
+There are a few things to do with your script:
+1. Store it somewhere. I decided to store it in `~/scripts/` to keep things simple. 
+2. Make it executable with `chmod u+x <script>`.
+
+Now, create the `.service` file in the directory mentioned above. Name it whatever you want, since this is a backup form my notes I decided to name it `backup.service` and this is what it looks like.
+
+```
+[Unit]
+Description=Backup obsidian notes before shutdown
+DefaultDependencies=no
+Before=shutdown.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/yjh/scripts/backup.fish
+
+[Install]
+WantedBy=shutdown.target
+```
+
+> It took me a while to figure out what the purpose of `[Install]` is and if you'd like to know more take a look at the [man page](https://man.archlinux.org/man/systemd.unit.5.en#%5BINSTALL%5D_SECTION_OPTIONS) for this.
+
+These units are not detected yet and systemd will need to know about them to do that run `sudo systemctl daemon-reload`. After making the unit known you'll need to install it with `systemctl enable <service>`.
+
+
+[^1]: [~/.config/systemd/user/ where the user puts their own units.](https://wiki.archlinux.org/title/Systemd/User)
+
