@@ -14,7 +14,7 @@ The script I want to be run just before shutdown is simple. It will:
 
 There are a few things to do with your script:
 1. Store it somewhere. I decided to store it in `~/scripts/` to keep things simple. 
-2. Make it executable with `chmod u+x <script>`.
+2. Make it executable with `chmod u+x <script>`.[^2]
 
 Now, create the `.service` file in the appropriate directory above. Name it whatever you want, since this is a backup form my notes I decided to name it `backup.service` and this is what it looks like.
 
@@ -41,4 +41,4 @@ Created symlink /home/yjh/.config/systemd/user/shutdown.target.wants/backup.serv
 ```
 
 [^1]: [~/.config/systemd/user/ where the user puts their own units.](https://wiki.archlinux.org/title/Systemd/User)
-
+[^2]: Along side the manuals and wikipages the article on running scripts with systemd by [golinuxcloud](https://www.golinuxcloud.com/run-script-with-systemd-before-shutdown-linux/) was also very helpful.
