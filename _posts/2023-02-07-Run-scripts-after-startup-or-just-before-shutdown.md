@@ -22,14 +22,15 @@ Now, create the `.service` file in the appropriate directory above. Name it what
 [Unit]
 Description=Backup obsidian notes before shutdown
 DefaultDependencies=no
-Before=shutdown.target
+Before=halt.target reboot.target shutdown.target
+After=networking.service
 
 [Service]
 Type=oneshot
-ExecStart=/home/yjh/scripts/backup.fish
+ExecStart=fish /home/yjh/scripts/backup.fish
 
 [Install]
-WantedBy=shutdown.target
+WantedBy=halt.target reboot.target shutdown.target
 ```
 
 > It took me a while to figure out what the purpose of `[Install]` is and if you'd like to know more take a look at the [man page](https://man.archlinux.org/man/systemd.unit.5.en#%5BINSTALL%5D_SECTION_OPTIONS) for this.
