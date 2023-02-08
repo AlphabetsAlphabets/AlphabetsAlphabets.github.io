@@ -12,6 +12,11 @@ project_entries:
   - title: Actt
     url: https://github.com/AlphabetsAlphabets/actt
     desc: An activity tracker made in Rust!
+    highlight: On-hold
+
+  - title: Kalculator
+    url: https://github.com/AlphabetsAlphabets/Kalculator
+    desc: An implementation of a calculator in C++ with operator precedence.
     highlight: On-going
 
 old_project_entries:
