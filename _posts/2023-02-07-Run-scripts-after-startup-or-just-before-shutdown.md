@@ -1,12 +1,12 @@
 ---
 layout: post
-title: "Scheduleing pre-shutdown tasks with systemd"
+title: "Scheduling pre-shutdown tasks with systemd"
 categories: linux
 ---
 
 It doesn't *just* apply to just before shutdowns, the article is only titled as such as it fits *my* use case. This applies to everything, at a specific time or just after startup. `systemd` is what will handle all of this. If you'd like to know more about what systemd is refer to [this](https://wiki.archlinux.org/title/Systemd) article and if you'd like to how to run certain scripts based on some condition refer to the article on `systemd` on the arch wiki and the [man page](https://man.archlinux.org/man/systemd.service.5#Default_Dependencies) about `systemd`.
 
-These tasks ran just before shutdown are called units and all units are written in a `.service` file. Since these are serviecs made by us the user they must be placed in `~/.config/systemd/user/`[^1]. This article will about how to setup these service files. As for the convention and syntax for each file refer to another source. One method is browse and read through a couple `.service` files. Or you can take a look at this [section](https://wiki.archlinux.org/title/Systemd#Writing_unit_files) in the arch wiki about systemd.
+These tasks ran just before shutdown are called units and all units are written in a `.service` file. Since these are serviecs made by us the user they must be placed in `~/.config/systemd/user/`[^1]. As for the convention and syntax for each file refer to another source. One method is to browse and read through a couple `.service` files. Or you can take a look at this [section](https://wiki.archlinux.org/title/Systemd#Writing_unit_files) in the arch wiki about systemd.
 
 The script I want to be run just before shutdown is simple. It will:
 1. `cd` into where I place my notes.
