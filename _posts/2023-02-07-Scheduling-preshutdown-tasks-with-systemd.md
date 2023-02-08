@@ -39,7 +39,7 @@ WantedBy=default.target shutdown.target
 
 There are a few items that relate to my use case of (1) running scripts before shutdown and (2) pushing a local repo to a remote repsitory. 
 
-> Something **very important** that I'd like to bring up is the help I received from [dnaka](https://github.com/dnaka91) and [Freddy](https://unix.stackexchange.com/users/332764/freddy) a unix user who helped me solve this [issue](https://unix.stackexchange.com/a/734710/527572).
+> Something **very important** that I'd like to bring up is the help I received from [dnaka](https://github.com/dnaka91) and [Freddy](https://unix.stackexchange.com/users/332764/freddy) a unix user who helped me solve this [issue](https://unix.stackexchange.com/a/734710/527572). Speaking of which Freddy has just explained to me that if `DefaultDependencies` is removed then `shutdown.target` is implicitly included when the service unit is run!
 
 - `RemainAfterExit`, `ExecStop` is for service units that will run scripts.
 
