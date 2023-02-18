@@ -8,6 +8,9 @@ navbar_entries:
   - title: Tags
     url: tags
 
+  - title: Chatbot
+    url: chatbot
+
 project_entries:
   - title: Actt
     url: https://github.com/AlphabetsAlphabets/actt
