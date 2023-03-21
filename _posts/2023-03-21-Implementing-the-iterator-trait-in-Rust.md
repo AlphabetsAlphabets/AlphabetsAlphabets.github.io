@@ -103,6 +103,8 @@ error: could not compile `slice` (bin "slice") due to previous error
 
 That's because in order to use `nth` the type has to implement the `Iterator` trait. `String` is not an iterator. Which is why a custom implementation of `nth` is required.
 
+> As for why `msg.nth` doesn't fail but calling `nth` directly on a `String` does, I have no idea. But, the `nth` equivalent for `String` would be `String::get`.
+
 ### Implementation
 While `nth` doesn't apply to `String` it does for `Chars`.
 
