@@ -4,8 +4,7 @@ title: "Implementing the iterator trait in Rust"
 tags: rust
 ---
 
-# Trait - Iterator
-## Basic implementation
+# Basic implementation
 The `Iterator` trait allows for the creation of an iterator. If the trait is implemented for a `struct`, the `struct` gets access to every single function that an iterator would have access to `find`, `nth`, `position`, etc.
 
 I wish to define `Iterator` for `Message`.
@@ -57,8 +56,8 @@ impl Iterator for Message {
 
 So, you can do whatever an iterator can with with `Message`. 
 
-## Implementation of `nth`
-### Justification
+# Implementation of `nth`
+## Justification
 Now, `Message` can do anything an iterator can or can it? Take for instance, finding the position of the comma and grabbing it.
 
 ```rust
@@ -108,11 +107,19 @@ That's because in order to use `nth` the type has to implement the `Iterator` tr
 While `nth` doesn't apply to `String` it does for `Chars`.
 
 ```rust
-fn nth(&mut self, index: usize) -> Option<Self::Item> {
-    let mut chars = self.msg.chars();
-    chars.nth(index)
-}
+    fn nth(&mut self, index: usize) -> Option<Self::Item> {
+        self.index += index;
+        self.msg.chars().nth(self.index)
+    }
 ```
 
-First, convert `String` into the characters then call `nth` on it.
+First, convert `String` into the characters then call `nth` on it. Then the code above will run just fine. But, why is it not implemented like this?
 
+```rust
+    fn nth(&mut self, index: usize) -> Option<Self::Item> {
+        let mut chars = self.msg.chars();
+        chars.nth(index)
+    }
+```
+
+Well the reason is so that when I or anyone else uses it, no one gets confused. Because, the first implementation is how iterators work to begin with. Best to fit in that stick out, especially when its already been standardised.
