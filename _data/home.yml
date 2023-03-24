@@ -14,12 +14,12 @@ project_entries:
     desc: An activity tracker made in Rust!
     highlight: On-hold
 
+old_project_entries:
   - title: Kalculator
     url: https://github.com/AlphabetsAlphabets/Kalculator
-    desc: An implementation of a calculator in C++ with operator precedence.
-    highlight: On-going
+    desc: An attempt at implementing a proper calculator with operator precedence in C++.
+    highlight: Finished
 
-old_project_entries:
   - title: Hecto
     url: https://github.com/AlphabetsAlphabets/hecto
     desc: An attempt at making clone of Neovim
