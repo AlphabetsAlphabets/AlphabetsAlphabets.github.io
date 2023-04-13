@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Custom error types in Rust and how to implement them."
+title: "Custom error types: How to implement them and why."
 ---
 
 Having custom error types is something that's really nice when you're trying to create a library or some sort of back end you plan to use in your future projects which is exactly what I did and for the purposes of this post I'm going to use it as an example. If you're curious the create is called [srsa](https://github.com/AlphabetsAlphabets/srsa/blob/master/src/errors.rs#L11).
