@@ -9,10 +9,20 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  background-color: black;
+  color: white;
 }
 
 .container {
   max-width: 800px; /* Adjust this value as needed */
   width: 100%; /* Removing this line will center everything. */
   padding: 0 50px;
+}
+
+a:visited {
+  color: #3391f8;
+}
+
+a:link {
+  color: white;
 }
