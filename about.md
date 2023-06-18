@@ -1,7 +1,6 @@
 ---
 layout: page
 title: About
-permalink: /about/
 ---
 
-Hello! My name is Yap Jia Hong.
+Hello! My name is Yap Jia Hong. I'm a university student and I like programming. Doesn't matter what I make, as long as I make something.

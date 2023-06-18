@@ -13,6 +13,11 @@ body {
   color: white;
 }
 
+/* The div for my socials */
+.credits {
+  padding-top: 20px;
+}
+
 .container {
   max-width: 800px; /* Adjust this value as needed */
   width: 100%; /* Removing this line will center everything. */
@@ -25,4 +30,26 @@ a:visited {
 
 a:link {
   color: white;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  background-color: black;
+  color: white;
+  z-index: 100;
+}
+
+.navbar nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar a {
+  padding: 0 10px;
+}
+
+.navbar a:not(:last-child)::after {
+  margin-left: 10px;
+  color: #333;
 }

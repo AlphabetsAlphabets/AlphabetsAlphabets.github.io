@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Handling colors in tags"
-tags: Actt 
+tags: actt 
 ---
 
 So, in Actt and many other applications you can assign tags colors. The purpose is to let you see what you have going on, and it is also a very nice visual distinction. Who wouldn't love that? It works one of two ways.

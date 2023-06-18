@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Gaiden: The rooms feature, and it's benefits"
+tags: gaiden discord-bot
 ---
 
 The room feature will create a new room under your name along with the topic name. The room can be controlled by the creator, and the creator only. With the exception of admins, and the owner of the discord course. 

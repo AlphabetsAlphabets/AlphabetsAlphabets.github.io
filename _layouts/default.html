@@ -4,14 +4,18 @@
     <meta charset="utf-8">
     <title>{{ page.title }}</title>
     <link rel="stylesheet" href="/assets/style.css">
+    <script src="{{ '/assets/js/dropdown.js' | relative_url }}"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
   </head>
   <body>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/projects">Projects</a>
-      <a href="/about">About</a>
-    </nav>
+   <div class="navbar">
+      <nav>
+        <a href="/">Home</a>
+        <a href="/projects">Projects</a>
+        <a href="/about">About</a>
+        <a href="/tags">Tags</a>
+      </nav>
+    </div>
 
     <h1>{{ page.title }}</h1>
     

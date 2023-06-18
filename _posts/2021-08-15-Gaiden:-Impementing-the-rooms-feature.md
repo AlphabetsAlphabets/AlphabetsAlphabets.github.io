@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Gaiden: Implementing the rooms feature"
-categories: gaiden
+tags: gaiden discord-bot
 ---
 
 # Implementation of rooms
