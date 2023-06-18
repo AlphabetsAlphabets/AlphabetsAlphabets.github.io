@@ -1,5 +1,7 @@
 ---
-layout: projects
+layout: default
 ---
 
-This is a list of projects, old and new.
+# Current
+# Previous
+# Ideas

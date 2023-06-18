@@ -1,37 +1,26 @@
-<!DOCTYPE html>
-<html lang="{{ page.lang | default: "en" }}" class="html" data-theme="{{ site.theme_config.appearance | default: "auto" }}">
-        {%- include head.html -%}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
+  </head>
   <body>
-    <main class="page-content" aria-label="Content">
-      <div class="w">
-        {{ content }}
-        {% if site.theme_config.appearance_toggle %}
-          {% include toggle_theme_button.html %}
-        {% endif %}
-        <div class="credits">
-          {%- if site.theme_config.show_copyright == true -%}
-          &copy;&nbsp;{{ "now" | date: "%Y" }}&nbsp;{{site.author}}
-          &nbsp;
-          •
-          &nbsp;
-          {%- endif -%}
-          {%- if site.soopr -%}
-          Powered by <a href="https://github.com/AlphabetsAlphabets" target="_blank" rel="noreferrer">GitHub</a>
-          &nbsp;
-          •
-          &nbsp;
-          {%- endif -%}
-          Theme&nbsp;<a href="https://github.com/abhinavs/moonwalk" target="_blank" rel="noreferrer">Moonwalk</a> by abhinavs
-        </div>
-      </div>
-    </main>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/projects">Projects</a>
+      <a href="/about">About</a>
+    </nav>
 
-    {%- if site.soopr -%}
-      {%- if site.soopr.publish_token and jekyll.environment == "production" -%}
-        <script async defer data-soopr-token="{{site.soopr.publish_token}}" src="https://sdk.soopr.co/soopr.js"></script>
-      {%- else -%}
-        <script async defer src="https://sdk.soopr.co/soopr.js"></script>
-      {%- endif -%}
-    {%- endif -%}
+    <h1>{{ page.title }}</h1>
+    
+    <section class="container">
+      {{ content }}
+    </section>
+
+    <div class="credits">
+      <a href="https://github.com/AlphabetsAlphabets" target="_blank" rel="noreferrer">GitHub</a>
+    </div>
   </body>
 </html>
