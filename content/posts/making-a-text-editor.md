@@ -1,5 +1,5 @@
 +++
-title: "Hecto: Making a text editor"
+title = "Hecto: Making a text editor"
 date = 2021-08-16
 +++
 
