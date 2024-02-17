@@ -16,7 +16,7 @@ title = "The Lexicon"
 [author]
   name = "Yap Jia Hong"
   headline = "An avid learner and exercise lover"
-  bio = "I love coding and Muay Thai!"
+  bio = "\"Nah, I'd win.\""
   links = [
     { email = "mailto:yapjiahong-p@proton.me" },
     { github = "https://github.com/AlphabetsAlphabets"}
