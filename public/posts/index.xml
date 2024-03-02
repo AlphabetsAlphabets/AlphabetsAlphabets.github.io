@@ -1,19 +1,72 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on My New Hugo Site</title>
-    <link>https://example.org/posts/</link>
-    <description>Recent content in Posts on My New Hugo Site</description>
+    <title>Posts on The Lexicon</title>
+    <link>http://localhost:1313/posts/</link>
+    <description>Recent content in Posts on The Lexicon</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Tue, 13 Feb 2024 16:28:12 +0800</lastBuildDate>
-    <atom:link href="https://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <copyright>© 2024 Yap Jia Hong</copyright>
+    <lastBuildDate>Sat, 02 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>My First Post</title>
-      <link>https://example.org/posts/my-first-post/</link>
-      <pubDate>Tue, 13 Feb 2024 16:28:12 +0800</pubDate>
-      <guid>https://example.org/posts/my-first-post/</guid>
-      <description>Introduction This is bold text, and this is emphasized text.&#xA;Visit the Hugo website!</description>
+      <title>Difficulties when making a lexer.</title>
+      <link>http://localhost:1313/posts/difficulties-when-making-a-lexer/</link>
+      <pubDate>Sat, 02 Mar 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/difficulties-when-making-a-lexer/</guid>
+      <description>Problem 1: Not understanding what a lexer is.</description>
+      
     </item>
+    
+    <item>
+      <title>Why I want to make a programming language</title>
+      <link>http://localhost:1313/posts/making-a-programming-language/</link>
+      <pubDate>Sat, 02 Mar 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/making-a-programming-language/</guid>
+      <description>Lore drop # I&amp;rsquo;ve tried making rlox, the lox programming language featured in CraftingInterpreters but implemented in Rust instead of Java, ~3 years ago.</description>
+      
+    </item>
+    
+    <item>
+      <title>Completions in Neovim</title>
+      <link>http://localhost:1313/posts/completions-in-neovim/</link>
+      <pubDate>Fri, 16 Feb 2024 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/completions-in-neovim/</guid>
+      <description>Introduction # I decided to learn about this because why not.</description>
+      
+    </item>
+    
+    <item>
+      <title>Performing pre-shutdown tasks</title>
+      <link>http://localhost:1313/posts/scheduling-preshutdown-tasks/</link>
+      <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/scheduling-preshutdown-tasks/</guid>
+      <description>Why I wanted to do this # I remember losing most of my notes in my second semester of diploma.</description>
+      
+    </item>
+    
+    <item>
+      <title>Hecto: Making a text editor</title>
+      <link>http://localhost:1313/posts/making-a-text-editor/</link>
+      <pubDate>Mon, 16 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/making-a-text-editor/</guid>
+      <description>Note # This blog post is confusing at best.</description>
+      
+    </item>
+    
+    <item>
+      <title>Making a calculator</title>
+      <link>http://localhost:1313/posts/making-a-calculator/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/making-a-calculator/</guid>
+      <description>Why? # This is something I&amp;rsquo;ve tried to do in the past but failed horribly at.</description>
+      
+    </item>
+    
   </channel>
 </rss>
