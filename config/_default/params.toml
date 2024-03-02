@@ -31,6 +31,8 @@ smartTOCHideUnfocusedChildren = false
 [footer]
   showMenu = true
   showCopyright = true
+  showRss = true
+  rssName = "https://alphabetsalphabets.github.io/index.xml"
   showThemeAttribution = true
   showAppearanceSwitcher = true
   showScrollToTop = true
