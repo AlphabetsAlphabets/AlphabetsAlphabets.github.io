@@ -1,46 +1,66 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
   <url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2024-06-19T22:36:26+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2024-06-19T22:36:26+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/posts/writing-a-novel/</loc>
+    <lastmod>2024-06-19T22:36:26+08:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url><url>
     <loc>http://localhost:1313/posts/difficulties-when-making-a-lexer/</loc>
     <lastmod>2024-03-02T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:1313/posts/</loc>
+  </url><url>
+    <loc>http://localhost:1313/series/moon/</loc>
     <lastmod>2024-03-02T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:1313/</loc>
+  </url><url>
+    <loc>http://localhost:1313/series/</loc>
     <lastmod>2024-03-02T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
-  </url>
-  <url>
+  </url><url>
     <loc>http://localhost:1313/posts/making-a-programming-language/</loc>
     <lastmod>2024-03-02T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
-  </url>
-  <url>
+  </url><url>
     <loc>http://localhost:1313/posts/completions-in-neovim/</loc>
     <lastmod>2024-02-16T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
-  </url>
-  <url>
+  </url><url>
     <loc>http://localhost:1313/posts/scheduling-preshutdown-tasks/</loc>
     <lastmod>2023-02-07T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
-  </url>
-  <url>
+  </url><url>
     <loc>http://localhost:1313/posts/making-a-text-editor/</loc>
     <lastmod>2021-08-16T00:00:00+00:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/authors/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/categories/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>

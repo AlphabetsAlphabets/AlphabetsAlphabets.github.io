@@ -4,59 +4,51 @@
     <title>The Lexicon</title>
     <link>http://localhost:1313/</link>
     <description>Recent content on The Lexicon</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
-    <copyright>© 2024 Yap Jia Hong</copyright>
-    <lastBuildDate>Sat, 02 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Jun 2024 22:36:26 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Writing a Novel</title>
+      <link>http://localhost:1313/posts/writing-a-novel/</link>
+      <pubDate>Wed, 19 Jun 2024 22:36:26 +0800</pubDate>
+      <guid>http://localhost:1313/posts/writing-a-novel/</guid>
+      <description>Writing a novel </description>
+    </item>
     <item>
       <title>Difficulties when making a lexer.</title>
       <link>http://localhost:1313/posts/difficulties-when-making-a-lexer/</link>
       <pubDate>Sat, 02 Mar 2024 00:00:00 +0000</pubDate>
-      
       <guid>http://localhost:1313/posts/difficulties-when-making-a-lexer/</guid>
       <description>Problem 1: Not understanding what a lexer is.</description>
-      
     </item>
-    
     <item>
       <title>Why I want to make a programming language</title>
       <link>http://localhost:1313/posts/making-a-programming-language/</link>
       <pubDate>Sat, 02 Mar 2024 00:00:00 +0000</pubDate>
-      
       <guid>http://localhost:1313/posts/making-a-programming-language/</guid>
-      <description>Lore drop # I&amp;rsquo;ve tried making rlox, the lox programming language featured in CraftingInterpreters but implemented in Rust instead of Java, ~3 years ago.</description>
-      
+      <description>Lore drop I&amp;rsquo;ve tried making rlox, the lox programming language featured in CraftingInterpreters but implemented in Rust instead of Java, ~3 years ago.</description>
     </item>
-    
     <item>
       <title>Completions in Neovim</title>
       <link>http://localhost:1313/posts/completions-in-neovim/</link>
       <pubDate>Fri, 16 Feb 2024 00:00:00 +0000</pubDate>
-      
       <guid>http://localhost:1313/posts/completions-in-neovim/</guid>
-      <description>Introduction # I decided to learn about this because why not.</description>
-      
+      <description>Introduction I decided to learn about this because why not.</description>
     </item>
-    
     <item>
       <title>Performing pre-shutdown tasks</title>
       <link>http://localhost:1313/posts/scheduling-preshutdown-tasks/</link>
       <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
-      
       <guid>http://localhost:1313/posts/scheduling-preshutdown-tasks/</guid>
-      <description>Why I wanted to do this # I remember losing most of my notes in my second semester of diploma.</description>
-      
+      <description>Why I wanted to do this I remember losing most of my notes in my second semester of diploma.</description>
     </item>
-    
     <item>
       <title>Hecto: Making a text editor</title>
       <link>http://localhost:1313/posts/making-a-text-editor/</link>
       <pubDate>Mon, 16 Aug 2021 00:00:00 +0000</pubDate>
-      
       <guid>http://localhost:1313/posts/making-a-text-editor/</guid>
-      <description>Note # This blog post is confusing at best.</description>
-      
+      <description>Note This blog post is confusing at best.</description>
     </item>
-    
   </channel>
 </rss>

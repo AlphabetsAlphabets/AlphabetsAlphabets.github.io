@@ -4,29 +4,23 @@
     <title>Moon on The Lexicon</title>
     <link>http://localhost:1313/series/moon/</link>
     <description>Recent content in Moon on The Lexicon</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
-    <copyright>© 2024 Yap Jia Hong</copyright>
-    <lastBuildDate>Sat, 02 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/series/moon/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 02 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/series/moon/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Difficulties when making a lexer.</title>
       <link>http://localhost:1313/posts/difficulties-when-making-a-lexer/</link>
       <pubDate>Sat, 02 Mar 2024 00:00:00 +0000</pubDate>
-      
       <guid>http://localhost:1313/posts/difficulties-when-making-a-lexer/</guid>
       <description>Problem 1: Not understanding what a lexer is.</description>
-      
     </item>
-    
     <item>
       <title>Why I want to make a programming language</title>
       <link>http://localhost:1313/posts/making-a-programming-language/</link>
       <pubDate>Sat, 02 Mar 2024 00:00:00 +0000</pubDate>
-      
       <guid>http://localhost:1313/posts/making-a-programming-language/</guid>
-      <description>Lore drop # I&amp;rsquo;ve tried making rlox, the lox programming language featured in CraftingInterpreters but implemented in Rust instead of Java, ~3 years ago.</description>
-      
+      <description>Lore drop I&amp;rsquo;ve tried making rlox, the lox programming language featured in CraftingInterpreters but implemented in Rust instead of Java, ~3 years ago.</description>
     </item>
-    
   </channel>
 </rss>
