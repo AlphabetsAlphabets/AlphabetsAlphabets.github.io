@@ -26,8 +26,8 @@
   
   
   
-  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.b0d4aeb65335611c810957fcff4af94f45bb796b37facd9be6f7287ee03ce57038918ff5d4ac7a6ea77914fde6d3942c0243d3d17f90926c454b4ea3499e973a.css"
-    integrity="sha512-sNSutlM1YRyBCVf8/0r5T0W7eWs3&#43;s2b5vcofuA85XA4kY/11Kx6bqd5FP3m05QsAkPT0X&#43;QkmxFS06jSZ6XOg==" />
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.a99c1a57c98168bc7e9a6a2d6c2cb2eac5f8257891ad3324d2276233a7ee6c36c55b35ed3c2238f3f8dc51dd501a777da0856c7a7e365b7d4b559fb81b769fa5.css"
+    integrity="sha512-qZwaV8mBaLx&#43;mmotbCyy6sX4JXiRrTMk0idiM6fubDbFWzXtPCI48/jcUd1QGnd9oIVsen42W31LVZ&#43;4G3afpQ==" />
   
   
   <script type="text/javascript" src="/js/appearance.min.516a16745bea5a9bd011138d254cc0fd3973cd55ce6e15f3dec763e7c7c2c7448f8fe7b54cca811cb821b0c7e12cd161caace1dd794ac3d34d40937cbcc9ee12.js"
@@ -44,8 +44,8 @@
   
   
   
-  <script defer type="text/javascript" id="script-bundle" src="/js/main.bundle.min.1271c22a557a15f10b5d38d2c87e49503604cfeffebadc1e7c267934e4b9f3ba1b74d81371219f9681dab2141482fc4ed2a8b462b179f0ef43a5f76d0575e85b.js"
-    integrity="sha512-EnHCKlV6FfELXTjSyH5JUDYEz&#43;/&#43;utwefCZ5NOS587obdNgTcSGfloHashQUgvxO0qi0YrF58O9DpfdtBXXoWw==" data-copy="" data-copied=""></script>
+  <script defer type="text/javascript" id="script-bundle" src="/js/main.bundle.min.d6c35110b5d7df8014403fbb81cd21a9d89daf9eb586c936e585e9d04adc204dce554aa737f81e8c902b9dea9e67bd63a977b77dedefb8a39430581ebc519207.js"
+    integrity="sha512-1sNRELXX34AUQD&#43;7gc0hqdidr561hsk25YXp0ErcIE3OVUqnN/gejJArneqeZ71jqXe3fe3vuKOUMFgevFGSBw==" data-copy="" data-copied=""></script>
   
   
   <script src="/js/zoom.min.js"></script>
@@ -63,17 +63,20 @@
   
   
   
-  <meta property="og:title" content="Completions in Neovim" />
-<meta property="og:description" content="Introduction # I decided to learn about this because why not." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/posts/completions-in-neovim/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-02-16T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-02-16T00:00:00+00:00" />
+  <meta property="og:url" content="http://localhost:1313/posts/completions-in-neovim/">
+  <meta property="og:site_name" content="The Lexicon">
+  <meta property="og:title" content="Completions in Neovim">
+  <meta property="og:description" content="Introduction # I decided to learn about this because why not.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-02-16T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-02-16T00:00:00+00:00">
 
-
-
-  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Completions in Neovim"/>
-<meta name="twitter:description" content="Introduction # I decided to learn about this because why not."/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Completions in Neovim">
+  <meta name="twitter:description" content="Introduction # I decided to learn about this because why not.">
 
   
   <script type="application/ld+json">
@@ -117,9 +120,6 @@
   <link href="https://github.com/AlphabetsAlphabets" rel="me" />
   
   
-
-  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   
   
 
@@ -142,8 +142,12 @@
 
 
 
+
+
+
   
   
+
 
   
   
@@ -152,7 +156,7 @@
   
 </head>
 <body
-  class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32">
+  class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32 scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600">
   <div id="the-top" class="absolute flex self-center">
     <a class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
       href="#main-content"><span
@@ -176,14 +180,15 @@
             
             
             
-  <a href="/posts/"  class="flex items-center">
+  <a href="/posts/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
     
-    <p class="text-base font-medium text-gray-500 hover:text-gray-900" title="">
+    <p class="text-base font-medium" title="">
         Blog
     </p>
 </a>
 
 
+
             
             
 
@@ -191,7 +196,7 @@
 
 
             
-            <button id="search-button" aria-label="Search" class="text-base hover:text-primary-600 dark:hover:text-primary-400 h-12"
+            <button id="search-button" aria-label="Search" class="text-base hover:text-primary-600 dark:hover:text-primary-400"
                 title="">
                 
 
@@ -208,9 +213,9 @@
             
             
             <div
-                class="ltr:mr-14 rtl:ml-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400">
-                <button id="appearance-switcher" aria-label="Dark mode switcher" type="button">
-                    <div class="flex items-center justify-center h-12 dark:hidden">
+                class="ltr:mr-14 rtl:ml-14 flex items-center">
+                <button id="appearance-switcher" aria-label="Dark mode switcher" type="button" class="text-base hover:text-primary-600 dark:hover:text-primary-400">
+                    <div class="flex items-center justify-center dark:hidden">
                         
 
   <span class="relative block icon">
@@ -220,7 +225,7 @@
 
 
                     </div>
-                    <div class="items-center justify-center hidden h-12 dark:flex">
+                    <div class="items-center justify-center hidden dark:flex">
                         
 
   <span class="relative block icon">
@@ -235,7 +240,7 @@
             
 
         </nav>
-        <div class="flex md:hidden items-center space-x-5 md:ml-12">
+        <div class="flex md:hidden items-center space-x-5 md:ml-12 h-12">
 
             <span></span>
 
@@ -258,8 +263,8 @@
 
             
             
-            <button id="appearance-switcher-mobile" aria-label="Dark mode switcher" type="button" style="margin-right:5px">
-                <div class="flex items-center justify-center h-12 dark:hidden">
+            <button id="appearance-switcher-mobile" aria-label="Dark mode switcher" type="button" class="text-base hover:text-primary-600 dark:hover:text-primary-400" style="margin-right:5px">
+                <div class="flex items-center justify-center dark:hidden">
                     
 
   <span class="relative block icon">
@@ -269,7 +274,7 @@
 
 
                 </div>
-                <div class="items-center justify-center hidden h-12 dark:flex">
+                <div class="items-center justify-center hidden dark:flex">
                     
 
   <span class="relative block icon">
@@ -320,13 +325,14 @@
 
                     
   <li class="mt-1">
-    <a href="/posts/"  class="flex items-center">
+    <a href="/posts/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
         
-        <p class="text-bg font-bg text-gray-500 hover:text-gray-900" title="">
+        <p class="text-bg font-bg" title="">
             Blog
         </p>
     </a>
 </li>
+
 
 
 
@@ -434,8 +440,12 @@
     
 
     
+
+    
       
       
+        
+        
 <div class="flex author">
   
   <div class="place-self-center">
@@ -494,16 +504,17 @@
 </div>
   </div>
 </div>
-    
+
+      
+
+      
+
+      
+      <div class="mb-5"></div>
+      
 
     
 
-    
-
-    
-    <div class="mb-5"></div>
-    
-  
   </header>
   
   <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
@@ -512,13 +523,14 @@
       class="order-first lg:ml-auto px-0 lg:order-last ltr:lg:pl-8 rtl:lg:pr-8">
       <div class="toc ltr:pl-5 rtl:pr-5 print:hidden lg:sticky lg:top-10">
 
-         <details open class="toc-right mt-0 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 hidden lg:block">
+         <details open id="TOCView"
+  class="toc-right mt-0 overflow-y-scroll overscroll-contain scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600 rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 hidden lg:block">
   <summary
     class="block py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
     Table of Contents
   </summary>
   <div
-    class="min-w-[220px] py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    class="min-w-[220px] py-2 border-dotted ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
     <li><a href="#introduction">Introduction</a></li>
@@ -565,6 +577,34 @@
   </div>
 </details>
 
+<script>
+
+  var margin = 200;
+  var marginError = 50;
+
+  (function () {
+    var $window = $(window);
+    var $toc = $('#TOCView');
+    var tocHeight = $toc.height();
+
+    function onResize() {
+      var windowAndMarginHeight = $window.height() - margin;
+      if(tocHeight >= windowAndMarginHeight) {
+        $toc.css("overflow-y", "scroll")
+        $toc.css("max-height", (windowAndMarginHeight + marginError) + "px")
+      } else {
+        $toc.css("overflow-y", "hidden")
+        $toc.css("max-height", "9999999px")
+      }
+    }
+
+    $window.on('resize', onResize);
+    $(document).ready(onResize);
+  })();
+
+
+
+</script>
    </div>
       </div>
       
@@ -575,7 +615,9 @@
 
 
         <div class="article-content max-w-prose mb-20">
-          <h2 class="relative group">Introduction 
+          
+
+<h2 class="relative group">Introduction 
     <div id="introduction" class="anchor"></div>
     
     <span
@@ -586,6 +628,8 @@
     
 </h2>
 <p>I decided to learn about this because why not. I remember one time I heard about omnifunc and that it&rsquo;s vim&rsquo;s built in completion. And I decided to give it a try because why not. It ended up being a pretty good experience. I also plan to use tags for navigation and code completion for a few weeks just to get a feel for this vs LSP. It will definitely be an interesting exercise and definitely one that&rsquo;s gonna be fun. It&rsquo;s also how people used to code pre-LSP.</p>
+
+
 <h2 class="relative group">What are completions? 
     <div id="what-are-completions" class="anchor"></div>
     
@@ -597,6 +641,8 @@
     
 </h2>
 <p>Completions is just Vim/Neovim&rsquo;s built in method of word completion. You can do all sorts of completions with it. Line completion, word, and even code. Code completions is done with &ldquo;omnifunc&rdquo; and it isn&rsquo;t LSP, it has nothing to do with that. It&rsquo;s also a little bit iffy. Because you&rsquo;ll end up using tag completions anyways. More details below.</p>
+
+
 <h2 class="relative group">A general use case of completions 
     <div id="a-general-use-case-of-completions" class="anchor"></div>
     
@@ -609,15 +655,10 @@
 </h2>
 <p>Completions are able to match words and then insert them. Making it useful for completing certain words or long functions names. Here is some code. And I wish to complete the variable name <code>folds_augroups</code>.
 
-
-
-
-
   <figure>
-    <img class="my-0 rounded-md" src="https://i.imgur.com/nDBadJP.png" alt="" />
+    <img class="my-0 rounded-md" loading="lazy" src="https://i.imgur.com/nDBadJP.png" alt="" />
     
   </figure>
-
 </p>
 <p>Because I find it annoying to type a variable name which is that long.</p>
 <div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/YWDgiOTp4FQezxZr6k" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/YWDgiOTp4FQezxZr6k"></a></p>
@@ -632,11 +673,12 @@
 <li>Tag files</li>
 <li>All files <code>##included</code> by the current file.</li>
 </ol>
-<p><a href="https://neovim.io/doc/user/usr_24.html##24.3"   target="_blank">
-    https://neovim.io/doc/user/usr_24.html##24.3</a></p>
+<p><a href="https://neovim.io/doc/user/usr_24.html##24.3" target="_blank">https://neovim.io/doc/user/usr_24.html##24.3</a></p>
 </blockquote>
 <p>Although option 6 is specific to C files.</p>
 <p>Above demonstrates a general use case. There are more specific completions such as completing a file name<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+
+
 <h2 class="relative group">Enabling omnifunc 
     <div id="enabling-omnifunc" class="anchor"></div>
     
@@ -666,6 +708,8 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">let</span> &amp;<span class="nx">l</span>:<span class="nx">define</span> <span class="p">=</span> <span class="s1">&#39;\&lt;function\|\&lt;local\%(\s\+function\)\=&#39;</span>
 </span></span></code></pre></div><p>These files are sourced <em>after</em> your configs. Meaning these configs <em>override yours</em>. These are buffer specific and only applies to buffers that match the filetype<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>. Meaning that configuration above will only apply to <code>.lua</code> files.</p>
+
+
 <h2 class="relative group">Using omnifunc 
     <div id="using-omnifunc" class="anchor"></div>
     
@@ -682,17 +726,14 @@
 <pre tabindex="0"><code>function! python3complete#Complete(findstart, base)
 </code></pre><p>Unforunately, the completion is very shallow. It only search for symbols in the current buffer. What&rsquo;s more it&rsquo;s not even accurate.</p>
 <p>
-
-
-
-
   <figure>
-    <img class="my-0 rounded-md" src="https://i.imgur.com/JHEBAQn.png" alt="" />
+    <img class="my-0 rounded-md" loading="lazy" src="https://i.imgur.com/JHEBAQn.png" alt="" />
     
   </figure>
-
 </p>
 <p>Notice how the screenshot has the <code>Tews</code> class, but it isn&rsquo;t listed. Another thing is that omnifunc has support for <strong>limited</strong> filetypes<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>. But, this is omnifunc working as intended. Because, omnifunc is <strong>NOT</strong> LSP. As mentioned at the very beginning. If you&rsquo;d want LSP-<strong>like</strong> behavior (emphasis on <strong>like</strong>), look at the next section.</p>
+
+
 <h2 class="relative group">Completion using tags 
     <div id="completion-using-tags" class="anchor"></div>
     
@@ -703,6 +744,8 @@
     </span>        
     
 </h2>
+
+
 <h3 class="relative group">Understanding and setup 
     <div id="understanding-and-setup" class="anchor"></div>
     
@@ -716,27 +759,22 @@
 <blockquote>
 <p>I&rsquo;ll work on a post specifically for tags in the future. But for now, I&rsquo;ll keep this here so that you get a complete picture.</p>
 </blockquote>
-<p>Vim and Neovim both support the use of <code>ctags</code> also called <a href="https://ctags.io/"   target="_blank">
-    universial tags</a> to navigate around projects. <code>ctags</code> is a completely different technology from omnifunc. You can create these tags with</p>
+<p>Vim and Neovim both support the use of <code>ctags</code> also called <a href="https://ctags.io/" target="_blank">universial tags</a> to navigate around projects. <code>ctags</code> is a completely different technology from omnifunc. You can create these tags with</p>
 <pre tabindex="0"><code>ctags -R .
 </code></pre><blockquote>
-<p>Thanks to <a href="https://github.com/gpanders"   target="_blank">
-    gpanders</a> from the neovim IRC for how to use ctags.</p>
+<p>Thanks to <a href="https://github.com/gpanders" target="_blank">gpanders</a> from the neovim IRC for how to use ctags.</p>
 </blockquote>
 <p>But, if you have a new function or class, you&rsquo;ll need to run it again. And again, and again, and again. This may even take an entire night. This is a snippet from the docs:</p>
 <blockquote>
 <p>You might do this overnight.<br>
-<a href="https://neovim.io/doc/user/usr_29.html#_one-tags-file"   target="_blank">
-    https://neovim.io/doc/user/usr_29.html#_one-tags-file</a></p>
+<a href="https://neovim.io/doc/user/usr_29.html#_one-tags-file" target="_blank">https://neovim.io/doc/user/usr_29.html#_one-tags-file</a></p>
 </blockquote>
 <p>This is what is meant by LSP-<strong>like</strong> behaviour. If you have LSP configured, any new functions or classes will be immediately available. No compilation neccessary. With ctags, you need to recompile it.</p>
 <blockquote>
-<p>I did some looking around and I can&rsquo;t seem to find anything solid about ctags regenerating the entire tag file when you run <code>ctags -R .</code>. It is however implied in <a href="https://github.com/universal-ctags/ctags/issues/1420"   target="_blank">
-    this issue</a>. In that same issue, it also states that larger files require more resources to generate the tag file. There are requests to generate tags for code that is new or modified. These requests are placed in the issue linked above and <a href="https://github.com/universal-ctags/ctags/issues/423"   target="_blank">
-    this one</a> and <a href="https://github.com/universal-ctags/ctags/issues/423#issuecomment-119265531"   target="_blank">
-    this comment</a>. These two issues are linked back to <a href="https://github.com/universal-ctags/ctags/issues/423"   target="_blank">
-    this main issue</a>.</p>
+<p>I did some looking around and I can&rsquo;t seem to find anything solid about ctags regenerating the entire tag file when you run <code>ctags -R .</code>. It is however implied in <a href="https://github.com/universal-ctags/ctags/issues/1420" target="_blank">this issue</a>. In that same issue, it also states that larger files require more resources to generate the tag file. There are requests to generate tags for code that is new or modified. These requests are placed in the issue linked above and <a href="https://github.com/universal-ctags/ctags/issues/423" target="_blank">this one</a> and <a href="https://github.com/universal-ctags/ctags/issues/423#issuecomment-119265531" target="_blank">this comment</a>. These two issues are linked back to <a href="https://github.com/universal-ctags/ctags/issues/423" target="_blank">this main issue</a>.</p>
 </blockquote>
+
+
 <h3 class="relative group">Using tags 
     <div id="using-tags" class="anchor"></div>
     
@@ -768,6 +806,8 @@
 </ol>
 <div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/w0arKM56lhl31t0sXY" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/w0arKM56lhl31t0sXY"></a></p>
 <p>These are just the basics. For more details look at the tags documentation<sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup> which has some good tips regarding navigation. Anyways, that&rsquo;s pretty much what tags can do.</p>
+
+
 <h3 class="relative group">Completions 
     <div id="completions" class="anchor"></div>
     
@@ -781,9 +821,10 @@
 <p>To get accurate code completion, you can&rsquo;t use omnifunc. You should use tag completion instead, triggered with <code>&lt;C-x&gt;&lt;C-]&gt;</code> while in insert mode.</p>
 <div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/bdRagCjZkDJaV0w0EL" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/bdRagCjZkDJaV0w0EL"></a></p>
 <blockquote>
-<p>I tried to get tag completion through omnifunc working, but it didn&rsquo;t. I followed the instructions <a href="https://neovim.io/doc/user/insert.html#ft-c-omni"   target="_blank">
-    here</a> for <code>c</code> but when I used the keybinds to trigger omnifunc, nothing appeared. If you manage to get it working, feel free to share it with me :D.</p>
+<p>I tried to get tag completion through omnifunc working, but it didn&rsquo;t. I followed the instructions <a href="https://neovim.io/doc/user/insert.html#ft-c-omni" target="_blank">here</a> for <code>c</code> but when I used the keybinds to trigger omnifunc, nothing appeared. If you manage to get it working, feel free to share it with me :D.</p>
 </blockquote>
+
+
 <h2 class="relative group">Closing 
     <div id="closing" class="anchor"></div>
     
@@ -799,46 +840,48 @@
 <hr>
 <ol>
 <li id="fn:1">
-<p>A full list of completion types can be found in the <a href="https://neovim.io/doc/user/insert.html##ins-completion"   target="_blank">
-    insert completion section</a>.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>A full list of completion types can be found in the <a href="https://neovim.io/doc/user/insert.html##ins-completion" target="_blank">insert completion section</a>.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:2">
-<p><a href="https://neovim.io/doc/user/usr_41.html##41.12"   target="_blank">
-    https://neovim.io/doc/user/usr_41.html##41.12</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p><a href="https://neovim.io/doc/user/usr_41.html##41.12" target="_blank">https://neovim.io/doc/user/usr_41.html##41.12</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:3">
-<p>Start reading from <a href="https://neovim.io/doc/user/insert.html##compl-omni-filetypes"   target="_blank">
-    compl-omni-filetypes</a>.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>Start reading from <a href="https://neovim.io/doc/user/insert.html##compl-omni-filetypes" target="_blank">compl-omni-filetypes</a>.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:4">
-<p>A full list specified <a href="https://neovim.io/doc/user/insert.html##compl-omni-filetypes"   target="_blank">
-    here</a>&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>A full list specified <a href="https://neovim.io/doc/user/insert.html##compl-omni-filetypes" target="_blank">here</a>&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:5">
-<p><a href="https://neovim.io/doc/user/usr_29.html#29.1"   target="_blank">
-    https://neovim.io/doc/user/usr_29.html#29.1</a>&#160;<a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p><a href="https://neovim.io/doc/user/usr_29.html#29.1" target="_blank">https://neovim.io/doc/user/usr_29.html#29.1</a>&#160;<a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </div>
 
         </div>
-                
+        
         
 
+        
         
 
           
       </div>
      
-    
-     <script>
+      
+      
+        
+        
+          
+          
+        
+      <script>
         var oid = "views_posts\/completions-in-neovim.md"
         var oid_likes = "likes_posts\/completions-in-neovim.md"
       </script>
       
       
       
-      <script type="text/javascript" src="/js/page.min.5b1bad196a6075a1e11bae1dc95f24f67b610948a00525e347566c5a62338ea78f1c7224ab9a53873dcdb2a1a7d7d391b8a8ef45561297f68806c01315b0c4f6.js" integrity="sha512-WxutGWpgdaHhG64dyV8k9nthCUigBSXjR1ZsWmIzjqePHHIkq5pThz3NsqGn19ORuKjvRVYSl/aIBsATFbDE9g=="></script>
+      <script type="text/javascript" src="/js/page.min.0860cf4e04fa2d72cc33ddba263083464d48f67de06114529043cb4623319efed4f484fd7f1730df5abea0e2da6f3538855634081d02f2d6e920b956f063e823.js" integrity="sha512-CGDPTgT6LXLMM926JjCDRk1I9n3gYRRSkEPLRiMxnv7U9IT9fxcw31q&#43;oOLabzU4hVY0CB0C8tbpILlW8GPoIw=="></script>
   
     </section>
   <footer class="pt-8 max-w-prose print:hidden">
@@ -934,14 +977,6 @@
     
 
     
-    <p class="text-xs text-neutral-500 dark:text-neutral-400">
-        <i class="bi bi-rss-fill"></i>
-        <a href="https://alphabetsalphabets.github.io/index.xml">RSS</a>
-    </p>
-    
-
-
-    
     
     <p class="text-xs text-neutral-500 dark:text-neutral-400">
       
@@ -964,7 +999,7 @@
   </script>
   
   
-  <script type="text/javascript" src="/js/process.min.62060bb247f4de2b6dde45903668fefb68d792f365587605177b1227c0cf43588701edaca0cb40e2c8e2789bd5ce67c1d2a215b9fb258c3496a7cd25e7cb5fdf.js" integrity="sha512-YgYLskf03itt3kWQNmj&#43;&#43;2jXkvNlWHYFF3sSJ8DPQ1iHAe2soMtA4sjieJvVzmfB0qIVufsljDSWp80l58tf3w=="></script>
+  <script type="text/javascript" src="/js/process.min.ee03488f19c93c2efb199e2e3014ea5f3cb2ce7d45154adb3399a158cac27ca52831db249ede5bb602700ef87eb02434139de0858af1818ab0fb4182472204a4.js" integrity="sha512-7gNIjxnJPC77GZ4uMBTqXzyyzn1FFUrbM5mhWMrCfKUoMdsknt5btgJwDvh&#43;sCQ0E53ghYrxgYqw&#43;0GCRyIEpA=="></script>
   
   
 </footer>

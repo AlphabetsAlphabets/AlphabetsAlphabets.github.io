@@ -26,8 +26,8 @@
   
   
   
-  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.b0d4aeb65335611c810957fcff4af94f45bb796b37facd9be6f7287ee03ce57038918ff5d4ac7a6ea77914fde6d3942c0243d3d17f90926c454b4ea3499e973a.css"
-    integrity="sha512-sNSutlM1YRyBCVf8/0r5T0W7eWs3&#43;s2b5vcofuA85XA4kY/11Kx6bqd5FP3m05QsAkPT0X&#43;QkmxFS06jSZ6XOg==" />
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.a99c1a57c98168bc7e9a6a2d6c2cb2eac5f8257891ad3324d2276233a7ee6c36c55b35ed3c2238f3f8dc51dd501a777da0856c7a7e365b7d4b559fb81b769fa5.css"
+    integrity="sha512-qZwaV8mBaLx&#43;mmotbCyy6sX4JXiRrTMk0idiM6fubDbFWzXtPCI48/jcUd1QGnd9oIVsen42W31LVZ&#43;4G3afpQ==" />
   
   
   <script type="text/javascript" src="/js/appearance.min.516a16745bea5a9bd011138d254cc0fd3973cd55ce6e15f3dec763e7c7c2c7448f8fe7b54cca811cb821b0c7e12cd161caace1dd794ac3d34d40937cbcc9ee12.js"
@@ -44,8 +44,8 @@
   
   
   
-  <script defer type="text/javascript" id="script-bundle" src="/js/main.bundle.min.1271c22a557a15f10b5d38d2c87e49503604cfeffebadc1e7c267934e4b9f3ba1b74d81371219f9681dab2141482fc4ed2a8b462b179f0ef43a5f76d0575e85b.js"
-    integrity="sha512-EnHCKlV6FfELXTjSyH5JUDYEz&#43;/&#43;utwefCZ5NOS587obdNgTcSGfloHashQUgvxO0qi0YrF58O9DpfdtBXXoWw==" data-copy="" data-copied=""></script>
+  <script defer type="text/javascript" id="script-bundle" src="/js/main.bundle.min.d6c35110b5d7df8014403fbb81cd21a9d89daf9eb586c936e585e9d04adc204dce554aa737f81e8c902b9dea9e67bd63a977b77dedefb8a39430581ebc519207.js"
+    integrity="sha512-1sNRELXX34AUQD&#43;7gc0hqdidr561hsk25YXp0ErcIE3OVUqnN/gejJArneqeZ71jqXe3fe3vuKOUMFgevFGSBw==" data-copy="" data-copied=""></script>
   
   
   <script src="/js/zoom.min.js"></script>
@@ -63,17 +63,20 @@
   
   
   
-  <meta property="og:title" content="Hecto: Making a text editor" />
-<meta property="og:description" content="Note # This blog post is confusing at best." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:1313/posts/making-a-text-editor/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-08-16T00:00:00+00:00" />
-<meta property="article:modified_time" content="2021-08-16T00:00:00+00:00" />
+  <meta property="og:url" content="http://localhost:1313/posts/making-a-text-editor/">
+  <meta property="og:site_name" content="The Lexicon">
+  <meta property="og:title" content="Hecto: Making a text editor">
+  <meta property="og:description" content="Note # This blog post is confusing at best.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2021-08-16T00:00:00+00:00">
+    <meta property="article:modified_time" content="2021-08-16T00:00:00+00:00">
 
-
-
-  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Hecto: Making a text editor"/>
-<meta name="twitter:description" content="Note # This blog post is confusing at best."/>
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Hecto: Making a text editor">
+  <meta name="twitter:description" content="Note # This blog post is confusing at best.">
 
   
   <script type="application/ld+json">
@@ -117,9 +120,6 @@
   <link href="https://github.com/AlphabetsAlphabets" rel="me" />
   
   
-
-  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   
   
 
@@ -142,8 +142,12 @@
 
 
 
+
+
+
   
   
+
 
   
   
@@ -152,7 +156,7 @@
   
 </head>
 <body
-  class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32">
+  class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32 scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600">
   <div id="the-top" class="absolute flex self-center">
     <a class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
       href="#main-content"><span
@@ -176,14 +180,15 @@
             
             
             
-  <a href="/posts/"  class="flex items-center">
+  <a href="/posts/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
     
-    <p class="text-base font-medium text-gray-500 hover:text-gray-900" title="">
+    <p class="text-base font-medium" title="">
         Blog
     </p>
 </a>
 
 
+
             
             
 
@@ -191,7 +196,7 @@
 
 
             
-            <button id="search-button" aria-label="Search" class="text-base hover:text-primary-600 dark:hover:text-primary-400 h-12"
+            <button id="search-button" aria-label="Search" class="text-base hover:text-primary-600 dark:hover:text-primary-400"
                 title="">
                 
 
@@ -208,9 +213,9 @@
             
             
             <div
-                class="ltr:mr-14 rtl:ml-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400">
-                <button id="appearance-switcher" aria-label="Dark mode switcher" type="button">
-                    <div class="flex items-center justify-center h-12 dark:hidden">
+                class="ltr:mr-14 rtl:ml-14 flex items-center">
+                <button id="appearance-switcher" aria-label="Dark mode switcher" type="button" class="text-base hover:text-primary-600 dark:hover:text-primary-400">
+                    <div class="flex items-center justify-center dark:hidden">
                         
 
   <span class="relative block icon">
@@ -220,7 +225,7 @@
 
 
                     </div>
-                    <div class="items-center justify-center hidden h-12 dark:flex">
+                    <div class="items-center justify-center hidden dark:flex">
                         
 
   <span class="relative block icon">
@@ -235,7 +240,7 @@
             
 
         </nav>
-        <div class="flex md:hidden items-center space-x-5 md:ml-12">
+        <div class="flex md:hidden items-center space-x-5 md:ml-12 h-12">
 
             <span></span>
 
@@ -258,8 +263,8 @@
 
             
             
-            <button id="appearance-switcher-mobile" aria-label="Dark mode switcher" type="button" style="margin-right:5px">
-                <div class="flex items-center justify-center h-12 dark:hidden">
+            <button id="appearance-switcher-mobile" aria-label="Dark mode switcher" type="button" class="text-base hover:text-primary-600 dark:hover:text-primary-400" style="margin-right:5px">
+                <div class="flex items-center justify-center dark:hidden">
                     
 
   <span class="relative block icon">
@@ -269,7 +274,7 @@
 
 
                 </div>
-                <div class="items-center justify-center hidden h-12 dark:flex">
+                <div class="items-center justify-center hidden dark:flex">
                     
 
   <span class="relative block icon">
@@ -320,13 +325,14 @@
 
                     
   <li class="mt-1">
-    <a href="/posts/"  class="flex items-center">
+    <a href="/posts/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
         
-        <p class="text-bg font-bg text-gray-500 hover:text-gray-900" title="">
+        <p class="text-bg font-bg" title="">
             Blog
         </p>
     </a>
 </li>
+
 
 
 
@@ -434,8 +440,12 @@
     
 
     
+
+    
       
       
+        
+        
 <div class="flex author">
   
   <div class="place-self-center">
@@ -494,16 +504,17 @@
 </div>
   </div>
 </div>
-    
+
+      
+
+      
+
+      
+      <div class="mb-5"></div>
+      
 
     
 
-    
-
-    
-    <div class="mb-5"></div>
-    
-  
   </header>
   
   <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
@@ -512,13 +523,14 @@
       class="order-first lg:ml-auto px-0 lg:order-last ltr:lg:pl-8 rtl:lg:pr-8">
       <div class="toc ltr:pl-5 rtl:pr-5 print:hidden lg:sticky lg:top-10">
 
-         <details open class="toc-right mt-0 overflow-hidden rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 hidden lg:block">
+         <details open id="TOCView"
+  class="toc-right mt-0 overflow-y-scroll overscroll-contain scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600 rounded-lg ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 hidden lg:block">
   <summary
     class="block py-1 text-lg font-semibold cursor-pointer bg-neutral-100 text-neutral-800 ltr:-ml-5 ltr:pl-5 rtl:-mr-5 rtl:pr-5 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">
     Table of Contents
   </summary>
   <div
-    class="min-w-[220px] py-2 border-dotted border-neutral-300 ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
+    class="min-w-[220px] py-2 border-dotted ltr:-ml-5 ltr:border-l ltr:pl-5 rtl:-mr-5 rtl:border-r rtl:pr-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
     <li><a href="#note">Note</a></li>
@@ -645,6 +657,34 @@
   </div>
 </details>
 
+<script>
+
+  var margin = 200;
+  var marginError = 50;
+
+  (function () {
+    var $window = $(window);
+    var $toc = $('#TOCView');
+    var tocHeight = $toc.height();
+
+    function onResize() {
+      var windowAndMarginHeight = $window.height() - margin;
+      if(tocHeight >= windowAndMarginHeight) {
+        $toc.css("overflow-y", "scroll")
+        $toc.css("max-height", (windowAndMarginHeight + marginError) + "px")
+      } else {
+        $toc.css("overflow-y", "hidden")
+        $toc.css("max-height", "9999999px")
+      }
+    }
+
+    $window.on('resize', onResize);
+    $(document).ready(onResize);
+  })();
+
+
+
+</script>
    </div>
       </div>
       
@@ -655,7 +695,9 @@
 
 
         <div class="article-content max-w-prose mb-20">
-          <h2 class="relative group">Note 
+          
+
+<h2 class="relative group">Note 
     <div id="note" class="anchor"></div>
     
     <span
@@ -666,6 +708,8 @@
     
 </h2>
 <p>This blog post is confusing at best. At some point I&rsquo;ll revisit this and polish it once more.</p>
+
+
 <h2 class="relative group">Cargo.toml specifications 
     <div id="cargotoml-specifications" class="anchor"></div>
     
@@ -720,6 +764,8 @@
 <p>Character to byte -&gt; <code>char as u8</code><br>
 byte to char -&gt; <code>byte as char</code></p>
 </blockquote>
+
+
 <h2 class="relative group">Creating the editor 
     <div id="creating-the-editor" class="anchor"></div>
     
@@ -792,23 +838,16 @@ byte to char -&gt; <code>byte as char</code></p>
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>Quitting the program was done by using the <code>panic!</code> macro, but that leaves an ugly output in stderr. <code>should_quit</code> is a bool, set to true when <code>ctrl+q</code> is pressed. If <code>should_quit</code> is true, exit program.</p>
 <p>
-
-
-
-
-  
-  
-  
     <figure>
-      <img class="my-0 rounded-md" src="/images/hecto/using_panic_macro_to_exit.png" alt="Using panic! to exit" />
+      <img class="my-0 rounded-md" loading="lazy" src="/images/hecto/using_panic_macro_to_exit.png" alt="Using panic! to exit" />
       
     </figure>
-  
-
 {:class=&ldquo;img-responsive&rdquo;}</p>
 <h5 style="text-align: center; font-style: italic;">Using panic! to exit</h5>
 <p><code>termion::clear::All</code>, and <code>termion::cursor::Goto(1, 1)</code>. Clears the screen then goes to row 1, column 1.</p>
 <p>the <code>process_keypress</code> has been condensed down, before the byte code and the character would printed in that function. Now it has <code>read_key</code> a helper function. Basically it grabs the current key pressed and returns it as an event. The <code>?</code> for when it&rsquo;s called is the same as calling <code>unwrap</code>. And if <code>pressed_key</code> matches <code>ctrl+q</code>, <code>should_quit</code> is set to <code>true</code>, quitting the program.</p>
+
+
 <h3 class="relative group">Drawing tidles (~) like vim 
     <div id="drawing-tidles--like-vim" class="anchor"></div>
     
@@ -858,6 +897,8 @@ byte to char -&gt; <code>byte as char</code></p>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">io</span>::<span class="n">stdout</span><span class="p">().</span><span class="n">flush</span><span class="p">();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p><em>Moved all functions related to the terminal into the implementation of <code>Terminal</code>.</em></p>
+
+
 <h3 class="relative group">Touching up 
     <div id="touching-up" class="anchor"></div>
     
@@ -887,7 +928,9 @@ byte to char -&gt; <code>byte as char</code></p>
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="fm">println!</span><span class="p">(</span><span class="s">&#34;~</span><span class="se">\r</span><span class="s">&#34;</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h3 class="relative group">Displaying a welcome message 
+</span></span></span></code></pre></div>
+
+<h3 class="relative group">Displaying a welcome message 
     <div id="displaying-a-welcome-message" class="anchor"></div>
     
     <span
@@ -940,6 +983,8 @@ This places the 4 character string right up to the edge of the screen.</p>
 |                        |
 +------------------------+
 </code></pre><p>It&rsquo;s not exactly centered but close enough.</p>
+
+
 <h2 class="relative group">Functionality 
     <div id="functionality" class="anchor"></div>
     
@@ -950,6 +995,8 @@ This places the 4 character string right up to the edge of the screen.</p>
     </span>        
     
 </h2>
+
+
 <h3 class="relative group">Moving the cursor 
     <div id="moving-the-cursor" class="anchor"></div>
     
@@ -1022,6 +1069,8 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="n">Terminal</span>::<span class="n">cursor_position</span><span class="p">(</span><span class="o">&amp;</span><span class="bp">self</span><span class="p">.</span><span class="n">cursor_position</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>The change here is that instead of setting the cursor to <code>(0, 0)</code> after drawing the tidles (which is every single time unless it&rsquo;s to quit hecto). Will cause the cursor to not move despite the functions being implemented. The fix is to just move the cursor to the current position of the cursor which doesn&rsquo;t change where it is at all.</p>
+
+
 <h3 class="relative group">Adding modes (5010ba7) 
     <div id="adding-modes-5010ba7" class="anchor"></div>
     
@@ -1104,7 +1153,9 @@ This places the 4 character string right up to the edge of the screen.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rust" data-lang="rust"><span class="line"><span class="cl"><span class="w">    </span><span class="k">fn</span> <span class="nf">change_mode</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">change_to</span>: <span class="nc">Mode</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="bp">self</span><span class="p">.</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">change_to</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h3 class="relative group">Adding in 0 and S 
+</span></span></span></code></pre></div>
+
+<h3 class="relative group">Adding in 0 and S 
     <div id="adding-in-0-and-s" class="anchor"></div>
     
     <span
@@ -1123,6 +1174,8 @@ This places the 4 character string right up to the edge of the screen.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rust" data-lang="rust"><span class="line"><span class="cl"><span class="w">            </span><span class="n">Key</span>::<span class="n">Char</span><span class="p">(</span><span class="sc">&#39;0&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Key</span>::<span class="n">Char</span><span class="p">(</span><span class="sc">&#39;S&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w">
 </span></span></span></code></pre></div><p>Since <code>g</code> goes to the beginning of the file, set y to 0, same reasoning for <code>0</code> the start of the line is when x is 0. When going to the bottom of the screen with <code>G</code> y is set to <code>height</code>.</p>
+
+
 <h3 class="relative group">Making the cursor change it&rsquo;s shape 
     <div id="making-the-cursor-change-its-shape" class="anchor"></div>
     
@@ -1150,6 +1203,8 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>After implementing this the cursor can now change immediately upon the mode being changed.</p>
+
+
 <h2 class="relative group">Viewing files 
     <div id="viewing-files" class="anchor"></div>
     
@@ -1210,6 +1265,8 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="fm">println!</span><span class="p">(</span><span class="s">&#34;</span><span class="si">{}</span><span class="se">\r</span><span class="s">&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">row</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p><code>render</code> as discussed earlier will print extract a substring or return <code>None</code>, then print out the substring.</p>
+
+
 <h3 class="relative group">Scrolling 
     <div id="scrolling" class="anchor"></div>
     
@@ -1220,6 +1277,8 @@ This places the 4 character string right up to the edge of the screen.</p>
     </span>        
     
 </h3>
+
+
 <h4 class="relative group">Vertical scrolling 
     <div id="vertical-scrolling" class="anchor"></div>
     
@@ -1268,6 +1327,8 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="fm">println!</span><span class="p">(</span><span class="s">&#34;~</span><span class="se">\r</span><span class="s">&#34;</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>As the goal is to scroll downwards, the row that is obtained from the <code>row</code> method <sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> will be increased by 1, thereby ignoring the previous row, and rendering everything else instead. As the value of <code>offset.y</code> increases, the row that was rendered will be ignored in favour of a new one. The same concept is applied to scrolling horizontally. Where it ignores a character instead of an entire line.</p>
+
+
 <h4 class="relative group">Horizontal scrolling 
     <div id="horizontal-scrolling" class="anchor"></div>
     
@@ -1296,7 +1357,9 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">if</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// &lt;-- `width + 1` not in the guide
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h4 class="relative group">Adding a fix 
+</span></span></span></code></pre></div>
+
+<h4 class="relative group">Adding a fix 
     <div id="adding-a-fix" class="anchor"></div>
     
     <span
@@ -1325,7 +1388,9 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">    	</span><span class="fm">panic!</span><span class="p">(</span><span class="n">error</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">};</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h3 class="relative group">Adding in more keys 
+</span></span></span></code></pre></div>
+
+<h3 class="relative group">Adding in more keys 
     <div id="adding-in-more-keys" class="anchor"></div>
     
     <span
@@ -1336,6 +1401,8 @@ This places the 4 character string right up to the edge of the screen.</p>
     
 </h3>
 <p>The W and B key in vim moves the cursor forward, and backward respectively until the first non whitespace character with the exception of the whitespace the cursor is currently on, or adjacent to.</p>
+
+
 <h4 class="relative group">Adding in the &lsquo;w&rsquo; key 
     <div id="adding-in-the-w-key" class="anchor"></div>
     
@@ -1371,6 +1438,8 @@ This places the 4 character string right up to the edge of the screen.</p>
 </code></pre><p>Take this line, and the cursor position is found by finding what text is surrounded by {foo}, in this case the cursor is at the &lsquo;k&rsquo; character in &lsquo;keys&rsquo;. To move forward and stop at the first <strong>non ascii alphabet</strong>, excluding the word the cursor is at, looping through each character with <code>enumerate</code>. Taking note of <code>count</code>, and setting it to <code>index</code>. Because <code>count</code> is the number of characters that has passed to read the non ascii alphabetic character.</p>
 <p>The if statement at the bottom will allow the cursor to move to the start of the second line, assuming the cursor is at the end of the current line, and there is a next line (<code>y &lt; height</code> part). Then increment y by 1, and set x to 0 (the start of the line). If that isn&rsquo;t the case, then just add the number of characters passed into the current x position to move it.</p>
 <p>And the &lsquo;b&rsquo; is the reverse of the &lsquo;w&rsquo; so it won&rsquo;t be specified in here, the concepts are all the same. <sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup></p>
+
+
 <h4 class="relative group">Scrolling up and down a page. 
     <div id="scrolling-up-and-down-a-page" class="anchor"></div>
     
@@ -1382,6 +1451,8 @@ This places the 4 character string right up to the edge of the screen.</p>
     
 </h4>
 <p>The keys responsible for this will be captial &lsquo;J&rsquo;, and &lsquo;K&rsquo;. The comments I added is all the explanation that is needed.</p>
+
+
 <h5 class="relative group">The &lsquo;K&rsquo; key 
     <div id="the-k-key" class="anchor"></div>
     
@@ -1402,7 +1473,9 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="mi">0</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h5 class="relative group">The &lsquo;J&rsquo; key 
+</span></span></span></code></pre></div>
+
+<h5 class="relative group">The &lsquo;J&rsquo; key 
     <div id="the-j-key" class="anchor"></div>
     
     <span
@@ -1422,7 +1495,9 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="w">		</span><span class="n">height</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">	</span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h2 class="relative group">Drawing a status bar 
+</span></span></span></code></pre></div>
+
+<h2 class="relative group">Drawing a status bar 
     <div id="drawing-a-status-bar" class="anchor"></div>
     
     <span
@@ -1510,8 +1585,7 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="o">..</span><span class="p">.</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><p><a href="https://github.com/YJH16120/hecto/blob/913d49300816dae5e370f6ddef04588e1d370a0d/src/editor.rs##L257"   target="_blank">
-    Previously</a>, the solution was to prevent the cursor from going to the line the status bar was, and to stop it from going past it. But all that did was prevent scrolling. It never occured to me to reduce the size of the active area instead.</p>
+</span></span></span></code></pre></div><p><a href="https://github.com/YJH16120/hecto/blob/913d49300816dae5e370f6ddef04588e1d370a0d/src/editor.rs##L257" target="_blank">Previously</a>, the solution was to prevent the cursor from going to the line the status bar was, and to stop it from going past it. But all that did was prevent scrolling. It never occured to me to reduce the size of the active area instead.</p>
 <p>The next thing to do would be to colour it. And make it pretty.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rust" data-lang="rust"><span class="line"><span class="cl"><span class="w">    </span><span class="k">fn</span> <span class="nf">draw_status_bar</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span><span class="w"> </span><span class="bp">self</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="fm">format!</span><span class="p">(</span><span class="s">&#34;</span><span class="si">{}</span><span class="s"> | </span><span class="si">{}</span><span class="s">&#34;</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="bp">self</span><span class="p">.</span><span class="n">file_name</span><span class="p">);</span><span class="w">
@@ -1575,6 +1649,8 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>By adding in <code>height - 1</code>. This stops the cursor from moving to, and past the status bar. And fixes the extra &ldquo;phantom&rdquo; line that was added in by Hecto. I noticed that when using captial J in normal mode, the cursor could go past the bounds of the document, but that did not apply to lower case j in normal mode, so I just did the samething for captial J as well.</p>
+
+
 <h2 class="relative group">Text editing 
     <div id="text-editing" class="anchor"></div>
     
@@ -1585,6 +1661,8 @@ This places the 4 character string right up to the edge of the screen.</p>
     </span>        
     
 </h2>
+
+
 <h3 class="relative group">Typing 
     <div id="typing" class="anchor"></div>
     
@@ -1663,6 +1741,8 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="bp">self</span><span class="p">.</span><span class="n">normal_mode</span><span class="p">(</span><span class="n">Key</span>::<span class="n">Char</span><span class="p">(</span><span class="sc">&#39;l&#39;</span><span class="p">));</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>Where <code>normal_mode</code> is called, this is to move the cursor to the right. Because without it text would appear, but, the cursor would not move, but instead, remain at the same position.</p>
+
+
 <h3 class="relative group">Enter key - Adding a new line 
     <div id="enter-key---adding-a-new-line" class="anchor"></div>
     
@@ -1704,7 +1784,9 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="bp">self</span><span class="p">.</span><span class="n">update_len</span><span class="p">();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="bp">Self</span>::<span class="n">from</span><span class="p">(</span><span class="o">&amp;</span><span class="n">remainder</span><span class="p">[</span><span class="o">..</span><span class="p">])</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h3 class="relative group">Deleting text 
+</span></span></span></code></pre></div>
+
+<h3 class="relative group">Deleting text 
     <div id="deleting-text" class="anchor"></div>
     
     <span
@@ -1815,6 +1897,8 @@ This places the 4 character string right up to the edge of the screen.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-rust" data-lang="rust"><span class="line"><span class="cl"><span class="kd">let</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="n">x</span><span class="w"> </span><span class="p">.</span><span class="n">iter</span><span class="p">().</span><span class="n">skip</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// x = [3, 4, 5];
 </span></span></span></code></pre></div><p>My taking away one character, you essentially delete it. And that&rsquo;s how the backspace key works.</p>
+
+
 <h3 class="relative group">Tabs 
     <div id="tabs" class="anchor"></div>
     
@@ -1841,7 +1925,9 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="bp">self</span><span class="p">.</span><span class="n">normal_mode</span><span class="p">(</span><span class="n">Key</span>::<span class="n">Char</span><span class="p">(</span><span class="sc">&#39;l&#39;</span><span class="p">));</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><h2 class="relative group">Saving files (or writing files) 
+</span></span></span></code></pre></div>
+
+<h2 class="relative group">Saving files (or writing files) 
     <div id="saving-files-or-writing-files" class="anchor"></div>
     
     <span
@@ -1868,6 +1954,8 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">     
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>The reason to truncate the file is so that you make sure the contents are as fresh as possible, this also avoids duplicating text. In a previous iteration of this function, the number of newline characters would increase because the file was not truncated before hand, making the file longer and longer each time. But when opened in Hecto they looked fine<sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup>. But this solution fixes the issue. With this Hecto has now become a function text editor with good features! It is usable but I plan to add mroe features to it. I plan to extend the Hecto blog posts instead of having one gigantic post. Who knows, I might keep it as one gigantic post anyways.</p>
+
+
 <h2 class="relative group">Command mode 
     <div id="command-mode" class="anchor"></div>
     
@@ -1878,6 +1966,8 @@ This places the 4 character string right up to the edge of the screen.</p>
     </span>        
     
 </h2>
+
+
 <h4 class="relative group">Drawing the border 
     <div id="drawing-the-border" class="anchor"></div>
     
@@ -1909,19 +1999,10 @@ This places the 4 character string right up to the edge of the screen.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>I want a window to be drawn. The window eventually looks like this:
 
-
-
-
-
-  
-  
-  
     <figure>
-      <img class="my-0 rounded-md" src="/images/hecto/command_win_final.png" alt="Using panic! to exit" />
+      <img class="my-0 rounded-md" loading="lazy" src="/images/hecto/command_win_final.png" alt="Using panic! to exit" />
       
     </figure>
-  
-
 {:class=&ldquo;img-responsive&rdquo;}</p>
 <h5 style="text-align: center; font-style: italic;">How it will eventually look</h5>
 <p>A new file will be made called <code>window.rs</code>. A struct that contains the four corners of the window.</p>
@@ -2017,48 +2098,51 @@ This places the 4 character string right up to the edge of the screen.</p>
 <hr>
 <ol>
 <li id="fn:1">
-<p><a href="https://github.com/YJH16120/hecto/commit/91576db65fa695a7934d2c57ccd2a0684a96bef4"   target="_blank">
-    The repo right after the port from termion to crossterm</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a>&#160;<a href="#fnref1:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p><a href="https://github.com/YJH16120/hecto/commit/91576db65fa695a7934d2c57ccd2a0684a96bef4" target="_blank">The repo right after the port from termion to crossterm</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a>&#160;<a href="#fnref1:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:2">
 <p>The <code>row</code> method will index into the <code>Row</code> struct which has a field containing a vector of strings, where each element is a row in a file, then grab that role using the provided index.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:3">
-<p><a href="https://github.com/YJH16120/hecto/blob/master/src/editor.rs##L143"   target="_blank">
-    The implementation of the &lsquo;b&rsquo; key</a>&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p><a href="https://github.com/YJH16120/hecto/blob/master/src/editor.rs##L143" target="_blank">The implementation of the &lsquo;b&rsquo; key</a>&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:4">
-<p><a href="https://github.com/YJH16120/hecto/blob/94813bfbf66d5b9f0b0b644f4a520d37e4d9ff1f/src/terminal.rs##L66"   target="_blank">
-    The colour changing stuff</a>.&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p><a href="https://github.com/YJH16120/hecto/blob/94813bfbf66d5b9f0b0b644f4a520d37e4d9ff1f/src/terminal.rs##L66" target="_blank">The colour changing stuff</a>.&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:5">
 <p>The reason the UnicodeSegmentation crate is used is because scrolling is determined via bytes, but some characters have larger bytes which can lead to improper deletion or scrolling of text, for example arabic characters. That crate is used to solve that issue.&#160;<a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:6">
-<p><a href="https://github.com/YJH16120/hecto/blob/9ae7913395984310be97c380a38d589445314aaa/src/document.rs##L94"   target="_blank">
-    This issue persisted for a very long time</a>&#160;<a href="#fnref:6" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p><a href="https://github.com/YJH16120/hecto/blob/9ae7913395984310be97c380a38d589445314aaa/src/document.rs##L94" target="_blank">This issue persisted for a very long time</a>&#160;<a href="#fnref:6" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </div>
 
         </div>
-                
+        
         
 
+        
         
 
           
       </div>
      
-    
-     <script>
+      
+      
+        
+        
+          
+          
+        
+      <script>
         var oid = "views_posts\/making-a-text-editor.md"
         var oid_likes = "likes_posts\/making-a-text-editor.md"
       </script>
       
       
       
-      <script type="text/javascript" src="/js/page.min.5b1bad196a6075a1e11bae1dc95f24f67b610948a00525e347566c5a62338ea78f1c7224ab9a53873dcdb2a1a7d7d391b8a8ef45561297f68806c01315b0c4f6.js" integrity="sha512-WxutGWpgdaHhG64dyV8k9nthCUigBSXjR1ZsWmIzjqePHHIkq5pThz3NsqGn19ORuKjvRVYSl/aIBsATFbDE9g=="></script>
+      <script type="text/javascript" src="/js/page.min.0860cf4e04fa2d72cc33ddba263083464d48f67de06114529043cb4623319efed4f484fd7f1730df5abea0e2da6f3538855634081d02f2d6e920b956f063e823.js" integrity="sha512-CGDPTgT6LXLMM926JjCDRk1I9n3gYRRSkEPLRiMxnv7U9IT9fxcw31q&#43;oOLabzU4hVY0CB0C8tbpILlW8GPoIw=="></script>
   
     </section>
   <footer class="pt-8 max-w-prose print:hidden">
@@ -2132,14 +2216,6 @@ This places the 4 character string right up to the edge of the screen.</p>
     
 
     
-    <p class="text-xs text-neutral-500 dark:text-neutral-400">
-        <i class="bi bi-rss-fill"></i>
-        <a href="https://alphabetsalphabets.github.io/index.xml">RSS</a>
-    </p>
-    
-
-
-    
     
     <p class="text-xs text-neutral-500 dark:text-neutral-400">
       
@@ -2162,7 +2238,7 @@ This places the 4 character string right up to the edge of the screen.</p>
   </script>
   
   
-  <script type="text/javascript" src="/js/process.min.62060bb247f4de2b6dde45903668fefb68d792f365587605177b1227c0cf43588701edaca0cb40e2c8e2789bd5ce67c1d2a215b9fb258c3496a7cd25e7cb5fdf.js" integrity="sha512-YgYLskf03itt3kWQNmj&#43;&#43;2jXkvNlWHYFF3sSJ8DPQ1iHAe2soMtA4sjieJvVzmfB0qIVufsljDSWp80l58tf3w=="></script>
+  <script type="text/javascript" src="/js/process.min.ee03488f19c93c2efb199e2e3014ea5f3cb2ce7d45154adb3399a158cac27ca52831db249ede5bb602700ef87eb02434139de0858af1818ab0fb4182472204a4.js" integrity="sha512-7gNIjxnJPC77GZ4uMBTqXzyyzn1FFUrbM5mhWMrCfKUoMdsknt5btgJwDvh&#43;sCQ0E53ghYrxgYqw&#43;0GCRyIEpA=="></script>
   
   
 </footer>
