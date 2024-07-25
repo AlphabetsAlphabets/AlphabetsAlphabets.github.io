@@ -7,7 +7,7 @@ date = 2024-02-16
 I decided to learn about this because why not. I remember one time I heard about omnifunc and that it's vim's built in completion. And I decided to give it a try because why not. It ended up being a pretty good experience. I also plan to use tags for navigation and code completion for a few weeks just to get a feel for this vs LSP. It will definitely be an interesting exercise and definitely one that's gonna be fun. It's also how people used to code pre-LSP.
 
 ## What are completions?
-Completions is just Vim/Neovim's built in method of word completion. You can do all sorts of completions with it. Line completion, word, and even code. Code completions is done with "omnifunc" and it isn't LSP, it has nothing to do with that. It's also a little bit iffy. Because you'll end up using tag completions anyways. More details below.
+Completions is just Vim/Neovim's built in method of word completion. You can do all sorts of completions with it. Line completion, word, and even code. Code completions is done with "omnifunc" and it isn't LSP, it has nothing to do with that which is why it sucks lol. What **key difference** between autocompletion and just completions is that completions is **manual** you need to press a keybind in order to activate it. Meaning instead of suggestions appearing as you type, you need to press a keybind to get those suggestions to appear.
 
 ## A general use case of completions 
 Completions are able to match words and then insert them. Making it useful for completing certain words or long functions names. Here is some code. And I wish to complete the variable name `folds_augroups`.
@@ -84,8 +84,25 @@ Unforunately, the completion is very shallow. It only search for symbols in the 
 
 Notice how the screenshot has the `Tews` class, but it isn't listed. Another thing is that omnifunc has support for **limited** filetypes[^omnifunc-supported-filetypes]. But, this is omnifunc working as intended. Because, omnifunc is **NOT** LSP. As mentioned at the very beginning. If you'd want LSP-**like** behavior (emphasis on **like**), look at the next section.
 
-## Completion using tags
-### Understanding and setup
+## Getting LSP like behaviour
+There are two ways to do this
+1. Tags 
+
+How completion was done pre-lsp days. You typically do not want to use this.
+
+2. Using omni completion 
+
+The more modern way. Which hooks omnifunc to your LSP results so you can get access to them. Because omni completion is what you want, that section will come first.
+
+### Omnicompletion
+As long as the value `omnifunc` is set to `v:lua.vim.lsp.omnifunc` you simply need to press `<C-o><C-x>` and your completions will appear!
+
+<iframe src="https://giphy.com/embed/g8uuuyvGcufWtoqpn6" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/g8uuuyvGcufWtoqpn6">via GIPHY</a></p>
+
+You can easily notice the difference between manual and omnicomplete. Manual completion is when the matches the text in the current buffer. So, when I typed `Par` for `PartialOrd` I get no results. But, with omnicomplete when I type `Par` and activate it, I get `ParialOrd` and its associated documentation. To get it working you can refer to [my config](https://codeberg.org/AlphabetsAlphabets/nvim/src/branch/lazy/lua/core/lsp.lua#L13) because I do not remember where I got the code from.
+
+### Completion using tags
+#### Understanding and setup
 
 > I'll work on a post specifically for tags in the future. But for now, I'll keep this here so that you get a complete picture.
 
@@ -106,7 +123,7 @@ This is what is meant by LSP-**like** behaviour. If you have LSP configured, any
 
 > I did some looking around and I can't seem to find anything solid about ctags regenerating the entire tag file when you run `ctags -R .`. It is however implied in [this issue](https://github.com/universal-ctags/ctags/issues/1420). In that same issue, it also states that larger files require more resources to generate the tag file. There are requests to generate tags for code that is new or modified. These requests are placed in the issue linked above and [this one](https://github.com/universal-ctags/ctags/issues/423) and [this comment](https://github.com/universal-ctags/ctags/issues/423#issuecomment-119265531). These two issues are linked back to [this main issue](https://github.com/universal-ctags/ctags/issues/423).
 
-### Using tags
+#### Using tags
 
 > This section will be moved into it's own post once I get the time for that. For now, I'll leave this here since it's useful.
 
@@ -129,7 +146,7 @@ Ok, once you have the provider and the tags, we can move around the project.
 
 These are just the basics. For more details look at the tags documentation[^tags-documentation] which has some good tips regarding navigation. Anyways, that's pretty much what tags can do. 
 
-### Completions
+#### Completions
 To get accurate code completion, you can't use omnifunc. You should use tag completion instead, triggered with `<C-x><C-]>` while in insert mode.
 
 <div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/bdRagCjZkDJaV0w0EL" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/bdRagCjZkDJaV0w0EL"></a></p>
