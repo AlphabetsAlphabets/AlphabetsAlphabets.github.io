@@ -1,5 +1,5 @@
 current directory: /home/star/Documents/blog/vendor/bundle/ruby/3.0.0/gems/http_parser.rb-0.8.0/ext/ruby_http_parser
-/usr/bin/ruby3.0 -I /usr/lib/ruby/vendor_ruby -r ./siteconf20241214-55286-jdthe2.rb extconf.rb
+/usr/bin/ruby3.0 -I /usr/lib/ruby/vendor_ruby -r ./siteconf20241214-15543-l71694.rb extconf.rb
 creating Makefile
 
 current directory: /home/star/Documents/blog/vendor/bundle/ruby/3.0.0/gems/http_parser.rb-0.8.0/ext/ruby_http_parser
@@ -13,4 +13,4 @@ linking shared-object ruby_http_parser.so
 
 current directory: /home/star/Documents/blog/vendor/bundle/ruby/3.0.0/gems/http_parser.rb-0.8.0/ext/ruby_http_parser
 make DESTDIR\= install
-/usr/bin/install -c -m 0755 ruby_http_parser.so ./.gem.20241214-55286-w0byqb
+/usr/bin/install -c -m 0755 ruby_http_parser.so ./.gem.20241214-15543-675jvd

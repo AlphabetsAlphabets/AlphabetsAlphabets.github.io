@@ -35,8 +35,6 @@ GEM
     faraday-net_http (3.4.0)
       net-http (>= 0.5.0)
     ffi (1.17.0)
-    ffi (1.17.0-arm64-darwin)
-    ffi (1.17.0-x86_64-darwin)
     forwardable-extended (2.6.0)
     gemoji (3.0.1)
     github-pages (223)
@@ -222,10 +220,6 @@ GEM
     minitest (5.25.4)
     net-http (0.6.0)
       uri
-    no-style-please (0.4.7)
-      jekyll (~> 3.9.0)
-      jekyll-feed (~> 0.15.1)
-      jekyll-seo-tag (~> 2.7.1)
     nokogiri (1.17.2-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.17.2-x86_64-darwin)
@@ -279,10 +273,8 @@ DEPENDENCIES
   ffi
   github-pages
   http_parser.rb
-  jekyll
   jekyll-feed (~> 0.6)
   kramdown-parser-gfm
-  no-style-please
   tzinfo (~> 1.2)
   tzinfo-data
   wdm (~> 0.1.0)
