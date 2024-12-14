@@ -8,12 +8,13 @@ source "https://rubygems.org"
 #
 # This will help ensure the proper Jekyll version is running.
 # Happy Jekylling!
-gem "jekyll", "~> 3.9.0"
+gem "github-pages"
+gem "jekyll"
 gem "webrick"
 
-gem 'http_parser.rb', git: "git@github.com:tmm1/http_parser.rb.git"
-gem 'eventmachine', git: "git@github.com:eventmachine/eventmachine.git"
-gem "ffi", git: "git@github.com:ffi/ffi.git"
+gem 'http_parser.rb' #, git: "git@github.com:tmm1/http_parser.rb.git"
+gem 'eventmachine' #, git: "git@github.com:eventmachine/eventmachine.git"
+gem "ffi" #, git: "git@github.com:ffi/ffi.git"
 # This is the default theme for new Jekyll sites. You may change this to anything you like.
 gem "no-style-please"
 
