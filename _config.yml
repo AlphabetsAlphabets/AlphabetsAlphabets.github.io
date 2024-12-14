@@ -10,6 +10,6 @@ theme_config:
 
 # Build settings
 markdown: kramdown
-theme: no-style-please
+theme: jekyll-theme-no-style-please
 plugins:
   - jekyll-feed
