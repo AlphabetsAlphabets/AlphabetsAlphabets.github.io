@@ -1,0 +1,9 @@
+[submodule "vendor/bundle/ruby/3.0.0/bundler/gems/eventmachine-e7320417cf29"]
+	path = vendor/bundle/ruby/3.0.0/bundler/gems/eventmachine-e7320417cf29
+	url = https://github.com/eventmachine/eventmachine
+[submodule "vendor/bundle/ruby/3.0.0/bundler/gems/ffi-c128cede7502"]
+	path = vendor/bundle/ruby/3.0.0/bundler/gems/ffi-c128cede7502
+	url = https://github.com/ffi/ffi
+[submodule "vendor/bundle/ruby/3.0.0/bundler/gems/http_parser.rb-71ecce2a498f"]
+	path = vendor/bundle/ruby/3.0.0/bundler/gems/http_parser.rb-71ecce2a498f
+	url = https://github.com/cotag/http-parser

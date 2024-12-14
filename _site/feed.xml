@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-12-14T17:13:39+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">alphabet’s yap archive</title><entry><title type="html">Completions in Neovim</title><link href="http://localhost:4000/2024/02/16/completions-in-neovim.html" rel="alternate" type="text/html" title="Completions in Neovim" /><published>2024-02-16T23:00:00+08:00</published><updated>2024-02-16T23:00:00+08:00</updated><id>http://localhost:4000/2024/02/16/completions-in-neovim</id><content type="html" xml:base="http://localhost:4000/2024/02/16/completions-in-neovim.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;I decided to learn about this because why not. I remember one time I heard about omnifunc and that it’s vim’s built in completion. And I decided to give it a try because why not. It ended up being a pretty good experience. I also plan to use tags for navigation and code completion for a few weeks just to get a feel for this vs LSP. It will definitely be an interesting exercise and definitely one that’s gonna be fun. It’s also how people used to code pre-LSP.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-are-completions&quot;&gt;What are completions?&lt;/h2&gt;
+&lt;p&gt;Completions is just Vim/Neovim’s built in method of word completion. You can do all sorts of completions with it. Line completion, word, and even code. Code completions is done with “omnifunc” and it isn’t LSP, it has nothing to do with that which is why it sucks lol. What &lt;strong&gt;key difference&lt;/strong&gt; between autocompletion and just completions is that completions is &lt;strong&gt;manual&lt;/strong&gt; you need to press a keybind in order to activate it. Meaning instead of suggestions appearing as you type, you need to press a keybind to get those suggestions to appear.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-general-use-case-of-completions&quot;&gt;A general use case of completions&lt;/h2&gt;
+&lt;p&gt;Completions are able to match words and then insert them. Making it useful for completing certain words or long functions names. Here is some code. And I wish to complete the variable name &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;folds_augroups&lt;/code&gt;.
+&lt;img src=&quot;https://i.imgur.com/nDBadJP.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Because I find it annoying to type a variable name which is that long.&lt;/p&gt;
+
+&lt;div style=&quot;width:100%;height:0;padding-bottom:56%;position:relative;&quot;&gt;&lt;iframe src=&quot;https://giphy.com/embed/YWDgiOTp4FQezxZr6k&quot; width=&quot;100%&quot; height=&quot;100%&quot; style=&quot;position:absolute&quot; frameborder=&quot;0&quot; class=&quot;giphy-embed&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;https://giphy.com/gifs/YWDgiOTp4FQezxZr6k&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So, I start by typing part of it then input &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ctrl+n&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ctrl+p&lt;/code&gt; then select the correct choice. You can see that if I type nothing and input &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ctrl+n&lt;/code&gt; anyways, I’ll get able to choose from literally &lt;em&gt;every&lt;/em&gt; word typed in the buffer. Completions will search beyond the current buffer too.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The Vim editor goes through a lot of effort to find words to complete. By default, it searches the following places:&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;Current file&lt;/li&gt;
+    &lt;li&gt;Files in other windows&lt;/li&gt;
+    &lt;li&gt;Other loaded files (hidden buffers)&lt;/li&gt;
+    &lt;li&gt;Files which are not loaded (inactive buffers)&lt;/li&gt;
+    &lt;li&gt;Tag files&lt;/li&gt;
+    &lt;li&gt;All files &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;##included&lt;/code&gt; by the current file.&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;https://neovim.io/doc/user/usr_24.html##24.3&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Although option 6 is specific to C files.&lt;/p&gt;
+
+&lt;p&gt;Above demonstrates a general use case. There are more specific completions such as completing a file name&lt;sup id=&quot;fnref:ins-completion&quot;&gt;&lt;a href=&quot;#fn:ins-completion&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot; role=&quot;doc-noteref&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;enabling-omnifunc&quot;&gt;Enabling omnifunc&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;I’ll tell you right now the code completion provided by omnifunc is pretty bad. Go to the next section with tags for how to get accurate code completion. Keep reading if you wana learn more about omnifunc.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Using omnifunc to perform code completion is pretty much the same as using it for completions. However, it must be enabled as it is not by default. To enable it have either&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;filetype plugin on
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;or&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;filetype plugin indent on
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;What this does is basically enable a filetype plugin. Filetype plugins live in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/share/nvim/runtime/ftplugin&lt;/code&gt;. If you open up one of its contents, it’s basically just configs. Here’s a snippet of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lua.vim&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-vim highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;b:did_ftplugin&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;s:cpo_save&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &amp;amp;&lt;span class=&quot;nb&quot;&gt;cpo&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cpo&lt;/span&gt;&amp;amp;&lt;span class=&quot;k&quot;&gt;vim&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;setlocal&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;comments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=:---,:--&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;setlocal&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;commentstring&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=--&lt;/span&gt;\ %s
+&lt;span class=&quot;k&quot;&gt;setlocal&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;formatoptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;-=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;formatoptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;+=&lt;/span&gt;croql
+
+&lt;span class=&quot;k&quot;&gt;let&lt;/span&gt; &amp;amp;&lt;span class=&quot;k&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;define&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;\&amp;lt;function\|\&amp;lt;local\%(\s\+function\)\=&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;These files are sourced &lt;em&gt;after&lt;/em&gt; your configs. Meaning these configs &lt;em&gt;override yours&lt;/em&gt;. These are buffer specific and only applies to buffers that match the filetype&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot; role=&quot;doc-noteref&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;. Meaning that configuration above will only apply to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.lua&lt;/code&gt; files.&lt;/p&gt;
+
+&lt;h2 id=&quot;using-omnifunc&quot;&gt;Using omnifunc&lt;/h2&gt;
+&lt;p&gt;To use omnifunc for code completion, tags are required for completions to work. Some require both tags and providers.&lt;sup id=&quot;fnref:tags-or-providers&quot;&gt;&lt;a href=&quot;#fn:tags-or-providers&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot; role=&quot;doc-noteref&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;. If a provider is not required, omnifunc will just work. If it is you’ll get an error message.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Error: Requires python3 + pynvim.  :help provider-python
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This appeared when I wanted to use omnifunc when editing a python file without the provider. The fix was simple: installing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pynvim&lt;/code&gt; package with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip&lt;/code&gt;. Continuing with the python example just having the provider isn’t enough. You also need to tell omnifunc which function to use by setting its value. Working in a python file means the value for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;omnifunc&lt;/code&gt; is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python3complete#Complete&lt;/code&gt;. I find this out by going to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;usr/share/nvim/runtime/autoload&lt;/code&gt; and opening the file &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python3compelete.vim&lt;/code&gt;. Then I navigated to the line with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Complete&lt;/code&gt; function which is this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;function! python3complete#Complete(findstart, base)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Unforunately, the completion is very shallow. It only search for symbols in the current buffer. What’s more it’s not even accurate.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/JHEBAQn.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Notice how the screenshot has the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tews&lt;/code&gt; class, but it isn’t listed. Another thing is that omnifunc has support for &lt;strong&gt;limited&lt;/strong&gt; filetypes&lt;sup id=&quot;fnref:omnifunc-supported-filetypes&quot;&gt;&lt;a href=&quot;#fn:omnifunc-supported-filetypes&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot; role=&quot;doc-noteref&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;. But, this is omnifunc working as intended. Because, omnifunc is &lt;strong&gt;NOT&lt;/strong&gt; LSP. As mentioned at the very beginning. If you’d want LSP-&lt;strong&gt;like&lt;/strong&gt; behavior (emphasis on &lt;strong&gt;like&lt;/strong&gt;), look at the next section.&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-lsp-like-behaviour&quot;&gt;Getting LSP like behaviour&lt;/h2&gt;
+&lt;p&gt;There are two ways to do this&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Tags&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;How completion was done pre-lsp days. You typically do not want to use this.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Using omni completion&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The more modern way. Which hooks omnifunc to your LSP results so you can get access to them. Because omni completion is what you want, that section will come first.&lt;/p&gt;
+
+&lt;h3 id=&quot;omnicompletion&quot;&gt;Omnicompletion&lt;/h3&gt;
+&lt;p&gt;As long as the value &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;omnifunc&lt;/code&gt; is set to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v:lua.vim.lsp.omnifunc&lt;/code&gt; you simply need to press &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;C-o&amp;gt;&amp;lt;C-x&amp;gt;&lt;/code&gt; and your completions will appear!&lt;/p&gt;
+
+&lt;iframe src=&quot;https://giphy.com/embed/g8uuuyvGcufWtoqpn6&quot; width=&quot;480&quot; height=&quot;270&quot; frameborder=&quot;0&quot; class=&quot;giphy-embed&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+&lt;p&gt;&lt;a href=&quot;https://giphy.com/gifs/g8uuuyvGcufWtoqpn6&quot;&gt;via GIPHY&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;You can easily notice the difference between manual and omnicomplete. Manual completion is when the matches the text in the current buffer. So, when I typed &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Par&lt;/code&gt; for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PartialOrd&lt;/code&gt; I get no results. But, with omnicomplete when I type &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Par&lt;/code&gt; and activate it, I get &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ParialOrd&lt;/code&gt; and its associated documentation. To get it working you can refer to &lt;a href=&quot;https://codeberg.org/AlphabetsAlphabets/nvim/src/branch/lazy/lua/core/lsp.lua#L13&quot;&gt;my config&lt;/a&gt; because I do not remember where I got the code from.&lt;/p&gt;
+
+&lt;h3 id=&quot;completion-using-tags&quot;&gt;Completion using tags&lt;/h3&gt;
+&lt;h4 id=&quot;understanding-and-setup&quot;&gt;Understanding and setup&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;I’ll work on a post specifically for tags in the future. But for now, I’ll keep this here so that you get a complete picture.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Vim and Neovim both support the use of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ctags&lt;/code&gt; also called &lt;a href=&quot;https://ctags.io/&quot;&gt;universial tags&lt;/a&gt; to navigate around projects. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ctags&lt;/code&gt; is a completely different technology from omnifunc. You can create these tags with&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ctags -R .
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Thanks to &lt;a href=&quot;https://github.com/gpanders&quot;&gt;gpanders&lt;/a&gt; from the neovim IRC for how to use ctags.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;But, if you have a new function or class, you’ll need to run it again. And again, and again, and again. This may even take an entire night. This is a snippet from the docs:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;You might do this overnight.&lt;br /&gt;
+https://neovim.io/doc/user/usr_29.html#_one-tags-file&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This is what is meant by LSP-&lt;strong&gt;like&lt;/strong&gt; behaviour. If you have LSP configured, any new functions or classes will be immediately available. No compilation neccessary. With ctags, you need to recompile it.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;I did some looking around and I can’t seem to find anything solid about ctags regenerating the entire tag file when you run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ctags -R .&lt;/code&gt;. It is however implied in &lt;a href=&quot;https://github.com/universal-ctags/ctags/issues/1420&quot;&gt;this issue&lt;/a&gt;. In that same issue, it also states that larger files require more resources to generate the tag file. There are requests to generate tags for code that is new or modified. These requests are placed in the issue linked above and &lt;a href=&quot;https://github.com/universal-ctags/ctags/issues/423&quot;&gt;this one&lt;/a&gt; and &lt;a href=&quot;https://github.com/universal-ctags/ctags/issues/423#issuecomment-119265531&quot;&gt;this comment&lt;/a&gt;. These two issues are linked back to &lt;a href=&quot;https://github.com/universal-ctags/ctags/issues/423&quot;&gt;this main issue&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;using-tags&quot;&gt;Using tags&lt;/h4&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;This section will be moved into it’s own post once I get the time for that. For now, I’ll leave this here since it’s useful.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Ok, once you have the provider and the tags, we can move around the project.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;If your cursor is on a function and you’d like to see its implementation use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CTRL+]&lt;/code&gt;, if you want to move back use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CTRL+T&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div style=&quot;width:100%;height:0;padding-bottom:56%;position:relative;&quot;&gt;&lt;iframe src=&quot;https://giphy.com/embed/0fpvY4iD5Kq2cdfN2C&quot; width=&quot;100%&quot; height=&quot;100%&quot; style=&quot;position:absolute&quot; frameborder=&quot;0&quot; class=&quot;giphy-embed&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;https://giphy.com/gifs/0fpvY4iD5Kq2cdfN2C&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;If you don’t have the name of a function run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;:tag&lt;/code&gt; and then press space. You’ll see a dropdown of all the functions, classes, etc.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div style=&quot;width:100%;height:0;padding-bottom:56%;position:relative;&quot;&gt;&lt;iframe src=&quot;https://giphy.com/embed/jlKATvOgUulyqF8WnC&quot; width=&quot;100%&quot; height=&quot;100%&quot; style=&quot;position:absolute&quot; frameborder=&quot;0&quot; class=&quot;giphy-embed&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;https://giphy.com/gifs/jlKATvOgUulyqF8WnC&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;If you’re trying to look at the definition of something, that can be done with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CTRL+}&lt;/code&gt;. If you want it to be in a new window do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CTRL+w }&lt;/code&gt;, that window can be closed with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;:pclose&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div style=&quot;width:100%;height:0;padding-bottom:56%;position:relative;&quot;&gt;&lt;iframe src=&quot;https://giphy.com/embed/7ehwPQwZMbCppw0kMq&quot; width=&quot;100%&quot; height=&quot;100%&quot; style=&quot;position:absolute&quot; frameborder=&quot;0&quot; class=&quot;giphy-embed&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;https://giphy.com/gifs/7ehwPQwZMbCppw0kMq&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Searching for all symbols. You can’t do this directly. You have to first open the tags file, filter each line. I used FZF for this. Then a simple &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CTRL+]&lt;/code&gt; will get you to its definition.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div style=&quot;width:100%;height:0;padding-bottom:56%;position:relative;&quot;&gt;&lt;iframe src=&quot;https://giphy.com/embed/w0arKM56lhl31t0sXY&quot; width=&quot;100%&quot; height=&quot;100%&quot; style=&quot;position:absolute&quot; frameborder=&quot;0&quot; class=&quot;giphy-embed&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;https://giphy.com/gifs/w0arKM56lhl31t0sXY&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;These are just the basics. For more details look at the tags documentation&lt;sup id=&quot;fnref:tags-documentation&quot;&gt;&lt;a href=&quot;#fn:tags-documentation&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot; role=&quot;doc-noteref&quot;&gt;5&lt;/a&gt;&lt;/sup&gt; which has some good tips regarding navigation. Anyways, that’s pretty much what tags can do.&lt;/p&gt;
+
+&lt;h4 id=&quot;completions&quot;&gt;Completions&lt;/h4&gt;
+&lt;p&gt;To get accurate code completion, you can’t use omnifunc. You should use tag completion instead, triggered with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&amp;lt;C-x&amp;gt;&amp;lt;C-]&amp;gt;&lt;/code&gt; while in insert mode.&lt;/p&gt;
+
+&lt;div style=&quot;width:100%;height:0;padding-bottom:56%;position:relative;&quot;&gt;&lt;iframe src=&quot;https://giphy.com/embed/bdRagCjZkDJaV0w0EL&quot; width=&quot;100%&quot; height=&quot;100%&quot; style=&quot;position:absolute&quot; frameborder=&quot;0&quot; class=&quot;giphy-embed&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;https://giphy.com/gifs/bdRagCjZkDJaV0w0EL&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;I tried to get tag completion through omnifunc working, but it didn’t. I followed the instructions &lt;a href=&quot;https://neovim.io/doc/user/insert.html#ft-c-omni&quot;&gt;here&lt;/a&gt; for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;c&lt;/code&gt; but when I used the keybinds to trigger omnifunc, nothing appeared. If you manage to get it working, feel free to share it with me :D.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;closing&quot;&gt;Closing&lt;/h2&gt;
+&lt;p&gt;This took me a while to write as I had to do it in between school. I also have assignments but I decided this was more fun and interesting. Not the greatest idea, that much I can tell you. But, it is fun though. I did learn a lot about how to get code-completions without LSP.&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:ins-completion&quot;&gt;
+      &lt;p&gt;A full list of completion types can be found in the &lt;a href=&quot;https://neovim.io/doc/user/insert.html##ins-completion&quot;&gt;insert completion section&lt;/a&gt;. &lt;a href=&quot;#fnref:ins-completion&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;https://neovim.io/doc/user/usr_41.html##41.12 &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:tags-or-providers&quot;&gt;
+      &lt;p&gt;Start reading from &lt;a href=&quot;https://neovim.io/doc/user/insert.html##compl-omni-filetypes&quot;&gt;compl-omni-filetypes&lt;/a&gt;. &lt;a href=&quot;#fnref:tags-or-providers&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:omnifunc-supported-filetypes&quot;&gt;
+      &lt;p&gt;A full list specified &lt;a href=&quot;https://neovim.io/doc/user/insert.html##compl-omni-filetypes&quot;&gt;here&lt;/a&gt; &lt;a href=&quot;#fnref:omnifunc-supported-filetypes&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:tags-documentation&quot;&gt;
+      &lt;p&gt;https://neovim.io/doc/user/usr_29.html#29.1 &lt;a href=&quot;#fnref:tags-documentation&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction I decided to learn about this because why not. I remember one time I heard about omnifunc and that it’s vim’s built in completion. And I decided to give it a try because why not. It ended up being a pretty good experience. I also plan to use tags for navigation and code completion for a few weeks just to get a feel for this vs LSP. It will definitely be an interesting exercise and definitely one that’s gonna be fun. It’s also how people used to code pre-LSP.</summary></entry><entry><title type="html">Performing pre-shutdown tasks</title><link href="http://localhost:4000/2023/02/07/scheduling-preshutdown-tasks.html" rel="alternate" type="text/html" title="Performing pre-shutdown tasks" /><published>2023-02-07T20:00:00+08:00</published><updated>2023-02-07T20:00:00+08:00</updated><id>http://localhost:4000/2023/02/07/scheduling-preshutdown-tasks</id><content type="html" xml:base="http://localhost:4000/2023/02/07/scheduling-preshutdown-tasks.html">&lt;h2 id=&quot;why-i-wanted-to-do-this&quot;&gt;Why I wanted to do this&lt;/h2&gt;
+
+&lt;p&gt;I remember losing most of my notes in my second semester of diploma. It hurt my soul. Despite having a private github repository setup for said notes, the process was still manual as I had to run the commands to add, commit and then push. This made it so I only backed up my notes once a week. One time I wanted to do some deleting and stupidly I &lt;em&gt;did not&lt;/em&gt; test out the script in a dummy folder beforehand. This resulted in me deleting a lot of important documents. After that experience all I wanted to do was to be able to have this backup process happen on its own. So, I came up with a simple solution: Performing the add, commit and push before the computer shutsdown. I spent some time looking at options to achieve what I wanted and I managed to find a solution I’m quite happy with.&lt;/p&gt;
+
+&lt;p&gt;First of all this doesn’t apply to &lt;em&gt;just&lt;/em&gt; before shutdowns. You can use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;systemd&lt;/code&gt; in a variety of ways. If you’d like to know more about what systemd is refer to &lt;a href=&quot;https://wiki.archlinux.org/title/Systemd&quot;&gt;this&lt;/a&gt; article and if you’d like to how to run certain scripts based on some condition refer to the article on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;systemd&lt;/code&gt; on the arch wiki and the &lt;a href=&quot;https://man.archlinux.org/man/systemd.service.5#Default_Dependencies&quot;&gt;man page&lt;/a&gt; about &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;systemd&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;creating-systemd-units&quot;&gt;Creating systemd units&lt;/h2&gt;
+&lt;p&gt;Tasks ran by systemd are called units and all units have the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.service&lt;/code&gt; extension. These units are made by users and therefore must be placed in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.config/systemd/user/&lt;/code&gt;&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot; role=&quot;doc-noteref&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. Thank the Arch Wiki because there’s a &lt;a href=&quot;https://wiki.archlinux.org/title/Systemd#Writing_unit_files&quot;&gt;guide&lt;/a&gt; that tells you exactly how to write units. Based on the functionality desired I wrote a simple script (stored in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/script&lt;/code&gt; to keep things simple) and then made it executable with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chmod u+x &amp;lt;script&amp;gt;&lt;/code&gt;.&lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot; role=&quot;doc-noteref&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;I named the unit &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;backup.service&lt;/code&gt; and placed it in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.config/systemd/user&lt;/code&gt;. You can name it whatever you want, as long as it’s name clearly describes its purpose. This is the content of the unit.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Unit]
+Description=Backup obsidian notes before shutdown
+DefaultDependencies=no
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStop=fish /home/yjh/scripts/backup.fish
+
+[Install]
+WantedBy=default.target shutdown.target
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;It took me a while to figure out what the purpose of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[Install]&lt;/code&gt; is and if you’d like to know more take a look at the &lt;a href=&quot;https://man.archlinux.org/man/systemd.unit.5.en#%5BINSTALL%5D_SECTION_OPTIONS&quot;&gt;man page&lt;/a&gt; for this.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;There are a few items that relate to my use case of (1) running scripts before shutdown and (2) pushing a local repo to a remote repsitory.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RemainAfterExit&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ExecStop&lt;/code&gt; is for service units that will run scripts.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RemainAfterExit&lt;/code&gt;&lt;sup id=&quot;fnref:3&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot; role=&quot;doc-noteref&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; is a must for these service units as it won’t even get into an active state it will always be dead.&lt;sup id=&quot;fnref:4&quot;&gt;&lt;a href=&quot;#fn:4&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot; role=&quot;doc-noteref&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Requires=network-online.target&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Requires=&lt;/code&gt; makes sure that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;network-online.target&lt;/code&gt; will be started if it isn’t when this service unit activates. This is because to push to remote repository an internet connection is required.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;After=network-online.target&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;After=&lt;/code&gt; makes sure that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;network-online.target&lt;/code&gt; has started. If &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;network-online.target&lt;/code&gt; fails to start for whatever reason the script will not be executed.&lt;sup id=&quot;fnref:5&quot;&gt;&lt;a href=&quot;#fn:5&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot; role=&quot;doc-noteref&quot;&gt;5&lt;/a&gt;&lt;/sup&gt; This ensures that the script will only execute if there is an internet connection otherwise, nothing happens.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Something &lt;strong&gt;very important&lt;/strong&gt; that I’d like to bring up is the help I received from &lt;a href=&quot;https://github.com/dnaka91&quot;&gt;dnaka&lt;/a&gt; and &lt;a href=&quot;https://unix.stackexchange.com/users/332764/freddy&quot;&gt;Freddy&lt;/a&gt; a unix user who helped me solve this &lt;a href=&quot;https://unix.stackexchange.com/a/734710/527572&quot;&gt;issue&lt;/a&gt;. He also explained that if &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DefaultDependencies&lt;/code&gt; is removed then &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shutdown.target&lt;/code&gt; is implicitly included when the service unit is run!&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;working-around-user-input&quot;&gt;Working around user input&lt;/h2&gt;
+&lt;p&gt;After &lt;a href=&quot;https://github.blog/changelog/2021-08-12-git-password-authentication-is-shutting-down/&quot;&gt;password authentication was shutdown&lt;/a&gt; in 2021, I decided to use SSH keys for authorisation. However, my SSH keys are password protected which means that user input is required. Inputs which I cannot give because when the system is shutting down the screen goes black. So, a way to circumvent this is to create a new SSH key and only use it for that specific repository. GitHub already has &lt;a href=&quot;https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent&quot;&gt;documentation&lt;/a&gt; on how to do exactly that.&lt;/p&gt;
+
+&lt;h2 id=&quot;enabling-the-unit&quot;&gt;Enabling the unit&lt;/h2&gt;
+&lt;p&gt;After writing up the service unit they are not detected yet and systemd will need to know about them to do that run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo systemctl daemon-reload&lt;/code&gt;. Then you’ll need to enable it with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;systemctl --user enable &amp;lt;service&amp;gt;&lt;/code&gt; and there will be some output this is what I got.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Created symlink /home/yjh/.config/systemd/user/shutdown.target.wants/backup.service → /home/yjh/.config/systemd/user/backup.service.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I made some random changes and I restarted my PC. I looked at the repository through my phone and saw a new commit. A huge success!&lt;/p&gt;
+
+&lt;h2 id=&quot;closing-thoughts&quot;&gt;Closing thoughts&lt;/h2&gt;
+&lt;p&gt;This actually took me a while to deal with. I spent many hours on this and even skipped class, probably not a smart idea. I was in class sure, but I was at the back doing my own thing. Anyways, the moral of the story is&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Don’t run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rm -rf&lt;/code&gt; without testing it first.&lt;/li&gt;
+  &lt;li&gt;Automate backups for redundency.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I implemented this about two years ago, and I’ve never been happier at my lack of data loss. I even manually backup my data once every few months to an external drive I carry around everywhere. I’m proud to say that if you threw my laptop into a volcano I would suffer no data loss!&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://wiki.archlinux.org/title/Systemd/User&quot;&gt;~/.config/systemd/user/ where the user puts their own units.&lt;/a&gt; &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:2&quot;&gt;
+      &lt;p&gt;Along side the manuals and wikipages the article on running scripts with systemd by &lt;a href=&quot;https://www.golinuxcloud.com/run-script-with-systemd-before-shutdown-linux/&quot;&gt;golinuxcloud&lt;/a&gt; was also very helpful. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:3&quot;&gt;
+      &lt;p&gt;About &lt;a href=&quot;https://man.archlinux.org/man/systemd.service.5#OPTIONS&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RemainAfterExit&lt;/code&gt;&lt;/a&gt; will require some serching with CTRL+F. &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:4&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://man.archlinux.org/man/systemd.service.5#OPTIONS&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Type=oneshot&lt;/code&gt; and relation to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RemainAfterExit&lt;/code&gt;&lt;/a&gt;. Will require some searching with CTRL+F. &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:5&quot;&gt;
+      &lt;p&gt;Detailed info on &lt;a href=&quot;https://man.archlinux.org/man/systemd.unit.5.en#%5BUNIT%5D_SECTION_OPTIONS&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Requires=&lt;/code&gt;&lt;/a&gt;. Will require searching. &lt;a href=&quot;#fnref:5&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Why I wanted to do this</summary></entry></feed>

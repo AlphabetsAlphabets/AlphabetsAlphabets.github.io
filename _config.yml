@@ -1,0 +1,15 @@
+title: alphabet's yap archive
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+
+theme_config:
+  appearance: "light" # can be "light", "dark" or "auto"
+  back_home_text: ".." # customize text for homepage link in post layout
+  date_format: "%Y-%m-%d" # customize how date is formatted
+  show_description: false # show blog description in home page
+
+# Build settings
+markdown: kramdown
+theme: no-style-please
+plugins:
+  - jekyll-feed

@@ -1,0 +1,10 @@
+entries:
+  - title: about me
+    entries:
+     - title: Loves to yap about tech and random shit.
+     - title: RSS available!
+       url: feed.xml
+  - title: posts
+    post_list:
+      limit: 5
+      show_more: true

@@ -1,0 +1,16 @@
+current directory: /home/star/Documents/blog/vendor/bundle/ruby/3.0.0/bundler/gems/http_parser.rb-71ecce2a498f/ext/ruby_http_parser
+/usr/bin/ruby3.0 -I /usr/lib/ruby/vendor_ruby -r ./siteconf20241214-40084-6ppq61.rb extconf.rb
+creating Makefile
+
+current directory: /home/star/Documents/blog/vendor/bundle/ruby/3.0.0/bundler/gems/http_parser.rb-71ecce2a498f/ext/ruby_http_parser
+make DESTDIR\= clean
+
+current directory: /home/star/Documents/blog/vendor/bundle/ruby/3.0.0/bundler/gems/http_parser.rb-71ecce2a498f/ext/ruby_http_parser
+make DESTDIR\=
+compiling ruby_http_parser.c
+compiling ryah_http_parser.c
+linking shared-object ruby_http_parser.so
+
+current directory: /home/star/Documents/blog/vendor/bundle/ruby/3.0.0/bundler/gems/http_parser.rb-71ecce2a498f/ext/ruby_http_parser
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 ruby_http_parser.so ./.gem.20241214-40084-q7v6qp
