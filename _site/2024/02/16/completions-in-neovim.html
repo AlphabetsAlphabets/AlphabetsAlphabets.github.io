@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Completions in Neovim</title><!-- Begin Jekyll SEO tag v2.7.1 -->
-<meta name="generator" content="Jekyll v3.9.5" />
+<meta name="generator" content="Jekyll v3.9.0" />
 <meta property="og:title" content="Completions in Neovim" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Introduction I decided to learn about this because why not. I remember one time I heard about omnifunc and that it’s vim’s built in completion. And I decided to give it a try because why not. It ended up being a pretty good experience. I also plan to use tags for navigation and code completion for a few weeks just to get a feel for this vs LSP. It will definitely be an interesting exercise and definitely one that’s gonna be fun. It’s also how people used to code pre-LSP." />
@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Completions in Neovim" />
 <script type="application/ld+json">
-{"headline":"Completions in Neovim","dateModified":"2024-02-16T23:00:00+08:00","datePublished":"2024-02-16T23:00:00+08:00","url":"http://localhost:4000/2024/02/16/completions-in-neovim.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2024/02/16/completions-in-neovim.html"},"description":"Introduction I decided to learn about this because why not. I remember one time I heard about omnifunc and that it’s vim’s built in completion. And I decided to give it a try because why not. It ended up being a pretty good experience. I also plan to use tags for navigation and code completion for a few weeks just to get a feel for this vs LSP. It will definitely be an interesting exercise and definitely one that’s gonna be fun. It’s also how people used to code pre-LSP.","@context":"https://schema.org"}</script>
+{"url":"http://localhost:4000/2024/02/16/completions-in-neovim.html","@type":"BlogPosting","description":"Introduction I decided to learn about this because why not. I remember one time I heard about omnifunc and that it’s vim’s built in completion. And I decided to give it a try because why not. It ended up being a pretty good experience. I also plan to use tags for navigation and code completion for a few weeks just to get a feel for this vs LSP. It will definitely be an interesting exercise and definitely one that’s gonna be fun. It’s also how people used to code pre-LSP.","headline":"Completions in Neovim","dateModified":"2024-02-16T23:00:00+08:00","datePublished":"2024-02-16T23:00:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2024/02/16/completions-in-neovim.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="alphabet&apos;s yap archive" /><link rel="shortcut icon" type="image/x-icon" href="" />
   <link rel="stylesheet" href="/assets/css/main.css" />
@@ -65,7 +65,7 @@
 
 <p>Although option 6 is specific to C files.</p>
 
-<p>Above demonstrates a general use case. There are more specific completions such as completing a file name<sup id="fnref:ins-completion"><a href="#fn:ins-completion" class="footnote" rel="footnote" role="doc-noteref">1</a></sup></p>
+<p>Above demonstrates a general use case. There are more specific completions such as completing a file name<sup id="fnref:ins-completion" role="doc-noteref"><a href="#fn:ins-completion" class="footnote" rel="footnote">1</a></sup></p>
 
 <h2 id="enabling-omnifunc">Enabling omnifunc</h2>
 <blockquote>
@@ -96,10 +96,10 @@
 <span class="k">let</span> &amp;<span class="k">l</span><span class="p">:</span><span class="nb">define</span> <span class="p">=</span> <span class="s1">'\&lt;function\|\&lt;local\%(\s\+function\)\='</span>
 </code></pre></div></div>
 
-<p>These files are sourced <em>after</em> your configs. Meaning these configs <em>override yours</em>. These are buffer specific and only applies to buffers that match the filetype<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>. Meaning that configuration above will only apply to <code class="language-plaintext highlighter-rouge">.lua</code> files.</p>
+<p>These files are sourced <em>after</em> your configs. Meaning these configs <em>override yours</em>. These are buffer specific and only applies to buffers that match the filetype<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">2</a></sup>. Meaning that configuration above will only apply to <code class="language-plaintext highlighter-rouge">.lua</code> files.</p>
 
 <h2 id="using-omnifunc">Using omnifunc</h2>
-<p>To use omnifunc for code completion, tags are required for completions to work. Some require both tags and providers.<sup id="fnref:tags-or-providers"><a href="#fn:tags-or-providers" class="footnote" rel="footnote" role="doc-noteref">3</a></sup>. If a provider is not required, omnifunc will just work. If it is you’ll get an error message.</p>
+<p>To use omnifunc for code completion, tags are required for completions to work. Some require both tags and providers.<sup id="fnref:tags-or-providers" role="doc-noteref"><a href="#fn:tags-or-providers" class="footnote" rel="footnote">3</a></sup>. If a provider is not required, omnifunc will just work. If it is you’ll get an error message.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Error: Requires python3 + pynvim.  :help provider-python
 </code></pre></div></div>
@@ -113,7 +113,7 @@
 
 <p><img src="https://i.imgur.com/JHEBAQn.png" alt="" /></p>
 
-<p>Notice how the screenshot has the <code class="language-plaintext highlighter-rouge">Tews</code> class, but it isn’t listed. Another thing is that omnifunc has support for <strong>limited</strong> filetypes<sup id="fnref:omnifunc-supported-filetypes"><a href="#fn:omnifunc-supported-filetypes" class="footnote" rel="footnote" role="doc-noteref">4</a></sup>. But, this is omnifunc working as intended. Because, omnifunc is <strong>NOT</strong> LSP. As mentioned at the very beginning. If you’d want LSP-<strong>like</strong> behavior (emphasis on <strong>like</strong>), look at the next section.</p>
+<p>Notice how the screenshot has the <code class="language-plaintext highlighter-rouge">Tews</code> class, but it isn’t listed. Another thing is that omnifunc has support for <strong>limited</strong> filetypes<sup id="fnref:omnifunc-supported-filetypes" role="doc-noteref"><a href="#fn:omnifunc-supported-filetypes" class="footnote" rel="footnote">4</a></sup>. But, this is omnifunc working as intended. Because, omnifunc is <strong>NOT</strong> LSP. As mentioned at the very beginning. If you’d want LSP-<strong>like</strong> behavior (emphasis on <strong>like</strong>), look at the next section.</p>
 
 <h2 id="getting-lsp-like-behaviour">Getting LSP like behaviour</h2>
 <p>There are two ways to do this</p>
@@ -201,7 +201,7 @@ https://neovim.io/doc/user/usr_29.html#_one-tags-file</p>
 <div style="width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/w0arKM56lhl31t0sXY" width="100%" height="100%" style="position:absolute" frameborder="0" class="giphy-embed" allowfullscreen=""></iframe></div>
 <p><a href="https://giphy.com/gifs/w0arKM56lhl31t0sXY"></a></p>
 
-<p>These are just the basics. For more details look at the tags documentation<sup id="fnref:tags-documentation"><a href="#fn:tags-documentation" class="footnote" rel="footnote" role="doc-noteref">5</a></sup> which has some good tips regarding navigation. Anyways, that’s pretty much what tags can do.</p>
+<p>These are just the basics. For more details look at the tags documentation<sup id="fnref:tags-documentation" role="doc-noteref"><a href="#fn:tags-documentation" class="footnote" rel="footnote">5</a></sup> which has some good tips regarding navigation. Anyways, that’s pretty much what tags can do.</p>
 
 <h4 id="completions">Completions</h4>
 <p>To get accurate code completion, you can’t use omnifunc. You should use tag completion instead, triggered with <code class="language-plaintext highlighter-rouge">&lt;C-x&gt;&lt;C-]&gt;</code> while in insert mode.</p>
@@ -218,19 +218,19 @@ https://neovim.io/doc/user/usr_29.html#_one-tags-file</p>
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:ins-completion">
+    <li id="fn:ins-completion" role="doc-endnote">
       <p>A full list of completion types can be found in the <a href="https://neovim.io/doc/user/insert.html##ins-completion">insert completion section</a>. <a href="#fnref:ins-completion" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:1">
+    <li id="fn:1" role="doc-endnote">
       <p>https://neovim.io/doc/user/usr_41.html##41.12 <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:tags-or-providers">
+    <li id="fn:tags-or-providers" role="doc-endnote">
       <p>Start reading from <a href="https://neovim.io/doc/user/insert.html##compl-omni-filetypes">compl-omni-filetypes</a>. <a href="#fnref:tags-or-providers" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:omnifunc-supported-filetypes">
+    <li id="fn:omnifunc-supported-filetypes" role="doc-endnote">
       <p>A full list specified <a href="https://neovim.io/doc/user/insert.html##compl-omni-filetypes">here</a> <a href="#fnref:omnifunc-supported-filetypes" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:tags-documentation">
+    <li id="fn:tags-documentation" role="doc-endnote">
       <p>https://neovim.io/doc/user/usr_29.html#29.1 <a href="#fnref:tags-documentation" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>

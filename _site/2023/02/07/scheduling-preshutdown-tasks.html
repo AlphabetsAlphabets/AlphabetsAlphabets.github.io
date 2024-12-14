@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Performing pre-shutdown tasks</title><!-- Begin Jekyll SEO tag v2.7.1 -->
-<meta name="generator" content="Jekyll v3.9.5" />
+<meta name="generator" content="Jekyll v3.9.0" />
 <meta property="og:title" content="Performing pre-shutdown tasks" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Why I wanted to do this" />
@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Performing pre-shutdown tasks" />
 <script type="application/ld+json">
-{"headline":"Performing pre-shutdown tasks","dateModified":"2023-02-07T20:00:00+08:00","datePublished":"2023-02-07T20:00:00+08:00","url":"http://localhost:4000/2023/02/07/scheduling-preshutdown-tasks.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/02/07/scheduling-preshutdown-tasks.html"},"description":"Why I wanted to do this","@context":"https://schema.org"}</script>
+{"url":"http://localhost:4000/2023/02/07/scheduling-preshutdown-tasks.html","@type":"BlogPosting","description":"Why I wanted to do this","headline":"Performing pre-shutdown tasks","dateModified":"2023-02-07T20:00:00+08:00","datePublished":"2023-02-07T20:00:00+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/02/07/scheduling-preshutdown-tasks.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="alphabet&apos;s yap archive" /><link rel="shortcut icon" type="image/x-icon" href="" />
   <link rel="stylesheet" href="/assets/css/main.css" />
@@ -39,7 +39,7 @@
 <p>First of all this doesn’t apply to <em>just</em> before shutdowns. You can use <code class="language-plaintext highlighter-rouge">systemd</code> in a variety of ways. If you’d like to know more about what systemd is refer to <a href="https://wiki.archlinux.org/title/Systemd">this</a> article and if you’d like to how to run certain scripts based on some condition refer to the article on <code class="language-plaintext highlighter-rouge">systemd</code> on the arch wiki and the <a href="https://man.archlinux.org/man/systemd.service.5#Default_Dependencies">man page</a> about <code class="language-plaintext highlighter-rouge">systemd</code>.</p>
 
 <h2 id="creating-systemd-units">Creating systemd units</h2>
-<p>Tasks ran by systemd are called units and all units have the <code class="language-plaintext highlighter-rouge">.service</code> extension. These units are made by users and therefore must be placed in <code class="language-plaintext highlighter-rouge">~/.config/systemd/user/</code><sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>. Thank the Arch Wiki because there’s a <a href="https://wiki.archlinux.org/title/Systemd#Writing_unit_files">guide</a> that tells you exactly how to write units. Based on the functionality desired I wrote a simple script (stored in <code class="language-plaintext highlighter-rouge">~/script</code> to keep things simple) and then made it executable with <code class="language-plaintext highlighter-rouge">chmod u+x &lt;script&gt;</code>.<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup></p>
+<p>Tasks ran by systemd are called units and all units have the <code class="language-plaintext highlighter-rouge">.service</code> extension. These units are made by users and therefore must be placed in <code class="language-plaintext highlighter-rouge">~/.config/systemd/user/</code><sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>. Thank the Arch Wiki because there’s a <a href="https://wiki.archlinux.org/title/Systemd#Writing_unit_files">guide</a> that tells you exactly how to write units. Based on the functionality desired I wrote a simple script (stored in <code class="language-plaintext highlighter-rouge">~/script</code> to keep things simple) and then made it executable with <code class="language-plaintext highlighter-rouge">chmod u+x &lt;script&gt;</code>.<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup></p>
 
 <p>I named the unit <code class="language-plaintext highlighter-rouge">backup.service</code> and placed it in <code class="language-plaintext highlighter-rouge">~/.config/systemd/user</code>. You can name it whatever you want, as long as it’s name clearly describes its purpose. This is the content of the unit.</p>
 
@@ -67,7 +67,7 @@ WantedBy=default.target shutdown.target
   <li><code class="language-plaintext highlighter-rouge">RemainAfterExit</code>, <code class="language-plaintext highlighter-rouge">ExecStop</code> is for service units that will run scripts.</li>
 </ul>
 
-<p><code class="language-plaintext highlighter-rouge">RemainAfterExit</code><sup id="fnref:3"><a href="#fn:3" class="footnote" rel="footnote" role="doc-noteref">3</a></sup> is a must for these service units as it won’t even get into an active state it will always be dead.<sup id="fnref:4"><a href="#fn:4" class="footnote" rel="footnote" role="doc-noteref">4</a></sup></p>
+<p><code class="language-plaintext highlighter-rouge">RemainAfterExit</code><sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup> is a must for these service units as it won’t even get into an active state it will always be dead.<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup></p>
 
 <ul>
   <li><code class="language-plaintext highlighter-rouge">Requires=network-online.target</code></li>
@@ -79,7 +79,7 @@ WantedBy=default.target shutdown.target
   <li><code class="language-plaintext highlighter-rouge">After=network-online.target</code></li>
 </ul>
 
-<p><code class="language-plaintext highlighter-rouge">After=</code> makes sure that <code class="language-plaintext highlighter-rouge">network-online.target</code> has started. If <code class="language-plaintext highlighter-rouge">network-online.target</code> fails to start for whatever reason the script will not be executed.<sup id="fnref:5"><a href="#fn:5" class="footnote" rel="footnote" role="doc-noteref">5</a></sup> This ensures that the script will only execute if there is an internet connection otherwise, nothing happens.</p>
+<p><code class="language-plaintext highlighter-rouge">After=</code> makes sure that <code class="language-plaintext highlighter-rouge">network-online.target</code> has started. If <code class="language-plaintext highlighter-rouge">network-online.target</code> fails to start for whatever reason the script will not be executed.<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">5</a></sup> This ensures that the script will only execute if there is an internet connection otherwise, nothing happens.</p>
 
 <blockquote>
   <p>Something <strong>very important</strong> that I’d like to bring up is the help I received from <a href="https://github.com/dnaka91">dnaka</a> and <a href="https://unix.stackexchange.com/users/332764/freddy">Freddy</a> a unix user who helped me solve this <a href="https://unix.stackexchange.com/a/734710/527572">issue</a>. He also explained that if <code class="language-plaintext highlighter-rouge">DefaultDependencies</code> is removed then <code class="language-plaintext highlighter-rouge">shutdown.target</code> is implicitly included when the service unit is run!</p>
@@ -107,19 +107,19 @@ WantedBy=default.target shutdown.target
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
+    <li id="fn:1" role="doc-endnote">
       <p><a href="https://wiki.archlinux.org/title/Systemd/User">~/.config/systemd/user/ where the user puts their own units.</a> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2">
+    <li id="fn:2" role="doc-endnote">
       <p>Along side the manuals and wikipages the article on running scripts with systemd by <a href="https://www.golinuxcloud.com/run-script-with-systemd-before-shutdown-linux/">golinuxcloud</a> was also very helpful. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3">
+    <li id="fn:3" role="doc-endnote">
       <p>About <a href="https://man.archlinux.org/man/systemd.service.5#OPTIONS"><code class="language-plaintext highlighter-rouge">RemainAfterExit</code></a> will require some serching with CTRL+F. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:4">
+    <li id="fn:4" role="doc-endnote">
       <p><a href="https://man.archlinux.org/man/systemd.service.5#OPTIONS"><code class="language-plaintext highlighter-rouge">Type=oneshot</code> and relation to <code class="language-plaintext highlighter-rouge">RemainAfterExit</code></a>. Will require some searching with CTRL+F. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:5">
+    <li id="fn:5" role="doc-endnote">
       <p>Detailed info on <a href="https://man.archlinux.org/man/systemd.unit.5.en#%5BUNIT%5D_SECTION_OPTIONS"><code class="language-plaintext highlighter-rouge">Requires=</code></a>. Will require searching. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
