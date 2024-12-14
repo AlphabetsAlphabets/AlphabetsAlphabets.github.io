@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Completions in Neovim'
+title: 'An Experience With He Who Shall Not Be Named'
 date: 2024-12-14 20:48
 ---
 
