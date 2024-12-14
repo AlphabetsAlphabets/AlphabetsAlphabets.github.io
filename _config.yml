@@ -10,6 +10,6 @@ theme_config:
 
 # Build settings
 markdown: kramdown
-theme: riggraz/no-style-please
+remote_theme: riggraz/no-style-please
 plugins:
   - jekyll-feed
